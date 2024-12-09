@@ -1,0 +1,222 @@
+/* General Reset */
+body, ul, li, a, img, header {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%; /* Full height for the viewport */
+    display: flex;
+    flex-direction: column; /* Makes body and footer layout manageable */
+}
+
+/* Main Content Area */
+.container {
+    flex: 1; /* Pushes footer to the bottom */
+}
+
+/* Header Section Styling */
+.header {
+    display: flex;
+    justify-content: space-between; /* Separates logo and nav sections */
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    height: 70px; /* Fixed height for the navbar */
+    padding: 0 20px; /* Horizontal spacing */
+    z-index: 1000;
+    background: none; /* No background */
+}
+
+/* Logo Section */
+.header-logo img {
+    max-height: 190px; /* Increase as needed */
+    width: auto; /* Maintain aspect ratio */
+    display: block;
+}
+
+.header-logo {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    height: 100%; /* Centers logo vertically */
+    overflow: hidden; /* Ensures excess content is clipped */
+}
+
+/* Navigation Menu */
+.header-menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+    height: 100%; /* Aligns nav menu vertically */
+}
+
+.header-menu .nav-list {
+    display: flex;
+    gap: 25px; /* Spacing between menu items */
+    list-style: none;
+}
+
+.header-menu .nav-list li a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #1D3557; /* Dark blue text */
+    text-decoration: none;
+    font-weight: 200;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.header-menu .nav-list li a:hover {
+    color: #457B9D; /* Lighter blue on hover */
+    transform: translateY(-2px); /* Subtle hover lift effect */
+}
+
+/* Header Right (Buttons) */
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    height: 100%; /* Keeps buttons aligned */
+}
+
+.header-right .btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 2px solid #1D3557;
+    text-decoration: none;
+    font-weight: bold;
+    color: #1D3557;
+    background: none;
+    transition: all 0.3s ease;
+}
+
+.header-right .btn-signin:hover {
+    background: #457B9D;
+    color: #fff;
+}
+
+.header-right .btn-register {
+    border-color: #457B9D;
+    color: #457B9D;
+}
+
+.header-right .btn-register:hover {
+    background: #457B9D;
+    color: #fff;
+}
+
+/* Responsive Design for Header */
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto; /* Allow navbar to grow with content */
+    }
+
+    .header-menu {
+        flex-grow: 0;
+        margin-top: 10px;
+    }
+
+    .header-right {
+        margin-top: 10px;
+    }
+}
+
+/* Footer Section */
+.custom-footer {
+    background-color: #1D3557; /* Dark blue background */
+    color: #fff; /* White text color */
+    padding: 40px 20px;
+    font-family: 'Poppins', sans-serif;
+    width: 100%; /* Full width */
+}
+
+.custom-footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.custom-footer .footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Ensures responsiveness */
+    gap: 20px;
+}
+
+/* About Section */
+.about-section h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.about-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Social Section */
+.social-section h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.social-section .social-icons {
+    display: flex;
+    gap: 15px; /* Space between icons */
+}
+
+.social-section .social-icons a {
+    color: #A8DADC; /* Soft blue icon color */
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-section .social-icons a:hover {
+    color: #F1FAEE; /* Lighter color on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    border-top: 1px solid #457B9D; /* Divider line */
+    padding-top: 10px;
+}
+
+.footer-bottom a {
+    color: #A8DADC;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    color: #F1FAEE; /* Lighter color on hover */
+}
+
+/* Responsive Design for Footer */
+@media screen and (max-width: 768px) {
+    .custom-footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-section .social-icons {
+        justify-content: center;
+    }
+}
