@@ -2,6 +2,159 @@
 {% load static %}
 
 {% block title %}Home{% endblock %}
+{% block style %}
+<style>
+    .card{
+        width: 20rem;
 
-{% block content %} 
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="mt-5">
+    <section class="my-5 mt-5 pt-5">
+        <div class="container-fluid d-flex flex-column align-items-center">
+            <div>
+                <div class="switch-container mb-4">
+                    <label class="switch-label text-white">HIRE</label>
+                    <input class="form-check-input" type="checkbox" role="switch" id="switch">
+                    <label class="switch-label text-white">APPLY</label>
+                </div>
+
+            </div>
+            <div>
+            <h1>Find Your <span>Dream Job</span> here</h1>
+            <p class="mt-3">The easiest way to get your dream job, create trackable resumes <br> and enrich your application and employers will find you!</p>
+
+            </div>
+        </div>
+    </section>
+    <div class="features-section container-fluid pt-5">
+        <h1 class="display-3 text-center text-light">Features</h1>
+        <section class="row row-cols-1 row-cols-3 gap-1 justify-content-center pb-5 pt-3 ps-5 m-5">
+
+            <div class="col m-3 pt-5">
+                <div class="card features-card border-0 shadow-lg rounded-5 h-100 justify-content-center">
+                    <div class="position-relative">
+                        <img src="https://squadio.com/img/ic_Compensation.e5798caf.svg" class="position-absolute" style="width: 100px; height: 100px; bottom: -60px; left: 50%; transform: translateX(-50%);" alt="Avatar">
+                    </div>
+
+                    <div class="card-body pt-5 mt-4 text-center">
+                        <h3>Very Fast</h3>
+                        <p class="card-title">Complete Your Business in Seconds, Add, Delete, Update Funds amd personal Information in Seconds</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col m-3 pt-5 ">
+                <div class="card features-card border-0 rounded-5 shadow-lg h-100 justify-content-center">
+                    <div class="position-relative">
+                        <img src="https://squadio.com/img/ic_Top-notch.18b7622d.svg" class="position-absolute" style="width: 100px; height: 100px; bottom: -60px; left: 50%; transform: translateX(-50%);" alt="Avatar">
+                    </div>
+
+                    <div class="card-body pt-5 mt-4 text-center">
+                        <h3>Mobility & modularity</h3>
+                        <p class="card-title">Check Your funds and data From anywhere at anytime with cloud based funding management system</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col m-3 pt-5 ">
+                    <div class="card features-card border-0 rounded-5 shadow-lg h-100 justify-content-center">
+                        <div class="position-relative">
+                            <img src="https://squadio.com/img/ic_Top-notch.18b7622d.svg" class="position-absolute" style="width: 100px; height: 100px; bottom: -60px; left: 50%; transform: translateX(-50%);" alt="Avatar">
+                        </div>
+
+                        <div class="card-body pt-5 mt-4 text-center">
+                            <h3>Mobility & modularity</h3>
+                            <p class="card-title">Check Your funds and data From anywhere at anytime with cloud based funding management system</p>
+                        </div>
+
+                    </div>
+                </div>
+            <div class="col m-3 pt-5">
+                    <div class="card features-card border-0 shadow-lg rounded-5 h-100 justify-content-center">
+                        <div class="position-relative">
+                            <img src="https://squadio.com/img/ic_Compensation.e5798caf.svg" class="position-absolute" style="width: 100px; height: 100px; bottom: -60px; left: 50%; transform: translateX(-50%);" alt="Avatar">
+                        </div>
+
+                        <div class="card-body pt-5 mt-4 text-center">
+                            <h3>Very Fast</h3>
+                            <p class="card-title">Complete Your Business in Seconds, Add, Delete, Update Funds amd personal Information in Seconds</p>
+                        </div>
+
+                    </div>
+                </div>
+            <div class="col m-3 pt-5 ">
+                <div class="card features-card border-0 rounded-5 shadow-lg h-100 justify-content-center">
+                    <div class="position-relative">
+                        <img src="https://squadio.com/img/ic_Top-notch.18b7622d.svg" class="position-absolute" style="width: 100px; height: 100px; bottom: -60px; left: 50%; transform: translateX(-50%);" alt="Avatar">
+                    </div>
+
+                    <div class="card-body pt-5 mt-4 text-center">
+                        <h3>Mobility & modularity</h3>
+                        <p class="card-title">Check Your funds and data From anywhere at anytime with cloud based funding management system</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col m-3 pt-5 ">
+                    <div class="card features-card border-0 rounded-5 shadow-lg h-100 justify-content-center">
+                        <div class="position-relative">
+                            <img src="https://squadio.com/img/ic_Top-notch.18b7622d.svg" class="position-absolute" style="width: 100px; height: 100px; bottom: -60px; left: 50%; transform: translateX(-50%);" alt="Avatar">
+                        </div>
+
+                        <div class="card-body pt-5 mt-4 text-center">
+                            <h3>Mobility & modularity</h3>
+                            <p class="card-title">Check Your funds and data From anywhere at anytime with cloud based funding management system</p>
+                        </div>
+
+                    </div>
+                </div>
+
+        </section>
+    </div>
+    <section class="container text-center mt-5 mb-5">
+        <h1>How To Get Started</h1>
+        <p>Nervous? Don't be! Squadio has found roles for thousands of people accross the globe. Here is a breakdown of how to get started.</p>
+        <div class="row justify-content-center">
+            <div class="col m-5">
+                <h1>1</h1>
+                <h3>Register Account</h3>
+                <hr>
+                <p>register to join</p>
+                <p>register to join</p>
+                <small>register to join</small>
+
+            </div>
+            <div class="col m-5">
+                <h1>2</h1>
+                <h3>Complete Your Account</h3>
+                <hr>
+                <p>Add experience</p>
+                <p>Add Skills</p>
+                <small>Add Education and certificates</small>
+            </div>
+            <div class="col m-5">
+                <h1>3</h1>
+                <h3>Swipe around opportunities</h3>
+                <hr>
+                <p>View opportunity details</p>
+                <p>Like an opportunity</p>
+                <small>Match and with job provider</small>
+            </div>
+            <div class="col m-5">
+                <h1>4</h1>
+                <h3>Get Your dream job</h3>
+                <hr>
+                <p>connect with job providers</p>
+                <p>register to join</p>
+                <small>register to join</small>
+            </div>
+        </div>
+        <a class="btn btn-warning rounded-5">apply as candidate</a>
+    </section>
+</div>
+
+
 {% endblock %}
