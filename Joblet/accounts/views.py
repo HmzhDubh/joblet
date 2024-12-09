@@ -11,7 +11,7 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)  
-            return redirect('home')  
+            return redirect('main:home_view')
     else:
         form = SignUpForm()
     return render(request, 'accounts/sign_up.html', {'form': form})
@@ -25,7 +25,7 @@ def signin_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)  
-                return redirect('home')  
+                return redirect('main:home_view')
     else:
         form = SignInForm()
     return render(request, 'accounts/sign_in.html', {'form': form})
@@ -33,4 +33,4 @@ def signin_view(request):
 @login_required
 def signout_view(request):
     logout(request)  
-    return redirect('sign_in')  
+    return redirect('accounts:signin')
