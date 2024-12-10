@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import Organization
 # Register your models here.
 
-admin.site.register(Organization)
+class orgAdmin(admin.ModelAdmin):
+    list_display = ['name', 'approved']
+admin.site.register(Organization, orgAdmin)
 
 
