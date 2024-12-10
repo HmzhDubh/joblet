@@ -13,6 +13,16 @@
 {% block content %}
 <div class="mt-5">
     <section class="my-5 mt-5 pt-5">
+        {% for group in request.user.groups.all %}
+            {{group}}
+            {% if group.name == 'candidate' %}
+                <h1 class="text-dark">Candidate</h1>
+            {% elif group.name == 'organizations' %}
+            <h1 class="text-dark"> welcome organization</h1>
+            {% else %}
+            <h1 class="text-dark">Welcome guest</h1>
+            {% endif %}
+        {% endfor%}
         <div class="container-fluid d-flex flex-column align-items-center">
             <div>
                 <div class="switch-container mb-4">
