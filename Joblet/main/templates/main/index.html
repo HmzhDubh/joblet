@@ -17,90 +17,10 @@
     <title>{% block title %}{% endblock %}</title>
 
     {% block style %}
-    <style>
-        .dropdown-toggle::after {
-          content: none;
-      }
-      .form-container {
-         max-width: 400px;
-         margin: 2rem auto;
-         padding: 2rem;
-         border-radius: 8px;
-         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-         background-color: white;
-     }
 
-     /* Style for all form paragraphs that Django generates */
-     .form-container p {
-         margin-bottom: 1.5rem;
-     }
-
-     /* Style for all labels */
-     .form-container label {
-         display: block;
-         margin-bottom: 0.5rem;
-         font-weight: 500;
-         color: #333;
-     }
-
-     /* Style for all inputs */
-     .form-container input {
-         width: 100%;
-         padding: 0.75rem;
-         border: 1px solid #ddd;
-         border-radius: 4px;
-         font-size: 1rem;
-     }
-
-     /* Style for error messages */
-     .form-container .errorlist {
-         color: #dc3545;
-         list-style: none;
-         padding: 0;
-         margin: 0.25rem 0;
-         font-size: 0.875rem;
-     }
-
-     /* Style for help text */
-     .form-container .helptext {
-         display: block;
-         margin-top: 0.25rem;
-         font-size: 0.875rem;
-         color: #6c757d;
-     }
-
-     /* Style for the submit button */
-     .form-container button {
-         width: 100%;
-         padding: 0.75rem;
-         background-color: #007bff;
-         color: white;
-         border: none;
-         border-radius: 4px;
-         font-size: 1rem;
-         cursor: pointer;
-         transition: background-color 0.2s;
-     }
-
-     .form-container button:hover {
-         background-color: #0056b3;
-     }
-
-     /* Style for required field indicators */
-     .form-container .required {
-         color: #dc3545;
-     }
-
-     /* Focus states */
-     .form-container input:focus {
-         outline: none;
-         border-color: #007bff;
-         box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-     }
-    </style>
     {% endblock %}
 </head>
-<body class="bg-light">
+<body class="{% if request.GET.type == 'candidate' %}bg-candidate{% elif request.GET.type == 'organization' %}bg-organization{% else %}bg-candidate{% endif %}">
     <div class="hero-section ">
         <header class="header">
             <div class="container">
@@ -113,24 +33,24 @@
                             </a>
                         </div>
                     </div>
-    
+
                     <!-- Navigation Menu -->
-                    <div class="col-lg-8 col-md-12">
-                        <nav class="header-menu">
-                            <ul class="nav-list">
-                                <li><a href="{% url 'main:home_view' %}">Home</a></li>
-                                {% if not request.user.is_authenticated %}
-                                <li><a href="#">DM</a></li>
+                    <div class="col-lg-8 col-md-12 pe-5">
+                        <nav class="navbar navbar-expand-lg justify-content-end mt-2">
+                            <ul class="navbar-nav">
+                                <li><a class="nav-link" href="{% url 'main:home_view' %}">Home</a></li>
+                                {% if request.user.is_authenticated %}
+                                <li><a class="nav-link" href="#">DM</a></li>
                                 {% endif %}
-                                <li><a href="#">About</a> 
+                                <li><a class="nav-link" href="#">About</a>
                                 </li>
-                                <li><a href="#">Contact Us</a></li>
+                                <li><a class="nav-link" href="{% url 'main:contact_view' %}">Contact Us</a></li>
                             </ul>
                         </nav>
                     </div>
-    
+
                     <!-- Sign In/Register Buttons -->
-                    <div class="col-lg-2 col-md-12 text-center text-lg-end">
+                    <div class="col-lg-2 col-md-12 text-center text-lg-end ps-5 mt-2">
                         <div class="header-right ps-5">
                             {% if request.user.is_authenticated %}
                                 {% if request.user.is_superuser %}
@@ -141,7 +61,7 @@
                                 <a href="{% url 'accounts:signout' %}" class="btn btn-register">Logout</a>
 
                             {% else %}
-                                <a href="{% url 'accounts:signin' %}" class="btn btn-signin">Sign in</a>
+                                <a href="{% url 'accounts:signin' %}" class="btn btn-signin ">Sign in</a>
                                 <a href="{% url 'accounts:signup' %}" class="btn btn-register">Register</a>
                             {% endif %}
                         </div>
@@ -150,7 +70,15 @@
             </div>
         </header>
     </div>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container alert {{message.tags}} alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
 
+    {% endif %}
     {% block content %}
 
     {% endblock %}

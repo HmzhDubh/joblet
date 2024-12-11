@@ -11,7 +11,12 @@ html, body {
     display: flex;
     flex-direction: column; /* Makes body and footer layout manageable */
 }
-
+.bg-candidate{
+    background-color: #c3dbe8;
+}
+.bg-organization{
+    background-color: #293855;
+}
 /* Main Content Area */
 .container {
     flex: 1; /* Pushes footer to the bottom */
@@ -20,12 +25,14 @@ html, body {
 /* Header Section Styling */
 .header {
     display: flex;
+
     justify-content: space-between; /* Separates logo and nav sections */
     align-items: center;
     width: 100%;
-    position: fixed;
+
+    margin-bottom: 15px;
     top: 0;
-    height: 70px; /* Fixed height for the navbar */
+    height: 50px; /* Fixed height for the navbar */
     padding: 0 20px; /* Horizontal spacing */
     z-index: 1000;
     background: none; /* No background */
@@ -114,7 +121,7 @@ html, body {
     color: #fff;
 }
 .features-section{
-    background: #1D3557;
+    background: #293855;
 }
 /* Responsive Design for Header */
 @media screen and (max-width: 768px) {
@@ -222,4 +229,61 @@ html, body {
     .social-section .social-icons {
         justify-content: center;
     }
+}
+.dropdown-toggle::after {
+    content: none;
+}
+.form-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+/* forms styles */
+.form-container p {
+    margin-bottom: 1.5rem;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
+
+.form-container .required {
+    color: #dc3545;
+}
+
+.form-container input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
