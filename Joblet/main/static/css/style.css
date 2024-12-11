@@ -220,3 +220,60 @@ html, body {
         justify-content: center;
     }
 }
+/* Card Container */
+.card-container {
+    display: flex;
+    justify-content: space-between; /* Space between cards */
+    align-items: stretch;
+    flex-wrap: wrap; /* Wrap cards on smaller screens */
+    gap: 1rem; /* Space between rows/columns */
+    margin-top: 20px;
+}
+
+/* Individual Card */
+.card {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    background-color: #f6f6f6; /* Light background color */
+    border: 1px solid #E0E0E0; /* Subtle border */
+    border-radius: 10px;
+    width: 150px; 
+    height: 150px;/* Fixed width */
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card Hover Effect */
+.card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+}
+
+/* Card Title */
+.card h4 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1D3557; /* Dark blue text */
+    margin-bottom: 10px;
+}
+
+/* Card Description */
+.card p {
+    font-size: 14px;
+    color: #457B9D; /* Soft blue text */
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .card-container {
+        justify-content: center; /* Center cards on small screens */
+        gap: 15px;
+    }
+    .card {
+        width: 100%; /* Full width on smaller screens */
+        max-width: 300px; /* Limit max width */
+    }
+}
