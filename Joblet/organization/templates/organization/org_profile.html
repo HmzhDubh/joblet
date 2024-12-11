@@ -1,0 +1,211 @@
+{% extends 'main/index.html' %}
+{% block title %} {{org.profile.username}} Profile {% endblock %}
+
+{% block content %}
+<main class="my-5 mt-5 pt-5">
+    <div class="container">
+        <nav class="pb-5 pt-5" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-primary">Organization</a></li>
+                <li class="breadcrumb-item active">Organization Profile</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <img src="{{ org.logo.url }}" alt="logo" class="profile-image mb-3 rounded-circle" width="50%">
+                        <div class="d-flex gap-2 justify-content-center">
+                            <div>
+                                <h5 class="card-title text-center">@{{ org.name }}</h5>
+                            </div>
+                            <div>
+                                {% if org.approved %}
+                                <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
+                                {% else %}
+
+                                <button  data-bs-container="body" data-bs-placement="right" data-bs-toggle="popover" data-bs-title="Organization Status" data-bs-content="Not Verified Yet"><i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i></button>
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        <p class="text-muted">{{ user.first_name }} {{ user.last_name }}</p>
+                        <p class="text-muted">{{ org.description }}</p>
+                        <p class="text-muted">{{ org.location }}</p>
+                        <p class="text-muted">Since: {{org.created_at}}</p>
+                        {% if request.user == org.profile %}
+
+                        <form class="text-end">
+
+                            {% if request.GET.edit %}
+                            <input type="hidden" name="save_edits" value="true">
+                            <button type="submit" class="btn btn-primary">Done <i class="bi bi-file-earmark-check" style="font-size: 1rem"></i></button>
+                            {% else %}
+                            <input type="hidden" name="edit" value="true">
+                            <button type="submit" class="btn"><i class="bi bi-pencil-square text-warning" style="font-size: 1.5rem"></i></button>
+                            {% endif %}
+                        </form>
+
+                        {% endif %}
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex gap-2">
+                            <i class="fas fa-globe me-2"></i>
+                            <span class="text-muted">Website:</span>
+                            {% if request.GET.edit %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="url" name="website" value="{{org.website}}" >
+                                <input type="submit" hidden>
+                            </form>
+                            {% else %}
+                            <a href="#" class="social-link">{{ org.website }}</a>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item d-flex gap-2">
+                            <i class="fab fa-linkedin me-2"></i>
+                            <span class="text-muted">Linked In:</span>
+                            {% if request.GET.edit %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="url" name="linkedin" value="{{org.linkedin}}">
+                                <input type="submit" hidden>
+                            </form>
+                            {% else %}
+                                <a href="#" class="social-link">{{ org.linkedin }}</a>
+                            {% endif %}
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row mb-3">
+
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Organization Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-muted">
+                                {% if request.GET.edit %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input id="name" type="text" name="name" value="{{org.name}}">
+                                    <input type="submit" hidden />
+                                </form>
+                                {% else %}
+                                {{org.name}}
+                                {% endif %}
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-muted">
+                                {% if request.GET.edit %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input id="email" type="text" name="email" value="{{org.email}}">
+                                    <input type="submit" hidden />
+                                </form>
+                                {% else %}
+                                {{org.email}}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-muted">
+                                {% if request.GET.edit %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input id="phone_number" type="text" name="phone_number" value="{{org.phone_number}}">
+                                    <input type="submit" hidden />
+                                </form>
+                                {% else %}
+                                {{org.phone_number}}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-muted">
+                                {% if request.GET.edit %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input id="location" type="text" name="location" value="{{org.location}}">
+                                    <input type="submit" hidden />
+                                </form>
+                                {% else %}
+                                {{ org.location }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-tools"></i> Tools</h4>
+
+                                    <div class="dropdown">
+                                        <a data-bs-toggle="dropdown" class="dropdown-toggle arrow-hidden"><span class="bi bi-plus-circle-fill " style="font-size: 1.6rem;"></span></a>
+                                        <ul class="dropdown-menu">
+                                            {% for skill in skills %}
+                                            <li>
+                                                <a href="{% url 'organization:add_skill' skill.id %}" class="dropdown-item">{{skill.skill_name}}</a>
+                                            </li>
+
+                                            {% endfor %}
+                                            <li>
+                                                <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}" method="post">
+                                                    {% csrf_token %}
+                                                <input type="text" name="skill_name" placeholder="Add New Skill">
+                                                <button  type="submit" class=" "><i class="bi bi-plus-circle"></i></button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% for skill in org.skills.all %}
+                                <div class="d-flex gap-3 mb-3">
+
+                                    <h5>{{skill.skill_name}}</h5>
+                                    <a href="{% url 'organization:remove_skill' skill.id %}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</main>
+{% endblock %}

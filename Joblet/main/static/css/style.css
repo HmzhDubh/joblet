@@ -81,6 +81,7 @@ html, body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-left: 10px;
     gap: 15px;
     height: 100%; /* Keeps buttons aligned */
 }
@@ -112,7 +113,9 @@ html, body {
     background: #457B9D;
     color: #fff;
 }
-
+.features-section{
+    background: #1D3557;
+}
 /* Responsive Design for Header */
 @media screen and (max-width: 768px) {
     .header {
@@ -133,7 +136,7 @@ html, body {
 
 /* Footer Section */
 .custom-footer {
-    background-color: #1D3557; /* Dark blue background */
+        background-color: #1D3557; /* Dark blue background */
     color: #fff; /* White text color */
     padding: 40px 20px;
     font-family: 'Poppins', sans-serif;
