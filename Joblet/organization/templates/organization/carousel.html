@@ -1,0 +1,82 @@
+<!-- carousel.html -->
+<div class="carousel-container mt-5 mb-5">
+    <!-- Left Arrow -->
+    <button class="carousel-arrow left-arrow" onclick="slideLeft()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+
+    {% for item in carousel_items %}
+    {% include "organization/organization_card.html" with org=item.org position_class=item.position_class %}
+    {% endfor %}
+
+    <!-- Right Arrow -->
+    <button class="carousel-arrow right-arrow" onclick="slideRight()">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
+
+<style>
+    .carousel-container {
+        position: relative;
+        height: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 1000px;
+        overflow-x: hidden;
+    }
+
+    .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: white;
+        border: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-arrow:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .left-arrow {
+        left: 20px;
+    }
+
+    .right-arrow {
+        right: 20px;
+    }
+
+    .carousel-arrow i {
+        font-size: 20px;
+        color: #343a40;
+    }
+</style>
+
+<script>
+    function slideRight() {
+        const currentUrl = new URL(window.location);
+        let activeIndex = parseInt(currentUrl.searchParams.get('active') || '0');
+        activeIndex = (activeIndex + 1) % {{ total_orgs }};
+        currentUrl.searchParams.set('active', activeIndex);
+        window.location = currentUrl;
+    }
+
+    function slideLeft() {
+        const currentUrl = new URL(window.location);
+        let activeIndex = parseInt(currentUrl.searchParams.get('active') || '0');
+        activeIndex = (activeIndex - 1 + {{ total_orgs }}) % {{ total_orgs }};
+        currentUrl.searchParams.set('active', activeIndex);
+        window.location = currentUrl;
+    }
+</script>

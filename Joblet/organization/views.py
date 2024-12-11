@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from .models import Organization, Skill
@@ -10,33 +11,74 @@ def org_profile(request: HttpRequest, user_name):
     if 'edit' in request.GET:
         user = User.objects.get(username=user_name)
         org = Organization.objects.get(profile=user)
-        print('Editing: '+request.GET['edit'])
+        print('Editing: ' + request.GET['edit'])
+
         if 'name' in request.POST:
 
-            org.name = request.POST['name']
-            org.save()
-            return redirect('organization:org_profile', user_name=user.username)
+            if org.name == '':
+                org.name = request.POST['name']
+                org.profile_completion += 10
+            else:
+                org.name = request.POST['name']
+
+        if 'logo' in request.FILES:
+            if org.logo == '':
+
+                org.logo = request.FILES['logo']
+                org.profile_completion += 10
+            else:
+                org.logo = request.FILES['logo']
 
         if 'email' in request.POST:
-            # print(request.POST['email'])
-            org.email = request.POST['email']
-            org.save()
+            if org.email == '':
+                org.email = request.POST['email']
+                org.profile_completion += 10
+            else:
+                org.email = request.POST['email']
+                print("Edit email")
 
         if 'phone_number' in request.POST:
-            print(request.POST['phone_number'])
-            org.phone_number = request.POST['phone_number']
+            if org.phone_number == '':
+                org.phone_number = request.POST['phone_number']
+                org.profile_completion += 10
+            else:
+                org.phone_number = request.POST['phone_number']
 
         if 'location' in request.POST:
-            print(request.POST['location'])
-            org.location = request.POST['location']
+            if org.location == '':
+
+                org.location = request.POST['location']
+                org.profile_completion += 10
+            else:
+                org.location = request.POST['location']
 
         if 'website' in request.POST:
-            print(request.POST['website'])
-            org.website = request.POST['website']
+            if org.website == '':
+                org.website = request.POST['website']
+                org.profile_completion += 10
+            else:
+                org.website = request.POST['website']
 
         if 'linkedin' in request.POST:
-            print(request.POST['linkedin'])
-            org.linkedin = request.POST['linkedin']
+            if org.linkedin == '':
+                org.linkedin = request.POST['linkedin']
+                org.profile_completion += 10
+            else:
+                org.linkedin = request.POST['linkedin']
+
+        if 'description' in request.POST:
+            if org.description == '':
+                org.description = request.POST['description']
+                org.profile_completion += 10
+            else:
+                org.description = request.POST['description']
+
+        if 'job_title' in request.POST:
+            if org.job_title == '':
+                org.job_title = request.POST['job_title']
+                org.profile_completion += 10
+            else:
+                org.job_title = request.POST['job_title']
 
         org.save()
 
@@ -50,6 +92,7 @@ def add_skill(request: HttpRequest, skill_id):
     skill = Skill.objects.get(pk=skill_id)
     org = Organization.objects.get(profile=request.user)
     org.skills.add(skill)
+    org.profile_completion += 3
     org.save()
     return redirect('organization:org_profile', user_name=request.user)
 
@@ -59,6 +102,7 @@ def remove_skill(request: HttpRequest, skill_id):
     skill = Skill.objects.get(pk=skill_id)
     org = Organization.objects.get(profile=request.user)
     org.skills.remove(skill)
+    org.profile_completion -= 3
     org.save()
     return redirect('organization:org_profile', user_name=request.user)
 
@@ -75,6 +119,15 @@ def new_skill_view(request: HttpRequest):
         org.save()
 
         return redirect('organization:org_profile', user_name=request.user)
+
+
+def change_org_status(request: HttpRequest, org_id):
+    org = Organization.objects.get(pk=org_id)
+    if request.user.is_superuser:
+        org.approved = not org.approved
+        org.save()
+        messages.success(request, 'Organization Status Updated successfully', 'alert-success')
+    return redirect('dashboard:dashboard_view')
 
 # def update_organization_profile(request: HttpRequest, user_name):
 #
