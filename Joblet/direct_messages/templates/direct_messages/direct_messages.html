@@ -36,11 +36,31 @@
                 <h4> Match With Sadaia</h4>
                 <p>Description for card 4 goes here.</p>
             </div>
-            <div class="card">
-                <h4> Match With Sadaia</h4>
-                <p>Description for card 4 goes here.</p>
-            </div>
         </div>
     </div>
 </div>
+<!-- Chats and Messages Section -->
+<div class="chats-section">
+    <div class="container">
+        <h2>Chats & Messages</h2>
+        <div class="chat-box">
+            {% if conversations %}
+                {% for conversation in conversations %}
+                    <div class="chat-message">
+                        <div class="sender-info">
+                            <strong>{{ conversation.user.username }}</strong>
+                            <span>{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
+                        </div>
+                        <p>{{ conversation.last_message.content|truncatechars:50 }}</p>
+                        <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-primary">View Chat</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No conversations yet. Start a new chat!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

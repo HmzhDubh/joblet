@@ -11,6 +11,7 @@ def org_profile(request: HttpRequest, user_name):
         user = User.objects.get(username=user_name)
         org = Organization.objects.get(profile=user)
         print('Editing: '+request.GET['edit'])
+        
         if 'name' in request.POST:
 
             org.name = request.POST['name']

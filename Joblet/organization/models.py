@@ -20,9 +20,7 @@ class Organization(models.Model):
     website = models.URLField(null=True)
     linkedin = models.URLField(null=True)
     logo = models.ImageField(upload_to='images', default='images/logo.jpg')
-
     skills = models.ManyToManyField(Skill)
-
     approved = models.BooleanField(default=False)
     profile_completion = models.SmallIntegerField(default=10)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,0 +1,29 @@
+
+{% extends 'main/index.html' %}
+{% load static %}
+
+{% block title %}Dm{% endblock %}
+
+{% block content %}
+
+<div class="custom-chat-container">
+    <div class="custom-chat-card">
+        <div id="custom-chat-box">
+            {% for message in messages %}
+                <p>
+                    <strong>{{ message.sender.username }}:</strong> 
+                    {{ message.content }}
+                </p>
+            {% endfor %}
+        </div>
+
+        <form class="custom-chat-form" method="POST" action="{% url 'direct_messages:send_message' recipient.id %}">
+            {% csrf_token %}
+            <textarea name="content" rows="3" placeholder="Type your message here"></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
