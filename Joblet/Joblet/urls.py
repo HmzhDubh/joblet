@@ -26,4 +26,5 @@ urlpatterns = [
     path('candidate/', include('candidate.urls')),
     path('organization/', include('organization.urls')),
     path('dm/', include('direct_messages.urls')),
+    path('dashboard/', include('dashboard.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

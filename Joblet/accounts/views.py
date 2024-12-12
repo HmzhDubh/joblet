@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -7,24 +8,35 @@ from .models import Profile
 from .models import Profile, Project, Education, Experince, Skill
 from .forms import ProfileForm, ProjectForm, EducationForm, ExperinceForm, SkillForm
 from django.urls import reverse
+from organization.models import Organization
+from django.contrib.auth.models import Group
+from django.http import HttpRequest, HttpResponse
 # Create your views here.
 
 
-
-def signup_view(request):
+def signup_view(request: HttpRequest):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            try:
-                with transaction.atomic():
-                    user = form.save()
-                    Profile.objects.create(user=user)
-                    login(request, user)
-                    
-                    return redirect(reverse('accounts:profile', args=[user.id]))
-            except Exception as e:
-                form.add_error(None, "An error occurred. Please try again.")
-                print(e)
+            with transaction.atomic():
+                user = form.save()
+                login(request, user)
+                if request.POST['acc_type'] == 'candidate':
+                    my_group = Group.objects.get(name='candidate')
+                    my_group.user_set.add(user)
+                    # init the user profile todo
+                elif request.POST['acc_type'] == 'organization':
+                    my_group = Group.objects.get(name='organizations')
+                    my_group.user_set.add(user)
+                    # init the organization profile
+                    new_organization = Organization(
+                        profile = request.user,
+                        email = request.POST['email']
+                    )
+                    new_organization.save()
+
+            return redirect('main:home_view')
+
     else:
         form = SignUpForm()
     return render(request, 'accounts/sign_up.html', {'form': form})
@@ -40,7 +52,7 @@ def signin_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)  
-                return redirect('home')  
+                return redirect('main:home_view')
     else:
         form = SignInForm()
     return render(request, 'accounts/sign_in.html', {'form': form})
@@ -48,6 +60,7 @@ def signin_view(request):
 @login_required
 def signout_view(request):
     logout(request)  
+
     return redirect('sign_in')  
 
 
@@ -123,3 +136,6 @@ def profile_view(request, user_id):
         'experiences': experiences,
         'skills': skills,
     })
+
+    return redirect('accounts:signin')
+

@@ -4,22 +4,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joblet</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/script.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>{% block title %}{% endblock %}</title>
+
     {% block style %}
+
     {% endblock %}
 </head>
-<body> 
-    
-    
-        {% block content %}
-        {% endblock %}
+<body class="{% if request.GET.type == 'candidate' %}bg-candidate{% elif request.GET.type == 'organization' %}bg-organization{% else %}bg-candidate{% endif %}">
+    <div class="hero-section ">
+        <header class="header">
+            <div class="container">
+                <div class="row align-items-center justify-content-between">
+                    <!-- Logo Section -->
+                    <div class="col-lg-2 col-md-12 text-center text-lg-start">
+                        <div class="header-logo">
+                            <a href="{% url 'main:home_view' %}" class="logo">
+                                <img src="{% static 'images/grid.png' %}" alt="Joblet Logo">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Menu -->
+                    <div class="col-lg-8 col-md-12 pe-5">
+                        <nav class="navbar navbar-expand-lg justify-content-end mt-2">
+                            <ul class="navbar-nav">
+                                <li><a class="nav-link" href="{% url 'main:home_view' %}">Home</a></li>
+                                {% if request.user.is_authenticated %}
+                                <li><a class="nav-link" href="#">DM</a></li>
+                                {% endif %}
+                                <li><a class="nav-link" href="#">About</a>
+                                </li>
+                                <li><a class="nav-link" href="{% url 'main:contact_view' %}">Contact Us</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- Sign In/Register Buttons -->
+                    <div class="col-lg-2 col-md-12 text-center text-lg-end ps-5 mt-2">
+                        <div class="header-right ps-5">
+                            {% if request.user.is_authenticated %}
+                                {% if request.user.is_superuser %}
+                                <a href="{% url 'dashboard:dashboard_view' %}" class="btn btn-signin">Dashboard</a>
+                                {% else %}
+                                <a href="{% url 'organization:org_profile' request.user.username %}" class="btn btn-signin">Profile</a>
+                                {% endif %}
+                                <a href="{% url 'accounts:signout' %}" class="btn btn-register">Logout</a>
+
+                            {% else %}
+                                <a href="{% url 'accounts:signin' %}" class="btn btn-signin ">Sign in</a>
+                                <a href="{% url 'accounts:signup' %}" class="btn btn-register">Register</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container alert {{message.tags}} alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    {% endif %}
+    {% block content %}
+
+    {% endblock %}
 
 
+    <footer class="custom-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="about-section">
+                        <h5>Joblet</h5>
+                        <p>Your trusted platform for finding your perfect job match. Discover the perfect fit for your needs with ease and confidence.</p>
+                    </div>
+                    <div class="social-section">
+                        <h5>Follow Us</h5>
+                        <div class="social-icons">
+                            <a href="http://www.facebook.com" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="http://www.twitter.com" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="http://www.instagram.com" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 joblet. All Rights Reserved. | <a href="#">Privacy Policy</a></p>
+            </div>
+        </footer>
 </body>
 </html>

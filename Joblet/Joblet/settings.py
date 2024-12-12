@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'candidate',
     'organization',
     'direct_messages',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
