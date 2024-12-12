@@ -4,7 +4,7 @@
 {% block content %}
 <main class="my-5 mt-5 pt-5">
     <div class="container">
-        <nav class="pb-5 pt-5" aria-label="breadcrumb">
+        <nav class="" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
                 <li class="breadcrumb-item"><a href="#" class="text-primary">Organization</a></li>
@@ -16,7 +16,14 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body text-center">
-                        <img src="{{ org.logo.url }}" alt="logo" class="profile-image mb-3 rounded-circle" width="50%">
+                        <img src="{{ org.logo.url }}" alt="logo" class="profile-image mb-3 rounded-circle" width="100%">
+                        {% if request.GET.edit %}
+                        <form class="d-flex pb-3 input-group" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" class="form-control" name="logo" aria-label="Upload">
+                            <button class="btn btn-outline-secondary" type="submit">Submit</button>
+                        </form>
+                        {% endif %}
                         <div class="d-flex gap-2 justify-content-center">
                             <div>
                                 <h5 class="card-title text-center">@{{ org.name }}</h5>
@@ -26,7 +33,7 @@
                                 <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
                                 {% else %}
 
-                                <button  data-bs-container="body" data-bs-placement="right" data-bs-toggle="popover" data-bs-title="Organization Status" data-bs-content="Not Verified Yet"><i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i></button>
+                                <i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i>
 
                                 {% endif %}
                             </div>
@@ -36,7 +43,12 @@
                         <p class="text-muted">{{ org.location }}</p>
                         <p class="text-muted">Since: {{org.created_at}}</p>
                         {% if request.user == org.profile %}
-
+                        <div class="p-2">
+                            <p>Your Profile Completion</p>
+                            <div class="progress">
+                                <div class="progress-bar {% if org.profile_completion <= 40 %}bg-danger{% elif org.profile_completion <= 70 and org.profile_completion >= 41 %}bg-warning{% elif org.profile_completion >= 80 %}bg-success{% endif %}" style="width: {{org.profile_completion}}%">{{ org.profile_completion }}%</div>
+                            </div>
+                        </div>
                         <form class="text-end">
 
                             {% if request.GET.edit %}
@@ -58,7 +70,7 @@
                             {% if request.GET.edit %}
                             <form method="post">
                                 {% csrf_token %}
-                                <input type="url" name="website" value="{{org.website}}" >
+                                <input type="url" name="website" value="{{org.website}}" required>
                                 <input type="submit" hidden>
                             </form>
                             {% else %}
@@ -71,7 +83,7 @@
                             {% if request.GET.edit %}
                             <form method="post">
                                 {% csrf_token %}
-                                <input type="url" name="linkedin" value="{{org.linkedin}}">
+                                <input type="url" name="linkedin" value="{{org.linkedin}}" required>
                                 <input type="submit" hidden>
                             </form>
                             {% else %}
@@ -95,11 +107,29 @@
                                 {% if request.GET.edit %}
                                 <form method="post">
                                     {% csrf_token %}
-                                    <input id="name" type="text" name="name" value="{{org.name}}">
+                                    <input id="name" type="text" name="name" value="{{org.name}}" required>
                                     <input type="submit" hidden />
                                 </form>
                                 {% else %}
                                 {{org.name}}
+                                {% endif %}
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Organization Description</h6>
+                            </div>
+                            <div class="col-sm-9 text-muted">
+                                {% if request.GET.edit %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input id="description" type="text" name="description" value="{{org.description}}" required>
+                                    <input type="submit" hidden />
+                                </form>
+                                {% else %}
+                                {{org.description}}
                                 {% endif %}
                             </div>
 
@@ -112,7 +142,7 @@
                                 {% if request.GET.edit %}
                                 <form method="post">
                                     {% csrf_token %}
-                                    <input id="email" type="text" name="email" value="{{org.email}}">
+                                    <input id="email" type="text" name="email" value="{{org.email}}" required>
                                     <input type="submit" hidden />
                                 </form>
                                 {% else %}
@@ -129,7 +159,7 @@
                                 {% if request.GET.edit %}
                                 <form method="post">
                                     {% csrf_token %}
-                                    <input id="phone_number" type="text" name="phone_number" value="{{org.phone_number}}">
+                                    <input id="phone_number" type="text" name="phone_number" value="{{org.phone_number}}" required>
                                     <input type="submit" hidden />
                                 </form>
                                 {% else %}
@@ -138,7 +168,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">Address</h6>
                             </div>
@@ -146,11 +176,28 @@
                                 {% if request.GET.edit %}
                                 <form method="post">
                                     {% csrf_token %}
-                                    <input id="location" type="text" name="location" value="{{org.location}}">
+                                    <input id="location" type="text" name="location" value="{{org.location}}" required>
                                     <input type="submit" hidden />
                                 </form>
                                 {% else %}
                                 {{ org.location }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Jop Title</h6>
+                            </div>
+                            <div class="col-sm-9 text-muted">
+                                {% if request.GET.edit %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input id="job_title" type="text" name="job_title" value="{{org.job_title}}" required>
+                                    <input type="submit" hidden />
+                                </form>
+                                {% else %}
+                                {{ org.job_title }}
                                 {% endif %}
                             </div>
                         </div>
@@ -163,7 +210,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
-                                    <h4 class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-tools"></i> Tools</h4>
+                                    <h4 class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-tools"></i>Required Tools</h4>
 
                                     <div class="dropdown">
                                         <a data-bs-toggle="dropdown" class="dropdown-toggle arrow-hidden"><span class="bi bi-plus-circle-fill " style="font-size: 1.6rem;"></span></a>

@@ -3,7 +3,321 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
+
 <main>
-    <h1>Dashboard</h1>
+    <div class="container-fluid px-3 px-md-4 py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-6 special-color">Dashboard</h1>
+            <hr class="special-color2" style="width:15%;margin: 0 auto;">
+        </div>
+
+        <!-- Main Content -->
+        <div class="row g-4">
+            <!-- Sidebar -->
+            <div class="col-12 col-md-3">
+                <div class="nav-bar p-3 p-md-4 shadow rounded">
+                    <form class="d-flex flex-md-column gap-2 justify-content-center flex-wrap" action="{% url 'dashboard:dashboard_view' %}" method="get">
+                        <button type="submit" name='data' value="All" class="list-group-item btn btn-primary {% if request.GET.data == 'All' %} active {% else %}btn-light{% endif %}">All</button>
+                        <button type="submit" name='data' value="Messages" class="list-group-item btn btn-primary {% if request.GET.data == 'Messages' %} active {% else %}btn-light{% endif %}">Messages</button>
+                        <button type="submit" name='data' value="Organizations" class="list-group-item btn btn-primary {% if request.GET.data == 'Organizations' %} active {% else %}btn-light{% endif %}">Organizations</button>
+                        <button type="submit" name='data' value="Projects" class="list-group-item btn btn-primary {% if request.GET.data == 'Projects' %} active {% else %}btn-light{% endif %}">Projects</button>
+                        <button type="submit" name='data' value="Skills" class="list-group-item btn btn-primary {% if request.GET.data == 'Skills' %} active {% else %}btn-light{% endif %}">Skills</button>
+                        <button type="submit" name='data' value="Candidates" class="list-group-item btn btn-primary {% if request.GET.data == 'Candidates' %} active {% else %}btn-light{% endif %}">Candidates</button>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-12 col-md-9">
+                <!-- Header Controls -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                    <h3 class="m-0">{{request.GET.data}} Model</h3>
+                    <a href="{% url 'main:home_view' %}" class="btn btn-primary">Exit</a>
+                </div>
+
+                <!-- Controls Section -->
+                <div class="shadow rounded p-3 mb-3">
+                    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                        <!-- Add Button -->
+                        {% if request.GET.data == 'Projects' or request.GET.data == 'Products' or request.GET.data == 'Photos'%}
+                        <button class="btn special-button">
+                            <a class="text-decoration-none special-color" href="{% if request.GET.data == 'Photos' %}{% url 'galleryApp:add_photo_view' %}{% elif request.GET.data == 'Projects' %}{% url 'projectsApp:add_project_view' %}{% elif request.GET.data == 'Products' %}{% url 'productsApp:add_product_view' %}{% endif %}">ADD</a>
+                        </button>
+                        {% endif %}
+
+                        <!-- Filters -->
+                        <div class="d-flex justify-content-end p-1"> <!-- Filtering/Categories Section -->
+
+                            <div class="d-flex gap-1 text-dark">
+                                <!-- All models filtering  -->
+                                {% if request.GET.data == 'All' or not 'data' in request.GET %}
+                                <form class="d-flex gap-2" action="{% url 'dashboard:dashboard_view' %}" method="get" >
+                                    <select name="order_by" class="form-select d-flex ">
+                                        <option>Sort</option>
+                                        <option value="newest" {% if request.GET.order_by == 'newest' %}selected{% endif %}> Newest </option>
+                                        <option value="oldest" {% if request.GET.order_by == 'oldest' %}selected{% endif %}> Oldest </option>
+                                    </select>
+                                    <input type="submit" class="btn btn-primary" value="Apply">
+                                </form>
+
+
+                                <!-- Massages Filtering -->
+                                {% elif request.GET.data == 'Messages' %}
+                                <form class="d-flex" action="{% url 'dashboard:dashboard_view' %}" method="get" >
+                                    <input type="hidden" name='data' value="Messages">
+                                    <select name="order_by" class="form-select d-flex special-color special-button text-light">
+                                        <option> Order By</option>
+                                        <option value="newest" {% if request.GET.order_by == 'newest' %}selected{% endif %}> Newest </option>
+                                        <option value="oldest" {% if request.GET.order_by == 'oldest' %}selected{% endif %}> Oldest </option>
+                                    </select>
+                                    <select name="category" class="form-select d-flex special-color special-button text-light">
+                                        <option> Category</option>
+
+                                        <option value="viewed">Viewed</option>
+                                        <option value="not_viewed">Not Viewed</option>
+
+                                    </select>
+                                    <input type="submit" class="btn special-color special-button" value="Apply">
+                                </form>
+
+                                {% endif %}
+
+                            </div>
+                        </div> <!-- end of Categories/Filtering Section -->
+
+                    </div>
+                </div>
+
+                <!-- Tables Section -->
+                <div class="shadow rounded p-3">
+                    <div class="table-responsive">
+
+                        {% if contact_messages %}
+                        <h5 class="special-color">Messages</h5>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Sender</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="pe-5">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            {% for user_message in contact_messages %}
+                            <tr>
+                                <th scope="row">{{user_message.id}}</th>
+                                <td>{{user_message.first_name}} {{user_message.last_name}}</td>
+                                <td>{{user_message.email}}</td>
+                                <td>{{user_message.subject}}</td>
+                                <td>{{user_message.created_at}}</td>
+                                <td>{% if user_message.is_viewed %}Viewed{% else %}Not Viewed{% endif %}</td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+
+                        {% if requests %}
+
+                        <h5 class="special-color">Requests</h5>
+                        <table class="table table-hover">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Client Name</th>
+                            <th scope="col">Client Email</th>
+                            <th scope="col">Product Type</th>
+                            <th scope="col">quantity</th>
+                            <th scope="col">Order Date</th>
+                            <th scope="col" class="text-center pe-5">Actions</th>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            {% for request in requests %}
+                            <tr>
+                                <th scope="row">{{request.id}}</th>
+                                <td>{{request.client_name}}</td>
+                                <td> {{request.client_email}}</td>
+                                <td> {{request.type}}</td>
+                                <td> {{request.quantity}}</td>
+                                <td>{{request.ordered_at}}</td>
+                                <td class="text-end pe-1  gap-1">
+                                    <a href="{% url 'productsApp:request_details_view' request.id %}" class="btn btn-success"><span class="material-symbols-outlined">visibility</span></a>
+                                    <a href="{% url 'productsApp:delete_request_view' request.id %}" class="btn btn-danger "><span class="material-symbols-outlined">delete</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% endif %}
+
+                        {% if projects %}
+
+                        <h5 class="special-color">Projects</h5>
+                        <table class="table table-hover">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" style="width: 30%;">Link</th>
+                            <th scope="col" class="pe-5 text-center">Actions</th>
+
+
+                            </thead>
+                            <tbody class="table-group-divider">
+                            {% for project in projects %}
+                            <tr>
+                                <th scope="row">{{project.id}}</th>
+                                <td>{{project.title}}</td>
+                                <td> {{project.type}}</td>
+                                <td>{% if project.status %} Complete {% else %} In Progress {% endif %}</td>
+                                <td>{{ project.link|truncatechars:25 }}</td>
+                                <td class="text-end pe-1 gap-1">
+                                    <a href="{% url 'projectsApp:project_details_view' project.id %}" class="btn btn-success"><span class="material-symbols-outlined">visibility</span></a>
+                                    <a href="{% url 'projectsApp:update_project_view' project.id %}" class="btn btn-warning "><span class="material-symbols-outlined">edit</span></a>
+                                    <a href="{% url 'projectsApp:delete_project_view' project.id %}" class="btn btn-danger "><span class="material-symbols-outlined">delete</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% endif %}
+
+                        {% if orgs %}
+
+                        <h5 class="special-color">Organizations</h5>
+                        <table class="table table-hover">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Address</th>
+                            <th scope="col" class="pe-5 text-center">Actions</th>
+
+
+                            </thead>
+                            <tbody class="table-group-divider">
+                            {% for org in orgs %}
+                            <tr>
+                                <th scope="row">{{org.id}}</th>
+                                <td>{{org.name}}</td>
+                                <td> {{org.description}}</td>
+                                <td> {{org.email}}</td>
+                                <td>{{org.phone_number}}</td>
+                                <td>{{org.location}}</td>
+                                <td class="text-center pe-1 gap-1">
+                                    {% if org.approved %}
+                                    <a href="{% url 'organization:change_org_status' org.id %}" class="btn btn-success">Approved</a>
+                                    {% else %}
+                                    <a href="{% url 'organization:change_org_status' org.id %}" class="btn btn-danger">Not Approved</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% endif %}
+
+                        {% if photos %}
+
+                        <h5 class="special-color">Photos</h5>
+                        <table class="table table-hover">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col" style="width:20%;">About</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Date</th>
+                            <th class="text-center"> Actions </th>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            {% for photo in photos %}
+                            <tr>
+                                <th scope="row">{{photo.id}}</th>
+                                <td>{{photo.title}}</td>
+                                <td>{{photo.about}}</td>
+                                <td>{{photo.category}}</td>
+                                <td>{{photo.photo_location}}</td>
+                                <td>{{photo.captured_at}}</td>
+                                <td class="text-end pe-1  gap-1">
+                                    <a href="{% url 'galleryApp:photo_details_view' photo.id %}" class="btn btn-success"><span class="material-symbols-outlined">visibility</span></a>
+                                    <a href="{% url 'galleryApp:update_photo_view' photo.id %}" class="btn btn-warning"><span class="material-symbols-outlined">edit</span></a>
+                                    <a href="{% url 'galleryApp:delete_photo_view' photo.id %}" class="btn btn-danger"><span class="material-symbols-outlined">delete</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% endif %}
+
+                        {% if skills %}
+
+                        <h5 class="special-color">Skills</h5>
+                        <table class="table table-hover">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Skill</th>
+
+
+                            </thead>
+                            <tbody class="table-group-divider">
+                            {% for skill in skills %}
+                            <tr>
+                                <th scope="row">{{skill.id}}</th>
+                                <td>{{skill.skill_name}}</td>
+
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% endif %}
+
+                        {% if tools %}
+
+                        <h5 class="special-color">Tools</h5>
+                        <table class="table table-hover">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Tools</th>
+                            <th scope="col">Site</th>
+                            <th class="text-center"> Actions </th>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            {% for tool in tools %}
+                            <tr>
+                                <th scope="row">{{tool.id}}</th>
+                                <td>{{tool.tool}}</td>
+                                <td>{{tool.preferred_color}}</td>
+                                <td class="text-end pe-1  gap-1">
+                                    <a href="{% url 'main:delete_tool_view' tool.id %}" class="btn btn-danger"><span class="material-symbols-outlined">delete</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 {% endblock %}
