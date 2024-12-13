@@ -1,0 +1,408 @@
+{% extends 'main/index.html' %}
+{% load static %}
+
+{% block title %} {{request.user.username}} Profile {% endblock %}
+
+{% block content %}
+<main>
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <img src="{{ candidate_profile.avatar.url}}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+
+                    <h2>{{ candidate_profile.user.first_name }} {{ candidate_profile.user.last_name }}
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal" class="btn btn-secondary btn-sm ms-2">Edit</a>
+                    </h2>
+                    <div class="text-start">
+                        <small>Bio: </small>
+                        <p>{{ candidate_profile.about }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label class="form-label" for="about">about</label>
+                            <textarea id="about" class="form-control" name="about" placeholder="Candidate Bio">{{candidate_profile.about}}</textarea>
+
+                            <label class="form-label" for="first_name">First Name</label>
+                            <input type="text" id="first_name" value="{{candidate_profile.user.first_name}}" class="form-control" name="first_name" placeholder="John">
+
+                            <label class="form-label" for="last_name">Last Name</label>
+                            <input type="text" id="last_name" value="{{candidate_profile.user.last_name}}" class="form-control" name="last_name" placeholder="Doe">
+
+                            <div class="mb-3">
+                                <label for="id_avatar" class="form-label">Avatar</label>
+                                <input type="file" class="form-control" id="id_avatar" name="avatar">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 right-column gap-3">
+            <div class="card shadow-sm btn-box">
+                <div class="card-body">
+                    <div class="btn-group d-flex flex-row justify-content-between gap-3" role="group" aria-label="Profile Info Buttons">
+                        <button class="btn btns mb-2 d-flex flex-column align-items-center border border-warning text-warning" id="skills-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools" viewBox="0 0 16 16">
+                                <path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3q0-.405-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708M3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"/>
+                            </svg>
+                            Skills
+                        </button>
+
+                        <button class="btn btns mb-2 d-flex flex-column align-items-center border border-warning text-warning" id="projects-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-code" viewBox="0 0 16 16">
+                                <path d="M6.646 5.646a.5.5 0 1 1 .708.708L5.707 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708zm2.708 0a.5.5 0 1 0-.708.708L10.293 8 8.646 9.646a.5.5 0 0 0 .708.708l2-2a.5.5 0 0 0 0-.708z"/>
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/>
+                            </svg>
+                            Projects
+                        </button>
+
+                        <button class="btn btns mb-2 d-flex flex-column align-items-center border border-warning text-warning" id="edu-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+                            </svg>
+                            Education
+                        </button>
+
+                        <button class="btn btns mb-2 d-flex flex-column align-items-center border border-warning text-warning" id="experience-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
+                                <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                                <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z"/>
+                            </svg>
+                            Experience
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm info-boxes">
+
+                <div class="card-body">
+                    <!-- skills -->
+                    <div class="info-box" id="skills-info" style="display: block;">
+                        <div class="d-flex justify-content-between">
+                            <h3>Skills</h3>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#editSkillsModal" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                        </div>
+                        <div class="container p-5">
+                            {% for skill in candidate_profile.skills.all %}
+                            <div class="d-flex justify-content-between mb-3 p-2 rounded-3 shadow align-items-center">
+                                <h5>{{ skill.skill_name }}</h5>
+                                <a href="{% url 'candidate:remove_skill' skill.id %}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal fade" id="editSkillsModal" tabindex="-1" aria-labelledby="editSkillsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form method="POST" action="{% url 'candidate:add_skill' %}" enctype="multipart/form-data" >
+                                {% csrf_token %}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editSkillsModalLabel">Add Skills</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <select class="form-select" name="skill">
+                                            {% for skill in skills %}
+                                            <option class="form-option" value="{{skill.id}}">{{ skill.skill_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Project -->
+                    <div class="info-box" id="projects-info" style="display: none;">
+                        <div class="d-flex justify-content-between">
+                            <h3>Projects</h3>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#editProjectsModal" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                        </div>
+                        <div class="container">
+                            {% if candidate_profile.projects.all %}
+                            <div class="">
+                                {% for project in candidate_profile.projects.all %}
+                                    <div class="m-5 shadow p-3 rounded-3">
+                                        <h1>{{ project.title }}</h1>
+                                        <p>{{ project.description }}</p>
+                                        <p>{{ project.tools_used }}</p>
+                                        <div class="d-flex justify-content-between">
+                                            <small>{{ project.created_at }}</small>
+                                            <a class="btn btn-danger" href="{% url 'candidate:remove_project' project.id %}"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editProjectsModal" tabindex="-1" aria-labelledby="editProjectsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form method="POST" action="{% url 'candidate:add_project' %}" enctype="multipart/form-data" >
+                                {% csrf_token %}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editProjectModalLabel">Add Project</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <label for="title" class="form-label">Title</label>
+                                        <input class="form-control" id="title" type="text" name="title">
+
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control" id="description" name="description"></textarea>
+
+                                        <label for="tools_used" class="form-label">Used Tools</label>
+                                        <textarea class="form-control" id="tools_used" name="tools_used"></textarea>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Education -->
+                    <div class="info-box" id="edu-info" style="display: none;">
+                        <div class="d-flex justify-content-between">
+                        <h3>Education</h3>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#editEducationModal" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                        </div>
+                        <div class="container pt-2">
+                            {% if candidate_profile.education.all %}
+                                {% for edu in candidate_profile.education.all %}
+                                <div class="m-5 shadow rounded-3 p-5">
+                                    <small>({{ edu.start_date.isoformat }} to {{ edu.end_date.isoformat }})</small>
+                                    <div class="d-flex justify-content-between">
+                                        <h2>{{ edu.degree }} of {{ edu.major }} From {{ edu.university }} University</h2>
+                                        <div>
+                                            <a href="{% url 'candidate:remove_education' edu.id %}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </div>
+
+                                    <h5>GPA: {{ edu.GPA }}</h5>
+                                    <p>{{ edu.certificate }}</p>
+
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                            <p class="alert alert-danger">No education records found.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="editEducationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form method="POST" action="{% url 'candidate:add_education' %}" enctype="multipart/form-data" >
+                                {% csrf_token %}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editEducationModalLabel">Add Education</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="mb-3">
+                                            <label for="university" class="form-label">University</label>
+                                            <input type="text" class="form-control" id="university" name="university" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="degree" class="form-label">Degree</label>
+                                            <select class="form-select" id="degree" name="degree" required>
+                                                <option value="">Select Degree</option>
+                                                {% for value, label in degree_choices %}
+                                                <option value="{{ value }}">{{ label }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="major" class="form-label">Major</label>
+                                            <input type="text" class="form-control" id="major" name="major" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="start_date" class="form-label">Start Date</label>
+                                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="end_date" class="form-label">End Date</label>
+                                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="GPA" class="form-label">GPA</label>
+                                            <input type="number" class="form-control" id="GPA" name="GPA" step="0.01" min="0" max="5" value="5.0" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="certificate" class="form-label">Certificate</label>
+                                            <input type="text" class="form-control" id="certificate" name="certificate" required>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="info-box" id="experience-info" style="display: none;">
+                        <div class="d-flex justify-content-between">
+                            <h3>Experience</h3>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#editExperienceModal" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                        </div>
+                        <div class="container pt-2">
+                            {% if candidate_profile.experience.all %}
+                            {% for experience in candidate_profile.experience.all %}
+                                <div class="m-5 shadow rounded-3 p-5">
+                                    <small>({{ experience.start_date }} to {{ experience.end_date }})</small>
+                                    <div class="d-flex justify-content-between">
+                                        <h2>{{ experience.position }} at {{ experience.company }}</h2>
+                                        <div>
+                                            <a href="{% url 'candidate:remove_experience' experience.id %}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% else %}
+                                <p class="alert alert-danger">No Experience records found.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editExperienceModal" tabindex="-1" aria-labelledby="editExperienceModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form method="POST" action="{% url 'candidate:add_experience' %}" enctype="multipart/form-data" >
+                                {% csrf_token %}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editExperienceModalLabel">Add Experience</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                        <div class="mb-3">
+                                            <label for="company" class="form-label">Company Name</label>
+                                            <input type="text" class="form-control" id="company" name="company" required>
+                                            <div class="invalid-feedback">
+                                                Please provide a company name.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="position" class="form-label">Position</label>
+                                            <input type="text" class="form-control" id="position" name="position" required>
+                                            <div class="invalid-feedback">
+                                                Please provide your position.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="exp_start_date" class="form-label">Start Date</label>
+                                            <input type="date" class="form-control" id="exp_start_date" name="start_date" required>
+                                            <div class="invalid-feedback">
+                                                Please select a start date.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="exp_end_date" class="form-label">End Date</label>
+                                            <input type="date" class="form-control" id="exp_end_date" name="end_date" required>
+                                            <div class="invalid-feedback">
+                                                Please select an end date.
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('skills-btn').onclick = function() {
+        toggleSection('skills');
+    };
+    document.getElementById('projects-btn').onclick = function() {
+        toggleSection('projects');
+    };
+    document.getElementById('edu-btn').onclick = function() {
+        toggleSection('edu');
+    };
+    document.getElementById('experience-btn').onclick = function() {
+        toggleSection('experience');
+    };
+
+    function toggleSection(section) {
+        const sections = ['skills', 'projects', 'edu', 'experience'];
+        sections.forEach(function(sec) {
+            const sectionElement = document.getElementById(`${sec}-info`);
+            if (sec === section) {
+                sectionElement.style.display = 'block';
+            } else {
+                sectionElement.style.display = 'none';
+            }
+        });
+    }
+
+    // Validate end date is after start date
+    document.getElementById('end_date').addEventListener('change', function() {
+        var startDate = new Date(document.getElementById('start_date').value);
+        var endDate = new Date(this.value);
+
+        if (endDate < startDate) {
+            this.setCustomValidity('End date must be after start date');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+</script>
+
+</main>
+{% endblock %}

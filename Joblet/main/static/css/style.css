@@ -287,3 +287,55 @@ html, body {
     border-color: #007bff;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
+
+.full-height {
+    height: 100vh;
+}
+
+.btn.active {
+    background-color: yellow;
+    font-weight: bold;
+    border-color: yellow;
+    color: black !important;
+}
+
+.info-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.info-box ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.info-box ul li {
+    margin-bottom: 10px;
+}
+
+.right-column {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.btn-box {
+    flex: 0 0 auto;
+}
+
+.info-boxes {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 20px;
+}
+
+.btns {
+    background-color: transparent;
+    border-color: yellow;
+    color: black !important;
+}
+
+.btns:hover {
+    background-color: yellow;
+    color: black !important;
+}
