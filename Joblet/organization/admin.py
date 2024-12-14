@@ -3,10 +3,14 @@ from .models import Organization, Skill
 # Register your models here.
 
 class orgAdmin(admin.ModelAdmin):
-    list_display = ['name', 'approved']
+    list_display = ['id', 'name', 'approved']
 admin.site.register(Organization, orgAdmin)
 
-admin.site.register(Skill)
+
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ['id', 'skill_name']
+
+admin.site.register(Skill, SkillAdmin)
 
 
 
