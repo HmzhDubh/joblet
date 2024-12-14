@@ -1,66 +1,64 @@
 {% extends 'main/index.html' %}
 {% load static %}
 
-{% block title %}Dm{% endblock %}
+{% block title %}DM{% endblock %}
 
 {% block content %}
-<div class="hero-section">
-    <div class="container">
-        <div class="card-container">
-            <!-- Card 1 -->
-            <div class="card ">
-                <h4> See who intrested in you</h4>
+<div class="main-container">
+    <!-- Left Side: User Profile -->
+    <div class="left-side">
+        <div class="profile-container">
+            <img src="{% static 'images/avatar_placeholder.png' %}" alt="User Avatar" class="avatar">
+            <h3>{{ user.username }}</h3>
+            <p>{{ user.email }}</p>
+            <ul>
+                <li>Location: {{ user.profile.location }}</li>
+                <li>Member Since: {{ user.date_joined|date:"F Y" }}</li>
+                <li>Bio: {{ user.profile.bio }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Right Side: Cards and Chats -->
+    <div class="right-side">
+        <div class="d-flex row gap-3 ms-2 justify-content-start">
+            <!-- Cards -->
+            <div class="card">
+                <h4>See who is interested in you</h4>
                 <p>Get the gold</p>
             </div>
-
-            <!-- Card 2 -->
             <div class="card">
-                <h4> Match With Sadaia</h4>
+                <h4>Match With Sadaia</h4>
                 <p>Description for card 2 goes here.</p>
             </div>
-            <!-- Card 3 -->
             <div class="card">
-                <h4> Match With Sadaia</h4>
+                <h4>Match With Sadaia</h4>
                 <p>Description for card 3 goes here.</p>
             </div>
-            <!-- Card 4 -->
-            <div class="card">
-                <h4> Match With Sadaia</h4>
-                <p>Description for card 4 goes here.</p>
-            </div>
-            <div class="card">
-                <h4> Match With Sadaia</h4>
-                <p>Description for card 4 goes here.</p>
-            </div>
-            <div class="card">
-                <h4> Match With Sadaia</h4>
-                <p>Description for card 4 goes here.</p>
-            </div>
         </div>
-    </div>
-</div>
-<!-- Chats and Messages Section -->
-<div class="chats-section">
-    <div class="container">
-        <h2>Chats & Messages</h2>
-        <div class="chat-box">
-            {% if conversations %}
-                {% for conversation in conversations %}
-                    <div class="chat-message">
-                        <div class="sender-info">
-                            <strong>{{ conversation.user.username }}</strong>
-                            <span>{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
-                        </div>
-                        <p>{{ conversation.last_message.content|truncatechars:50 }}</p>
-                        <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-primary">View Chat</a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No conversations yet. Start a new chat!</p>
-            {% endif %}
-        </div>
-    </div>
-</div>
 
+        <!-- Chats Section -->
+        <div class="chats-section">
+            <h2>Chats</h2>
+            <div class="chat-box">
+                {% if conversations %}
+                    {% for conversation in conversations %}
+                        <div class="chat-message">
+                            <div class="sender-info">
+                                <strong>{{ conversation.user.username }}</strong>
+                                <span>{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
+                            </div>
+                            <p>{{ conversation.last_message.content|truncatechars:50 }}</p>
+                            <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-primary">View Chat</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No conversations yet. Start a new chat!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
+

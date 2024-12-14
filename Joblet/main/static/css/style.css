@@ -30,7 +30,6 @@ html, body {
     align-items: center;
     width: 100%;
     margin-bottom: 15px;
-    position: relative;
     top: 0;
     height: 50px; /* Fixed height for the navbar */
     padding: 0 20px; /* Horizontal spacing */
@@ -229,4 +228,295 @@ html, body {
     .social-section .social-icons {
         justify-content: center;
     }
+}
+/* Card Container */
+.card-container {
+    display: flex;
+    justify-content: space-between; /* Space between cards */
+    align-items: stretch;
+    flex-wrap: wrap; /* Wrap cards on smaller screens */
+    gap: 1rem; /* Space between rows/columns */
+    margin-top: 20px;
+}
+
+/* Individual Card */
+.card {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    background-color: #f6f6f6; /* Light background color */
+    border: 1px solid #E0E0E0; /* Subtle border */
+    border-radius: 10px;
+    width: 150px; 
+    height: 150px;/* Fixed width */
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card Hover Effect */
+.card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+}
+
+/* Card Title */
+.card h4 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1D3557; /* Dark blue text */
+    margin-bottom: 10px;
+}
+
+/* Card Description */
+.card p {
+    font-size: 14px;
+    color: #457B9D; /* Soft blue text */
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .card-container {
+        justify-content: center; /* Center cards on small screens */
+        gap: 15px;
+    }
+    .card {
+        width: 100%; /* Full width on smaller screens */
+        max-width: 300px; /* Limit max width */
+    }
+}
+
+.chat-message p {
+    margin: 0;
+    font-size: 16px;
+    color: #444;
+}
+/* Overall Chat Container */
+.custom-chat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    padding: 20px;
+}
+
+/* Chat Card */
+.custom-chat-card {
+    background-color: #fff;
+    width: 400px;
+    max-width: 100%;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Chat Box */
+#custom-chat-box {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+#custom-chat-box p {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #e6f7ff;
+    border-radius: 20px;
+    display: inline-block;
+    max-width: 80%;
+}
+
+#custom-chat-box p strong {
+    color: #0073e6;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+/* Chat Form */
+.custom-chat-form {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    gap: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.custom-chat-form textarea {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 14px;
+    resize: none;
+    height: 40px;
+}
+
+.custom-chat-form textarea:focus {
+    outline: none;
+    border-color: #0073e6;
+    box-shadow: 0 0 5px rgba(0, 115, 230, 0.5);
+}
+
+.custom-chat-form button {
+    padding: 10px 20px;
+    background-color: #0073e6;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-chat-form button:hover {
+    background-color: #005bb5;
+}
+.dropdown-toggle::after {
+    content: none;
+}
+.form-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+/* forms styles */
+.form-container p {
+    margin-bottom: 1.5rem;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
+
+.form-container .required {
+    color: #dc3545;
+}
+
+.form-container input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.left-side {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 100px;
+}
+
+.profile-container {
+    text-align: center;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.right-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+
+.card {
+    background-color: #fbfbff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    width: 170px;
+    height: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chats-section {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+} 
+
+.chat-box {
+    margin-top: 10px;
+}
+
+.chat-message {
+    border-bottom: 1px solid #dee2e6;
+    padding: 10px 0;
+}
+
+.chat-message:last-child {
+    border-bottom: none;
+}
+
+.sender-info {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #505050;
+    color: #ffffff;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #0056b3;
 }
