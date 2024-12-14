@@ -8,17 +8,29 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
+            <div class="container card shadow-sm">
+                <div class="card-body text-center p-5 ">
                     <img src="{{ candidate_profile.avatar.url}}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
 
                     <h2>{{ candidate_profile.user.first_name }} {{ candidate_profile.user.last_name }}
+                        {% if candidate_profile.approved %}
+                        <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
+                        {% else %}
+                        <i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i>
+                        {% endif %}
                         <a href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal" class="btn btn-secondary btn-sm ms-2">Edit</a>
                     </h2>
+                    <div class="p-2">
+                        <p>Your Profile Completion</p>
+                        <div class="progress">
+                            <div class="progress-bar {% if candidate_profile.profile_completion <= 40 %}bg-danger{% elif candidate_profile.profile_completion <= 70 and candidate_profile.profile_completion >= 41 %}bg-warning{% elif candidate_profile.profile_completion >= 80 %}bg-success{% endif %}" style="width: {{candidate_profile.profile_completion}}%">{{ candidate_profile.profile_completion }}%</div>
+                        </div>
+                    </div>
                     <div class="text-start">
-                        <small>Bio: </small>
+                        <h6>Bio: </h6>
                         <p>{{ candidate_profile.about }}</p>
                     </div>
+
                 </div>
             </div>
         </div>

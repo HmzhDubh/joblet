@@ -93,7 +93,7 @@
                 <!-- Tables Section -->
                 <div class="shadow rounded p-3">
                     <div class="table-responsive">
-
+                        <!-- messages table -->
                         {% if contact_messages %}
                         <h5 class="special-color">Messages</h5>
                         <table class="table table-hover">
@@ -125,7 +125,7 @@
                             </tbody>
                         </table>
                         {% endif %}
-
+                        <!-- matches table todo -->
                         {% if requests %}
 
                         <h5 class="special-color">Requests</h5>
@@ -158,7 +158,7 @@
                         </table>
 
                         {% endif %}
-
+                        <!-- projects todo -->
                         {% if projects %}
 
                         <h5 class="special-color">Projects</h5>
@@ -192,7 +192,7 @@
                         </table>
 
                         {% endif %}
-
+                        <!-- Organizations table todo -->
                         {% if orgs %}
 
                         <h5 class="special-color">Organizations</h5>
@@ -287,26 +287,35 @@
                         </table>
 
                         {% endif %}
+                        <!-- candidates  -->
+                        {% if candidates %}
 
-                        {% if tools %}
-
-                        <h5 class="special-color">Tools</h5>
+                        <h5 class="special-color">Candidates</h5>
                         <table class="table table-hover">
                             <thead>
                             <th scope="col">#</th>
-                            <th scope="col">Tools</th>
-                            <th scope="col">Site</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Completion</th>
                             <th class="text-center"> Actions </th>
                             </thead>
                             <tbody class="table-group-divider">
-                            {% for tool in tools %}
+                            {% for candidate in candidates %}
                             <tr>
-                                <th scope="row">{{tool.id}}</th>
-                                <td>{{tool.tool}}</td>
-                                <td>{{tool.preferred_color}}</td>
-                                <td class="text-end pe-1  gap-1">
-                                    <a href="{% url 'main:delete_tool_view' tool.id %}" class="btn btn-danger"><span class="material-symbols-outlined">delete</span></a>
+                                <th scope="row">{{candidate.id}}</th>
+                                <td>{{candidate.user.first_name}}</td>
+                                <td>{{candidate.user.last_name}}</td>
+                                <td>{{candidate.user.email}}</td>
+                                <td>{{candidate.profile_completion}}</td>
+                                <td class="text-center">
+                                    {% if candidate.approved %}
+                                    <a href="{% url 'candidate:change_candidate_status' candidate.id %}" class="btn btn-success">Approved</a>
+                                    {% else %}
+                                    <a href="{% url 'candidate:change_candidate_status' candidate.id %}" class="btn btn-danger">Not Approved</a>
+                                    {% endif %}
                                 </td>
+
                             </tr>
                             {% endfor %}
                             </tbody>

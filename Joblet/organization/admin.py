@@ -3,7 +3,7 @@ from .models import Organization, Skill
 # Register your models here.
 
 class orgAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'approved']
+    list_display = ['id', 'name', 'approved', 'profile_completion']
 admin.site.register(Organization, orgAdmin)
 
 

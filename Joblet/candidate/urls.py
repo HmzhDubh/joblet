@@ -4,7 +4,7 @@ from . import views
 app_name = 'candidate'
 urlpatterns = [
     path('profile/<user_name>/', views.candidate_profile_view, name='candidate_profile_view'),
-
+    path('organization//update/<candidate_id>', views.change_candidate_status, name='change_candidate_status'),
     path('profile/skill/add/', views.add_skill, name='add_skill'),
     path('profile/skill/remove/<skill_id>/', views.remove_skill, name='remove_skill'),
 

@@ -90,7 +90,10 @@ def org_profile(request: HttpRequest, user_name):
         org.save()
         messages.success(request, 'Profile was updated Successfully', 'alert-success')
 
-    return render(request, 'organization/org_profile.html', context={'org': org, 'skills': Skill.objects.all})
+    return render(request, 'organization/org_profile.html', context={
+        'org': org,
+        'skills': Skill.objects.all
+    })
 
 
 def add_skill(request: HttpRequest, skill_id):
