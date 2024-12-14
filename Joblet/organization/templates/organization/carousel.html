@@ -6,8 +6,13 @@
     </button>
 
     {% for item in carousel_items %}
-    {% include "organization/organization_card.html" with org=item.org position_class=item.position_class %}
+        {% if item.org %}
+            {% include "organization/organization_card.html" with org=item.org position_class=item.position_class %}
+        {% elif item.candidate %}
+            {% include "candidate/candidate_card.html" with candidate=item.candidate position_class=item.position_class %}
+        {% endif %}
     {% endfor %}
+
 
     <!-- Right Arrow -->
     <button class="carousel-arrow right-arrow" onclick="slideRight()">
@@ -67,7 +72,7 @@
     function slideRight() {
         const currentUrl = new URL(window.location);
         let activeIndex = parseInt(currentUrl.searchParams.get('active') || '0');
-        activeIndex = (activeIndex + 1) % {{ total_orgs }};
+        activeIndex = (activeIndex + 1) % {{ total_candidates }};
         currentUrl.searchParams.set('active', activeIndex);
         window.location = currentUrl;
     }
@@ -75,7 +80,7 @@
     function slideLeft() {
         const currentUrl = new URL(window.location);
         let activeIndex = parseInt(currentUrl.searchParams.get('active') || '0');
-        activeIndex = (activeIndex - 1 + {{ total_orgs }}) % {{ total_orgs }};
+        activeIndex = (activeIndex - 1 + {{ total_candidates }}) % {{ total_candidates }};
         currentUrl.searchParams.set('active', activeIndex);
         window.location = currentUrl;
     }

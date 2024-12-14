@@ -38,59 +38,11 @@ def candidate_profile_view(request, user_name):
         messages.success(request, 'profile updates successfully', 'alert-success')
         candidate_profile.save()
 
-        # skills_form = SkillForm(request.POST)
-        # if skills_form.is_valid():
-        #     skill_name = skills_form.cleaned_data['skill_name']
-        #     skill, created = Skill.objects.get_or_create(skill_name=skill_name)
-        #     profile.skills.add(skill)
-        #     profile.save()
-        #     messages.success(request, f"Skill '{skill_name}' added successfully!")
-        #
-        # project_form = ProjectForm(request.POST)
-        # if project_form.is_valid():
-        #     project = project_form.save(commit=False)
-        #     project.profile = profile
-        #     project.save()
-        #     messages.success(request, "Project added successfully!")
-        #
-        # education_form = EducationForm(request.POST)
-        # if education_form.is_valid():
-        #     education = education_form.save(commit=False)
-        #     education.profile = profile
-        #     education.save()
-        #     profile.save()
-        #     messages.success(request, "Education added successfully!")
-        #
-        #
-        # experience_form = ExperinceForm(request.POST)
-        # if experience_form.is_valid():
-        #     experience = experience_form.save(commit=False)
-        #     experience.profile = profile
-        #     experience.save()
-        #     profile.save()
-        #     messages.success(request, "Experience added successfully!")
-
-    # projects = user.candidate.projects.all()
-    # education = user.candidate.education.all()
-    # experiences = user.candidate.experience.all()
-    # skills = user.candidate.skills.values_list('skill_name', flat=True)
-    #
-    # skills_form = SkillForm()
-    # project_form = ProjectForm()
-    # education_form = EducationForm()
-    # experience_form = ExperinceForm()
-
     return render(request, 'candidate/candidate_profile.html', {
         'candidate_profile': candidate_profile,
         'skills': Skill.objects.all(),
         'degree_choices': Education.DEGREE_CHOICES,
-        # 'project_form': project_form,
-        # 'education_form': education_form,
-        # 'experience_form': experience_form,
-        # 'projects': projects,
-        # 'education': education,
-        # 'experiences': experiences,
-        # 'skills': skills,
+
     })
 
 
@@ -136,7 +88,7 @@ def add_project(request: HttpRequest):
         project.save()
 
         if not candidate.profile_completion >= 100:
-            candidate.profile_completion += 3
+            candidate.profile_completion += 10
 
         candidate.save()
 
@@ -180,7 +132,7 @@ def add_education(request: HttpRequest):
         education.save()
 
         if not candidate.profile_completion >= 100:
-            candidate.profile_completion += 3
+            candidate.profile_completion += 10
 
         candidate.save()
 
@@ -194,7 +146,7 @@ def remove_education(request: HttpRequest, education_id):
         edu.delete()
 
         candidate = Candidate.objects.get(user=request.user)
-        candidate.profile_completion -= 3
+        candidate.profile_completion -= 10
         candidate.save()
 
         messages.warning(request, 'Education was removed Successfully', 'alert-warning')
@@ -223,7 +175,7 @@ def add_experience(request: HttpRequest):
                 experience.save()
 
                 if not candidate.profile_completion >= 100:
-                    candidate.profile_completion += 3
+                    candidate.profile_completion += 10
 
                 candidate.save()
 
@@ -253,3 +205,12 @@ def remove_experience(request: HttpRequest, experience_id):
         messages.error(request, 'Error Deleting record', 'alert-danger')
 
     return redirect('candidate:candidate_profile_view', user_name=request.user)
+
+
+def change_candidate_status(request: HttpRequest, candidate_id):
+    candidate = Candidate.objects.get(pk=candidate_id)
+    if request.user.is_superuser:
+        candidate.approved = not candidate.approved
+        candidate.save()
+        messages.success(request, 'Candidate Status Updated successfully', 'alert-success')
+    return redirect('dashboard:dashboard_view')
