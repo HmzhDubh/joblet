@@ -17,17 +17,10 @@ def org_profile(request: HttpRequest, user_name):
     org = Organization.objects.get(profile=user)
 
     if 'edit' in request.GET:
-<<<<<<< HEAD
-        user = User.objects.get(username=user_name)
-        org = Organization.objects.get(profile=user)
-        print('Editing: '+request.GET['edit'])        
-=======
-
         print('Editing: ' + request.GET['edit'])
->>>>>>> eac4725f9ab7e5ce28d13bcc72faa9fa065779dc
 
         if 'name' in request.POST:
-
+            
             if org.name == '':
                 org.name = request.POST['name']
                 org.profile_completion += 10

@@ -6,24 +6,31 @@
 
 {% block content %}
 
-<div class="custom-chat-container">
-    <div class="custom-chat-card">
-        <div id="custom-chat-box">
-            {% for message in messages %}
-                <p>
-                    <strong>{{ message.sender.username }}:</strong> 
-                    {{ message.content }}
-                </p>
-            {% endfor %}
-        </div>
-
-        <form class="custom-chat-form" method="POST" action="{% url 'direct_messages:send_message' recipient.id %}">
-            {% csrf_token %}
-            <textarea name="content" rows="3" placeholder="Type your message here"></textarea>
-            <button type="submit">Send</button>
-        </form>
+<div class="chat-container">
+    <!-- Chat Header -->
+    <div class="chat-header">
+        <h2>Chat with {{ recipient.username }}</h2>
     </div>
+
+    <!-- Chat Messages -->
+    <div id="chat-box">
+        {% for message in messages %}
+            <div class="chat-message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                <p>{{ message.content }}</p>
+                <span class="timestamp">{{ message.timestamp|date:"M d, H:i" }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Chat Form -->
+    <form class="chat-form" method="POST" action="{% url 'direct_messages:send_message' recipient.id %}">
+        {% csrf_token %}
+        <textarea name="content" rows="2" placeholder="Type your message here"></textarea>
+        <button type="submit">Send</button>
+    </form>
 </div>
+
+
 
 
 {% endblock %}
