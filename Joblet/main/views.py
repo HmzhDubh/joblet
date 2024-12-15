@@ -10,28 +10,31 @@ from candidate.models import Candidate
 
 def home_view(request: HttpRequest):
 
+    cands = Candidate.objects.all()
+    orgs = Organization.objects.all()
+
     if not request.user.is_authenticated:
-        return render(request, "main/home.html")
+        return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
 
     for group in request.user.groups.all():
         if group.name == 'candidate':
             # Get all organizations
             orgs = Organization.objects.all()
-            total_orgs = len(orgs)
+            total_cards = len(orgs)
             carousel_items = []
 
-            if total_orgs > 0:
+            if total_cards > 0:
                 # Get the current active index (could be from query params or session)
                 try:
                     active_index = int(request.GET.get('active', 0))
                     # Ensure active_index is within bounds
-                    active_index = active_index % total_orgs
+                    active_index = active_index % total_cards
                 except ValueError:
                     active_index = 0
 
                 # Calculate previous and next indices with wrap-around
-                prev_index = (active_index - 1) % total_orgs
-                next_index = (active_index + 1) % total_orgs
+                prev_index = (active_index - 1) % total_cards
+                next_index = (active_index + 1) % total_cards
 
                 # Create carousel items
                 for i, org in enumerate(orgs):
@@ -54,27 +57,27 @@ def home_view(request: HttpRequest):
             return render(request, "main/home.html", {
                 'orgs': orgs,
                 'carousel_items': carousel_items,
-                'total_orgs': total_orgs
+                'total_cards': total_cards
             })
 
         elif group.name == 'organizations':
             # Get all candidates
             candidates = Candidate.objects.all()
-            total_candidates = len(candidates)
+            total_cards = len(candidates)
             carousel_items = []
 
-            if total_candidates > 0:
+            if total_cards > 0:
                 # Get the current active index (could be from query params or session)
                 try:
                     active_index = int(request.GET.get('active', 0))
                     # Ensure active_index is within bounds
-                    active_index = active_index % total_candidates
+                    active_index = active_index % total_cards
                 except ValueError:
                     active_index = 0
 
                 # Calculate previous and next indices with wrap-around
-                prev_index = (active_index - 1) % total_candidates
-                next_index = (active_index + 1) % total_candidates
+                prev_index = (active_index - 1) % total_cards
+                next_index = (active_index + 1) % total_cards
 
                 # Create carousel items
                 for i, candidate in enumerate(candidates):
@@ -97,10 +100,10 @@ def home_view(request: HttpRequest):
             return render(request, "main/home.html", {
                 'candidates': candidates,
                 'carousel_items': carousel_items,
-                'total_candidates': total_candidates
+                'total_cards': total_cards
             })
 
-    return render(request, "main/home.html")
+    return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
 
 
 def contact_view(request: HttpRequest):

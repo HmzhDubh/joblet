@@ -28,7 +28,7 @@
                     <!-- Logo Section -->
                     <div class="col-lg-2 col-md-12 text-center text-lg-start">
                         <div class="header-logo">
-                            <a href="{% url 'main:home_view' %}" class="logo">
+                            <a href="{% url 'main:home_view' %}?type=candidate" class="logo">
                                 <img src="{% static 'images/grid.png' %}" alt="Joblet Logo">
                             </a>
                         </div>
@@ -38,7 +38,7 @@
                     <div class="col-lg-8 col-md-12 pe-5">
                         <nav class="navbar navbar-expand-lg justify-content-end mt-2">
                             <ul class="navbar-nav">
-                                <li><a class="nav-link" href="{% url 'main:home_view' %}">Home</a></li>
+                                <li><a class="nav-link" href="{% url 'main:home_view' %}?type=candidate">Home</a></li>
                                 {% if request.user.is_authenticated %}
                                 <li><a class="nav-link" href="{% url 'direct_messages:direct_messages_view' %}">DM</a></li>
                                 {% endif %}
