@@ -2,8 +2,15 @@
 
 {% block title %} Sign Up {% endblock %}
 {% block content %}
-<main class="my-5 pt-5 mt-5">
-    <div class="container pt-5 mt-5 mb-5 pb-5 shadow rounded ">
+<main class="container my-5 pt-5 mt-5">
+    <nav class="" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
+            <li class="breadcrumb-item"><a href="#" class="text-primary">Login</a></li>
+            <li class="breadcrumb-item active">Sign Up</li>
+        </ol>
+    </nav>
+    <div class="container pt-5 mt-5 mb-5 pb-5 shadow rounded text-light bg-organization">
         {% if request.resolver_match.view_name == 'accounts:candidate_signup_view' %}
         <h3 class="text-center display-4">Candidate Sign Up</h3>
         <form class="m-5 p-5" action="{% url 'accounts:candidate_signup_view' %}" method="post" enctype="multipart/form-data">

@@ -4,7 +4,14 @@
 
 {% block content %}
 
-<main>
+<main class="container ">
+    <nav class="" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
+            <li class="breadcrumb-item"><a href="#" class="text-primary">Admin Panel</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
     <div class="container-fluid px-3 px-md-4 py-4">
         <!-- Header -->
         <div class="text-center mb-4">
