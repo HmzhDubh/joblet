@@ -25,3 +25,10 @@ class Organization(models.Model):
     approved = models.BooleanField(default=False)
     profile_completion = models.SmallIntegerField(default=10, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, through='OrganizationLike', related_name='liked_organizations')
+
+
+class OrganizationLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='organization_likes')
+    created_at = models.DateTimeField(auto_now_add=True)

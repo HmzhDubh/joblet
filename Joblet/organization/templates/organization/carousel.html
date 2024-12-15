@@ -69,6 +69,7 @@
 </style>
 
 <script>
+    
     function slideRight() {
         const currentUrl = new URL(window.location);
         let activeIndex = parseInt(currentUrl.searchParams.get('active') || '0');
@@ -85,3 +86,4 @@
         window.location = currentUrl;
     }
 </script>
+

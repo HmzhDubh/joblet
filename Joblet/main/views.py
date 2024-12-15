@@ -50,11 +50,12 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Candidate.DoesNotExist:
                         pass
-
+            
             return render(request, "main/home.html", {
                 'orgs': orgs,
                 'carousel_items': carousel_items,
-                'total_orgs': total_orgs
+                'total_orgs': total_orgs,
+                'total_candidates' : total_orgs
             })
 
         elif group.name == 'organizations':
@@ -93,7 +94,7 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Organization.DoesNotExist:
                         pass
-
+            
             return render(request, "main/home.html", {
                 'candidates': candidates,
                 'carousel_items': carousel_items,

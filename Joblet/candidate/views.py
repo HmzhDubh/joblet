@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Candidate, Project, Education, Experince
-
+from .models import Candidate, Project, Education, Experince, CandidateLike
+from django.http import JsonResponse
 from organization.models import Skill, Organization
 
 # Create your views here.
@@ -214,3 +214,15 @@ def change_candidate_status(request: HttpRequest, candidate_id):
         candidate.save()
         messages.success(request, 'Candidate Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
+
+def like_candidate(request, candidate_id):
+    # Get the candidate object or return 404 if not found
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+    
+    # Toggle the like
+    like, created = CandidateLike.objects.get_or_create(user=request.user, candidate=candidate)
+    if not created:
+        like.delete()  # If the like already exists, remove it (unlike)
+    
+    # Redirect back to the previous page or fallback to home if no referrer
+    return redirect(request.META.get('/'))
