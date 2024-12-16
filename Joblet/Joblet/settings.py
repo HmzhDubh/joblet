@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'organization',
     'direct_messages',
     'dashboard',
+    'matchApp',
 ]
 
 MIDDLEWARE = [

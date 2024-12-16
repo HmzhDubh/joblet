@@ -1,15 +1,17 @@
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
 
-from django.shortcuts import render, redirect, get_object_or_404
+from .forms import ProjectForm
+from .models import Organization, Skill, OrganizationLike, Projects
 from django.contrib.auth.models import User
-from .models import Projects
-from .forms import ProjectForm 
-
-from .models import Organization, Skill,OrganizationLike
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from candidate.models import CandidateLike,Candidate
 from candidate.views import is_match
+
+ 
+
 # Create your views here.
 
 
@@ -114,8 +116,7 @@ def org_profile(request: HttpRequest, user_name):
         
     return render(request, 'organization/org_profile.html', context={
         'org': org,
-        'skills': Skill.objects.all,
-        'projects': org.project.all()
+        'skills': Skill.objects.all
     })
 
 
@@ -216,8 +217,6 @@ def update_project(request, project_id):
     return render(request, 'organization/update_project.html', {'form': form, 'project': project})
 
 
-
-
 def delete_project(request, project_id):
     project = get_object_or_404(Projects, id=project_id)
     if request.method == 'POST':
@@ -239,4 +238,3 @@ def like_organization(request, organization_id):
             messages.success(request, f"It's a match! You and {organization.name} like each other.")
     # Redirect back to the home if no referrer is available
     return redirect("main:home_view")
-

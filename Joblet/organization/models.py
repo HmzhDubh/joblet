@@ -43,6 +43,6 @@ class Projects(models.Model):
 
 class OrganizationLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='organization_likes')
+    projects = models.ForeignKey(Projects, default=0, on_delete=models.CASCADE, related_name='organization_likes')
     created_at = models.DateTimeField(auto_now_add=True)
 
