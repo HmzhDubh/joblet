@@ -7,6 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 from django.db import transaction, IntegrityError
+from django.urls import reverse
 
 from organization.models import Organization
 from candidate.models import Candidate
@@ -39,7 +40,7 @@ def candidate_signup_view(request: HttpRequest):
             login(request, new_user)
             messages.success(request, f'{new_user.username} Account was created Successfully', 'alert-success')
 
-            return redirect('main:home_view')
+            return redirect(f'{reverse("main:home_view")}?type=candidate')
         except IntegrityError as ie:
             print(ie)
             messages.error(request, 'This username is taken, please try another one', 'alert-danger')
@@ -77,7 +78,7 @@ def organization_signup_view(request: HttpRequest):
             login(request, new_user)
             messages.success(request, f'{new_user.username} Account was created Successfully', 'alert-success')
 
-            return redirect('main:home_view')
+            return redirect(f'{reverse("main:home_view")}?type=candidate')
         except IntegrityError as ie:
             print(ie)
             messages.error(request, 'This username is taken, please try another one', 'alert-danger')
@@ -95,7 +96,7 @@ def signin_view(request: HttpRequest):
         if user:
             login(request, user)
             messages.success(request, f'{user.username} Signed in Successfully', 'alert-success')
-            return redirect(request.GET.get('next', '/'))
+            return redirect(f'{reverse("main:home_view")}?type=candidate')
         else:
             messages.error(request, 'Username or password is wrong, please try again', 'alert-danger')
     return render(request, 'accounts/sign_in.html')

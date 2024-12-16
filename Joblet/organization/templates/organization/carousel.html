@@ -69,10 +69,12 @@
 </style>
 
 <script>
+    
     function slideRight() {
         const currentUrl = new URL(window.location);
         let activeIndex = parseInt(currentUrl.searchParams.get('active') || '0');
-        activeIndex = (activeIndex + 1) % {{ total_candidates }};
+
+        activeIndex = (activeIndex + 1) % {{ total_cards }};
         currentUrl.searchParams.set('active', activeIndex);
         window.location = currentUrl;
     }
@@ -80,8 +82,9 @@
     function slideLeft() {
         const currentUrl = new URL(window.location);
         let activeIndex = parseInt(currentUrl.searchParams.get('active') || '0');
-        activeIndex = (activeIndex - 1 + {{ total_candidates }}) % {{ total_candidates }};
+        activeIndex = (activeIndex - 1 + {{ total_cards }}) % {{ total_cards }};
         currentUrl.searchParams.set('active', activeIndex);
         window.location = currentUrl;
     }
 </script>
+

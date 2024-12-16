@@ -126,17 +126,42 @@
                 {% endif %}
             </div>
             <p class="mb-0">{{ candidate.email }}</p>
+            {% if candidate.skills.all %}
             <div class="d-flex pt-2 gap-2 justify-content-center">
+                <small>Skills</small>
                 {% for skill in candidate.skills.all %}
                 <button class="btn btn-warning rounded-5">{{skill.skill_name}}</button>
                 {% endfor %}
             </div>
+            {% endif %}
+
+            {% if candidate.projects.all %}
+            <div class="d-flex pt-2 gap-2 justify-content-center">
+                <small>Projects: </small>
+                {% for project in candidate.projects.all %}
+                <p>{{project.title}}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
         </div>
         <div class="action-buttons">
-            <button class="btn btn-circle"><i class="fas fa-star"></i></button>
-            <button class="btn btn-circle"><i class="fas fa-heart"></i></button>
-            <button class="btn btn-circle"><i class="fas fa-bolt"></i></button>
-            <button class="btn btn-circle"><i class="fas fa-comment-alt"></i></button>
+                <!-- Like Button -->
+                <form action="{% url 'candidate:like_candidate' candidate.id %}" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-circle">
+                        {% if user in candidate.likes.all %}
+                            <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
+                        {% else %}
+                            <i class="fas fa-heart"></i> <!-- Not liked -->
+                        {% endif %}
+                    </button>
+                </form>
+    
+                <!-- Other Buttons -->
+                <button class="btn btn-circle"><i class="fas fa-star"></i></button>
+                <button class="btn btn-circle"><i class="fas fa-bolt"></i></button>
+                <button class="btn btn-circle"><i class="fas fa-comment-alt"></i></button>
         </div>
     </div>
 </div>

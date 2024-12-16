@@ -112,7 +112,7 @@
 
 <div class="card-wrapper {{ position_class }}">
     <div class="profile-card">
-        <h1 class="text-light">{{org.job_title}}</h1>
+        <h1 class="text-light">{{ org.job_title }}</h1>
         <div class="profile-image-container">
             <img src="{{ org.logo.url }}" alt="{{ org.name }}" class="profile-image">
         </div>
@@ -129,13 +129,26 @@
             <p class="mb-0">{{ org.email }}</p>
             <div class="d-flex pt-2 gap-2 justify-content-center">
                 {% for skill in org.skills.all %}
-                <button class="btn btn-warning rounded-5">{{skill.skill_name}}</button>
+                <button class="btn btn-warning rounded-5">{{ skill.skill_name }}</button>
                 {% endfor %}
             </div>
         </div>
         <div class="action-buttons">
+            <!-- Like Button -->
+            <form action="{% url 'organization:like_organization' org.id %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-circle">
+                    {% if user in org.likes.all %}
+                        <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
+                    {% else %}
+                        <i class="fas fa-heart"></i> <!-- Not liked -->
+                    {% endif %}
+                </button>
+            </form>
+            <span>{{ org.likes.count }}</span> <!-- Display Like Count -->
+
+            <!-- Other Buttons -->
             <button class="btn btn-circle"><i class="fas fa-star"></i></button>
-            <button class="btn btn-circle"><i class="fas fa-heart"></i></button>
             <button class="btn btn-circle"><i class="fas fa-bolt"></i></button>
             <button class="btn btn-circle"><i class="fas fa-comment-alt"></i></button>
         </div>
