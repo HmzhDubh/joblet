@@ -12,7 +12,7 @@ def home_view(request: HttpRequest):
 
     cands = Candidate.objects.all()
     orgs = Organization.objects.all()
-
+    
     if not request.user.is_authenticated:
         return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
 
