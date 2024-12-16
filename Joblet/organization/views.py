@@ -1,10 +1,13 @@
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
+
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Organization, Skill
 from django.contrib.auth.models import User
 from .models import Projects
 from .forms import ProjectForm 
+
+from .models import Organization, Skill,OrganizationLike
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -27,7 +30,6 @@ def org_profile(request: HttpRequest, user_name):
         return redirect('organization:org_profile', user_name=user_name)
     
     if 'edit' in request.GET:
-
         print('Editing: ' + request.GET['edit'])
 
         if 'name' in request.POST:
@@ -162,9 +164,6 @@ def change_org_status(request: HttpRequest, org_id):
     return redirect('dashboard:dashboard_view')
 
 
-
-
-
 def add_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -224,15 +223,13 @@ def delete_project(request, project_id):
         return redirect('organization:profile', org_id=request.user.organization.id)
     return render(request, 'organization/delete_project.html', {'project': project})
 
-# def update_organization_profile(request: HttpRequest, user_name):
-#
-#     user = User.objects.get(username=user_name)
-#     org = Organization.objects.get(profile=user)
-#     if request.method == 'POST':
-#         org.name = request.POST['name']
-#         org.email = request.POST['email']
-#         org.phone_number = request.POST['phone_number']
-#         org.description = request.POST['description']
-#         profile_completion = 50
-#         org.save()
-#     return render(request, 'organization/update_org.html', context={'org', org})
+
+def like_organization(request, organization_id):
+    organization = get_object_or_404(Organization, id=organization_id)
+    # Toggle the like
+    like, created = OrganizationLike.objects.get_or_create(user=request.user, organization=organization)
+    if not created:
+        like.delete()  # If the like already exists, delete it (unlike)
+    # Redirect back to the home if no referrer is available
+    return redirect("main:home_view")
+

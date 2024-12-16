@@ -2,18 +2,24 @@
 
 {% block title %} Sign In {% endblock %}
 {% block content %}
-<main class="my-5 pt-5 mt-5">
+<main class="container my-5 pt-5 mt-5">
+    <nav class="" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
+            <li class="breadcrumb-item active">Sign In</li>
+        </ol>
+    </nav>
     <div class="container pt-5 mt-5 mb-5 pb-5 shadow rounded bg-organization text-light">
         <h1 class="display-2 text-center ">Sign In</h1>
         <form class="m-5 p-5" action="{% url 'accounts:signin' %}{% if 'next' in request.GET %}?next={{request.GET.next}}{% endif %}" method="post">
         {% csrf_token %}
             <div class="mb-3">
                 <label class="form-label" for="username">Username</label>
-                <input class="form-control" type="text" id="username" name="username">
+                <input class="form-control" type="text" id="username" name="username" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="password">Password</label>
-                <input class="form-control" type="text" id="password" name="password">
+                <input class="form-control" type="text" id="password" name="password" required>
             </div>
         <button class="btn btn-primary" type="submit">Sign In</button>
     </form>

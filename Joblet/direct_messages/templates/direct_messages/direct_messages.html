@@ -1,0 +1,63 @@
+{% extends 'main/index.html' %}
+{% load static %}
+
+{% block title %}DM{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- Left Side: User Profile -->
+    <div class="left-side">
+        <div class="profile-container">
+            <img src="{% static 'images/avatar_placeholder.png' %}" alt="User Avatar" class="avatar">
+            <h3>{{ user.username }}</h3>
+            <p class="email">{{ user.email }}</p>
+            <ul class="profile-info">
+                <li><strong>Location:</strong> {{ user.profile.location }}</li>
+                <li><strong>Member Since:</strong> {{ user.date_joined|date:"F Y" }}</li>
+                <li><strong>Bio:</strong> {{ user.profile.bio }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Right Side: Cards and Chats -->
+    <div class="right-side">
+        <div class="cards-container">
+            <div class="card">
+                <h4>See who is interested in you</h4>
+                <p>Get the gold</p>
+            </div>
+            <div class="card">
+                <h4>Match With Sadaia</h4>
+                <p>Description for card 2 goes here.</p>
+            </div>
+            <div class="card">
+                <h4>Match With Sadaia</h4>
+                <p>Description for card 3 goes here.</p>
+            </div>
+        </div>
+
+        <div class="chats-section">
+            <h2>Chats</h2>
+            <div class="chat-box">
+                {% if conversations %}
+                    {% for conversation in conversations %}
+                        <div class="chat-message">
+                            <div class="sender-info">
+                                <strong>{{ conversation.user.username }}</strong>
+                                <span class="timestamp">{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
+                            </div>
+                            <p class="chat-preview">{{ conversation.last_message.content|truncatechars:50 }}</p>
+                            <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-primary">View Chat</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No conversations yet. Start a new chat!</p>
+                {% endif %}                                          
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

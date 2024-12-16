@@ -21,9 +21,7 @@ class Organization(models.Model):
     website = models.URLField(null=True)
     linkedin = models.URLField(null=True)
     logo = models.ImageField(upload_to='images', default='images/logo.jpg')
-
     skills = models.ManyToManyField(Skill)
-
     approved = models.BooleanField(default=False)
     profile_completion = models.SmallIntegerField(default=10, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -39,3 +37,12 @@ class Projects(models.Model):
 
     def __str__(self):
         return self.title
+
+    likes = models.ManyToManyField(User, through='OrganizationLike', related_name='liked_organizations')
+
+
+class OrganizationLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='organization_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+

@@ -28,7 +28,7 @@
                     <!-- Logo Section -->
                     <div class="col-lg-2 col-md-12 text-center text-lg-start">
                         <div class="header-logo">
-                            <a href="{% url 'main:home_view' %}" class="logo">
+                            <a href="{% url 'main:home_view' %}?type=candidate" class="logo">
                                 <img src="{% static 'images/grid.png' %}" alt="Joblet Logo">
                             </a>
                         </div>
@@ -38,9 +38,9 @@
                     <div class="col-lg-8 col-md-12 pe-5">
                         <nav class="navbar navbar-expand-lg justify-content-end mt-2">
                             <ul class="navbar-nav">
-                                <li><a class="nav-link" href="{% url 'main:home_view' %}">Home</a></li>
+                                <li><a class="nav-link" href="{% url 'main:home_view' %}?type=candidate">Home</a></li>
                                 {% if request.user.is_authenticated %}
-                                <li><a class="nav-link" href="#">DM</a></li>
+                                <li><a class="nav-link" href="{% url 'direct_messages:direct_messages_view' %}">DM</a></li>
                                 {% endif %}
                                 <li><a class="nav-link" href="#">About</a>
                                 </li>
@@ -67,14 +67,33 @@
                                 <a href="{% url 'accounts:signout' %}" class="btn btn-register">Logout</a>
 
                             {% else %}
-                                <a href="{% url 'accounts:signin' %}" class="btn btn-signin ">Sign in</a>
+                                <a href="{% url 'accounts:signin' %}" class="btn {% if request.GET.type == 'candidate' %}btn-signin{% else %}btn-org{% endif %} ">Sign in</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" class="btn btn-register">Register</a>
+                                <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
 
-                                {% if request.GET.type == 'candidate' %}
-                                    <a href="{% url 'accounts:candidate_signup_view' %}" class="btn btn-register">Register</a>
-                                {% elif request.GET.type == 'organization' %}
-                                    <a href="{% url 'accounts:organization_signup_view' %}" class="btn btn-register">Register</a>
-                                {% endif %}
-
+                                            <div class="modal-content bg-candidate">
+                                                <div class="modal-header">
+                                                    <h5 class="Register" id="editSkillsModalLabel">Register</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container d-flex flex-column justify-content-center gap-3">
+                                                       <div class="text-center">
+                                                           <a href="{% url 'accounts:candidate_signup_view' %}" class="btn btn-register p-4 ps-5 pe-5 rounded-1">Register as a Candidate</a>
+                                                       </div>
+                                                        <div class="text-center">
+                                                            <a href="{% url 'accounts:organization_signup_view' %}" class="btn btn-register p-4 ps-5 pe-5 rounded-1">Register as an Organization</a>
+                                                       </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
 
                             {% endif %}
                         </div>
@@ -97,7 +116,7 @@
     {% endblock %}
 
 
-    <footer class="custom-footer">
+    <footer class="custom-footer bg-candidate text-dark">
             <div class="container">
                 <div class="footer-content">
                     <div class="about-section">
@@ -107,9 +126,9 @@
                     <div class="social-section">
                         <h5>Follow Us</h5>
                         <div class="social-icons">
-                            <a href="http://www.facebook.com" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                            <a href="http://www.twitter.com" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="http://www.instagram.com" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="http://www.facebook.com" aria-label="Facebook"><i class="fab fa-facebook text-dark"></i></a>
+                            <a href="http://www.twitter.com" aria-label="Twitter"><i class="fab fa-twitter text-dark"></i></a>
+                            <a href="http://www.instagram.com" aria-label="Instagram"><i class="fab fa-instagram text-dark"></i></a>
                         </div>
                     </div>
                 </div>
