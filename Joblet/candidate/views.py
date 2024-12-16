@@ -225,4 +225,4 @@ def like_candidate(request, candidate_id):
         like.delete()  # If the like already exists, remove it (unlike)
     
     # Redirect back to the previous page or fallback to home if no referrer
-    return redirect(request.META.get('/'))
+    return redirect("main:home_view")

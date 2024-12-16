@@ -151,7 +151,7 @@ def like_organization(request, organization_id):
     if not created:
         like.delete()  # If the like already exists, delete it (unlike)
     # Redirect back to the home if no referrer is available
-    return redirect(request.META.get('/'))
+    return redirect("main:home_view")
 
 
 
