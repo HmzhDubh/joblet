@@ -205,7 +205,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col d-flex gap-3 flex-column">
 
                         <div class="card">
                             <div class="card-body">
@@ -242,13 +242,47 @@
 
                             </div>
                         </div>
-
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-tools"></i>Projects</h4>
+                                        {% if request.user == org.profile %}
+                                        <div class="text-end mb-3">
+                                            <a href="{% url 'organization:add_project' %}" class="btn btn-primary">Add New Project</a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                            
+                                    <!-- Projects Display Section -->
+                                    <div class="row">
+                                        {% for project in org.project.all %}
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ project.title }}</h5>
+                                                    <p class="card-text">{{ project.description|slice:":100" }}...</p>
+                                                    <p class="card-text">{{ project.tools_used}}</p>
+                                                    <a href="{% url 'organization:update_project' project.id %}" class="btn btn-warning">Edit</a>
+                                                    <a href="{% url 'organization:delete_project' project.id %}" class="btn btn-danger">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% empty %}
+                                        <p>No projects available.</p>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>    
 
 
                     </div>
                 </div>
-            </div>
 
+               
         </div>
     </div>
 
