@@ -203,50 +203,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col">
-
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h4 class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-tools"></i>Required Tools</h4>
-
-                                    <div class="dropdown">
-                                        <a data-bs-toggle="dropdown" class="dropdown-toggle arrow-hidden"><span class="bi bi-plus-circle-fill " style="font-size: 1.6rem;"></span></a>
-                                        <ul class="dropdown-menu">
-                                            {% for skill in skills %}
-                                            <li>
-                                                <a href="{% url 'organization:add_skill' skill.id %}" class="dropdown-item">{{skill.skill_name}}</a>
-                                            </li>
-
-                                            {% endfor %}
-                                            <li>
-                                                <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}" method="post">
-                                                    {% csrf_token %}
-                                                <input type="text" name="skill_name" placeholder="Add New Skill">
-                                                <button  type="submit" class=" "><i class="bi bi-plus-circle"></i></button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                {% for skill in org.skills.all %}
-                                <div class="d-flex gap-3 mb-3">
-
-                                    <h5>{{skill.skill_name}}</h5>
-                                    <a href="{% url 'organization:remove_skill' skill.id %}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-
-                                </div>
-                                {% endfor %}
-
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
             </div>
 
         </div>
