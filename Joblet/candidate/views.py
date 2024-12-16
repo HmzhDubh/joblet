@@ -58,9 +58,6 @@ def add_skill(request: HttpRequest, skill_id):
     return redirect('candidate:candidate_profile_view', user_name=request.user)
 
 
-
-
-
 def remove_skill(request: HttpRequest, skill_id):
     try:
         skill = Skill.objects.get(pk=skill_id)
