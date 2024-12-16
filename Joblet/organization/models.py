@@ -10,7 +10,7 @@ class Skill(models.Model):
 
 class Organization(models.Model):
 
-    profile = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organization')
 
     name = models.CharField(max_length=150, null=True)
     email = models.EmailField()
@@ -25,6 +25,19 @@ class Organization(models.Model):
     approved = models.BooleanField(default=False)
     profile_completion = models.SmallIntegerField(default=10, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Projects(models.Model):
+
+    profile = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name="project")
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    tools_used = models.TextField(blank=True)
+    created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
     likes = models.ManyToManyField(User, through='OrganizationLike', related_name='liked_organizations')
 
 
@@ -32,3 +45,4 @@ class OrganizationLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='organization_likes')
     created_at = models.DateTimeField(auto_now_add=True)
+
