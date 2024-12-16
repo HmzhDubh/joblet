@@ -104,6 +104,23 @@ html, body {
     background: none;
     transition: all 0.3s ease;
 }
+.header-right .btn-org {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 2px solid white;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    background: none;
+    transition: all 0.3s ease;
+}
+
+.header-right .btn-org:hover {
+    background: #457B9D;
+    color: #fff;
+}
 
 .header-right .btn-signin:hover {
     background: #457B9D;
@@ -142,7 +159,7 @@ html, body {
 
 /* Footer Section */
 .custom-footer {
-        background-color: #1D3557; /* Dark blue background */
+
     color: #fff; /* White text color */
     padding: 40px 20px;
     font-family: 'Poppins', sans-serif;

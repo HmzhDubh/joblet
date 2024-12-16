@@ -52,7 +52,7 @@ def add_skill(request: HttpRequest):
     candidate = Candidate.objects.get(user=request.user)
     candidate.skills.add(skill)
     if not candidate.profile_completion >= 100:
-        candidate.profile_completion += 3
+        candidate.profile_completion += 5
     candidate.save()
     messages.success(request, 'Skill was added Successfully', 'alert-success')
     return redirect('candidate:candidate_profile_view', user_name=request.user)
@@ -63,7 +63,7 @@ def remove_skill(request: HttpRequest, skill_id):
         skill = Skill.objects.get(pk=skill_id)
         candidate = Candidate.objects.get(user=request.user)
         candidate.skills.remove(skill)
-        candidate.profile_completion -= 3
+        candidate.profile_completion -= 5
         candidate.save()
         messages.warning(request, 'Skill was removed Successfully', 'alert-warning')
 
@@ -88,7 +88,7 @@ def add_project(request: HttpRequest):
         project.save()
 
         if not candidate.profile_completion >= 100:
-            candidate.profile_completion += 10
+            candidate.profile_completion += 20
 
         candidate.save()
 
@@ -102,11 +102,11 @@ def remove_project(request: HttpRequest, project_id):
         project.delete()
 
         candidate = Candidate.objects.get(user=request.user)
-        candidate.profile_completion -= 3
+        candidate.profile_completion -= 20
         candidate.save()
 
         messages.warning(request, 'Project was removed Successfully', 'alert-warning')
-    except Experince as e:
+    except Exception as e:
         print(e)
         messages.error(request, 'Error Deleting record', 'alert-danger')
 
@@ -132,7 +132,7 @@ def add_education(request: HttpRequest):
         education.save()
 
         if not candidate.profile_completion >= 100:
-            candidate.profile_completion += 10
+            candidate.profile_completion += 25
 
         candidate.save()
 
@@ -146,7 +146,7 @@ def remove_education(request: HttpRequest, education_id):
         edu.delete()
 
         candidate = Candidate.objects.get(user=request.user)
-        candidate.profile_completion -= 10
+        candidate.profile_completion -= 25
         candidate.save()
 
         messages.warning(request, 'Education was removed Successfully', 'alert-warning')
@@ -175,7 +175,7 @@ def add_experience(request: HttpRequest):
                 experience.save()
 
                 if not candidate.profile_completion >= 100:
-                    candidate.profile_completion += 10
+                    candidate.profile_completion += 25
 
                 candidate.save()
 
@@ -194,7 +194,7 @@ def remove_experience(request: HttpRequest, experience_id):
         exp.delete()
 
         candidate = Candidate.objects.get(user=request.user)
-        candidate.profile_completion -= 3
+        candidate.profile_completion -= 25
         candidate.save()
 
         messages.warning(request, 'Education was removed Successfully', 'alert-warning')

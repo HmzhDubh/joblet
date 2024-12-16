@@ -126,11 +126,24 @@
                 {% endif %}
             </div>
             <p class="mb-0">{{ candidate.email }}</p>
+            {% if candidate.skills.all %}
             <div class="d-flex pt-2 gap-2 justify-content-center">
+                <small>Skills</small>
                 {% for skill in candidate.skills.all %}
                 <button class="btn btn-warning rounded-5">{{skill.skill_name}}</button>
                 {% endfor %}
             </div>
+            {% endif %}
+
+            {% if candidate.projects.all %}
+            <div class="d-flex pt-2 gap-2 justify-content-center">
+                <small>Projects: </small>
+                {% for project in candidate.projects.all %}
+                <p>{{project.title}}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
         </div>
         <div class="action-buttons">
                 <!-- Like Button -->

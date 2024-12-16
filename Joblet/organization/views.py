@@ -152,18 +152,3 @@ def like_organization(request, organization_id):
         like.delete()  # If the like already exists, delete it (unlike)
     # Redirect back to the home if no referrer is available
     return redirect("main:home_view")
-
-
-
-# def update_organization_profile(request: HttpRequest, user_name):
-#
-#     user = User.objects.get(username=user_name)
-#     org = Organization.objects.get(profile=user)
-#     if request.method == 'POST':
-#         org.name = request.POST['name']
-#         org.email = request.POST['email']
-#         org.phone_number = request.POST['phone_number']
-#         org.description = request.POST['description']
-#         profile_completion = 50
-#         org.save()
-#     return render(request, 'organization/update_org.html', context={'org', org})
