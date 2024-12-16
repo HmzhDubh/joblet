@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Candidate, Project, Education, Experince, CandidateLike
 from django.http import JsonResponse
-from organization.models import Skill, Organization
+from organization.models import Skill, Organization,OrganizationLike
 
 # Create your views here.
 
@@ -215,6 +215,13 @@ def change_candidate_status(request: HttpRequest, candidate_id):
         messages.success(request, 'Candidate Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
 
+def is_match(candidate, organization):
+    # Check if mutual likes exist
+    candidate_likes_org = CandidateLike.objects.filter(user=candidate.user, candidate=candidate).exists()
+    org_likes_candidate = OrganizationLike.objects.filter(user=organization.profile, organization=organization).exists()
+
+    return candidate_likes_org and org_likes_candidate
+
 def like_candidate(request, candidate_id):
     # Get the candidate object or return 404 if not found
     candidate = get_object_or_404(Candidate, id=candidate_id)
@@ -223,6 +230,11 @@ def like_candidate(request, candidate_id):
     like, created = CandidateLike.objects.get_or_create(user=request.user, candidate=candidate)
     if not created:
         like.delete()  # If the like already exists, remove it (unlike)
-    
+    else:
+        organization = Organization.objects.get(profile=request.user)
+        if is_match(candidate, organization):
+            messages.success(request, f"It's a match! You and {candidate.user.username} like each other.")
     # Redirect back to the previous page or fallback to home if no referrer
     return redirect("main:home_view")
+
+

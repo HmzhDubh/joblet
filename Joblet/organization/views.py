@@ -7,7 +7,11 @@ from .models import Organization, Skill, OrganizationLike, Projects
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from candidate.models import CandidateLike,Candidate
+from candidate.views import is_match
+
  
+
 # Create your views here.
 
 
@@ -229,5 +233,10 @@ def like_organization(request, organization_id):
     like, created = OrganizationLike.objects.get_or_create(user=request.user, organization=organization)
     if not created:
         like.delete()  # If the like already exists, delete it (unlike)
+    else:
+         # Check for mutual like (match)
+        candidate = Candidate.objects.get(user=request.user)
+        if is_match(candidate, organization):
+            messages.success(request, f"It's a match! You and {organization.name} like each other.")
     # Redirect back to the home if no referrer is available
     return redirect("main:home_view")
