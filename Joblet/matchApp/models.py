@@ -6,7 +6,7 @@ from organization.models import Organization, Projects
 
 class Match(models.Model):
 
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    candidate = models.ManyToManyField(Candidate)
+    project = models.ManyToManyField(Projects)
     created_at = models.DateTimeField(auto_now_add=True)
 

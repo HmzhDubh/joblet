@@ -177,7 +177,9 @@ def add_project(request):
                 return redirect('organization:org_profile', user_name=request.user)
             else:
                 messages.error(request, 'User does not have an associated organization.', 'alert-danger')
-                return redirect('main:home_view')  
+                return redirect('main:home_view')
+        else:
+            print('form is not valid')
     else:
         form = ProjectForm()
 

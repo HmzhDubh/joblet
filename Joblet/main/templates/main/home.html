@@ -4,81 +4,9 @@
 {% block title %}Home{% endblock %}
 {% block style %}
 <style>
-    .card{
-        width: 20rem;
 
-    }
-        .profile-card {
-            max-width: 400px;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            background-color: #1D3557;
-            padding: 20px;
-        }
 
-        .profile-image-container {
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: #fff;
-        }
 
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-info {
-            padding: 15px;
-            color: white;
-            text-align: center;
-            margin-bottom: 60px;  /* Space for buttons */
-        }
-
-        .action-buttons {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-circle {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-        }
-
-        .btn-circle:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            background-color: #dc3545;
-            border-radius: 50%;
-            margin-left: 5px;
-            font-size: 12px;
-        }
 </style>
 {% endblock %}
 {% block content %}
@@ -162,12 +90,12 @@
         {% if request.GET.type == 'candidate' %}
             <div>
                 <h1 class="display-3 text-center text-light">Features</h1>
-                <section class="row row-cols-1 row-cols-3 gap-1 justify-content-center pb-5 pt-3 ps-5 m-5">
+                <section class="p-5">
                     <div class="container" style="top: 250px;">
-                    <div class="row g-4">
+                    <div class="row row-cols-1 row-cols-4 g-4 gap-1 justify-content-center">
 
                         <!-- Exclusive opportunities Card -->
-                        <div class="col-md-4">
+                        <div class="col">
                             <div class="card h-100 shadow">
                                 <div class="card-body text-center p-4">
                                     <div class="rounded-circle bg-light d-inline-flex p-3 mb-3">
@@ -180,8 +108,8 @@
                         </div>
 
                         <!-- Smart Matching Card -->
-                        <div class="col-md-4">
-                            <div class="card h-100 shadow">
+                        <div class="col">
+                            <div class="card w-100 shadow">
                                 <div class="card-body text-center p-4">
                                     <div class="rounded-circle bg-light d-inline-flex p-3 mb-3">
                                         <img src="https://squadio.com/img/ic_Top-notch.18b7622d.svg">
@@ -193,7 +121,7 @@
                         </div>
 
                         <!-- Competitive Compensation Card -->
-                        <div class="col-md-4">
+                        <div class="col">
                             <div class="card h-100 shadow">
                                 <div class="card-body text-center p-4">
                                     <div class="rounded-circle bg-light d-inline-flex p-3 mb-3">
@@ -206,7 +134,7 @@
                         </div>
 
                         <!-- Up-to-date technologies Card -->
-                        <div class="col-md-4">
+                        <div class="col">
                             <div class="card h-100 shadow">
                                 <div class="card-body text-center p-4">
                                     <div class="rounded-circle bg-light d-inline-flex p-3 mb-3">
@@ -219,7 +147,7 @@
                         </div>
 
                         <!-- Professional Flexibility Card 1 -->
-                        <div class="col-md-4">
+                        <div class="col">
                             <div class="card h-100 shadow">
                                 <div class="card-body text-center p-4">
                                     <div class="rounded-circle bg-light d-inline-flex p-3 mb-3">
@@ -232,7 +160,7 @@
                         </div>
 
                         <!-- Mobility Card 2 -->
-                        <div class="col-md-4">
+                        <div class="col">
                             <div class="card h-100 shadow">
                                 <div class="card-body text-center p-4">
                                     <div class="rounded-circle bg-light d-inline-flex p-3 mb-3">
