@@ -1,13 +1,15 @@
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
-from .models import Organization, Skill,OrganizationLike
+
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from .models import Projects
+from .forms import ProjectForm 
+
+from .models import Organization, Skill,OrganizationLike
 from django.http import JsonResponse
 from candidate.models import CandidateLike,Candidate
 from candidate.views import is_match
- 
 # Create your views here.
 
 
@@ -21,6 +23,14 @@ def org_profile(request: HttpRequest, user_name):
     user = User.objects.get(username=user_name)
     org = Organization.objects.get(profile=user)
 
+
+    if request.method == 'POST' and 'delete_project' in request.POST:
+        project_id = request.POST.get('delete_project')
+        project = get_object_or_404(Projects, id=project_id, profile=org)
+        project.delete()
+        messages.success(request, 'Project deleted successfully.', 'alert-success')
+        return redirect('organization:org_profile', user_name=user_name)
+    
     if 'edit' in request.GET:
         print('Editing: ' + request.GET['edit'])
 
@@ -93,10 +103,19 @@ def org_profile(request: HttpRequest, user_name):
 
         org.save()
         messages.success(request, 'Profile was updated Successfully', 'alert-success')
+        
+        if request.method == 'POST' and 'delete_project' in request.POST:
+            project_id = request.POST.get('delete_project')
+            project = get_object_or_404(Projects, id=project_id, organization=org)  
+            project.delete()
+            messages.success(request, 'Project deleted successfully.', 'alert-success')
+            return redirect('organization:org_profile', user_name=user_name)
 
+        
     return render(request, 'organization/org_profile.html', context={
         'org': org,
-        'skills': Skill.objects.all
+        'skills': Skill.objects.all,
+        'projects': org.project.all()
     })
 
 
@@ -146,6 +165,67 @@ def change_org_status(request: HttpRequest, org_id):
         messages.success(request, 'Organization Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
 
+
+def add_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+
+            org = request.user.organization.first()  
+            
+            if org:
+                project.profile = org
+                project.save()
+                return redirect('organization:org_profile', user_name=request.user)
+            else:
+                messages.error(request, 'User does not have an associated organization.', 'alert-danger')
+                return redirect('main:home_view')  
+    else:
+        form = ProjectForm()
+
+    return render(request, 'organization/add_project.html', {'form': form})
+
+
+def update_project(request, project_id):
+    project = get_object_or_404(Projects, id=project_id)
+
+    if request.method == 'POST':
+        if 'delete' in request.POST:
+            project.delete()
+            messages.success(request, 'Project deleted successfully.', 'alert-success')
+            return redirect('organization:org_profile', user_name=request.user)
+        
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            project = form.save(commit=False)
+            
+            org = request.user.organization.first()
+            
+            if org:
+                project.profile = org
+                project.save()
+                messages.success(request, 'Project updated successfully.', 'alert-success')
+                return redirect('organization:org_profile', user_name=request.user)
+            else:
+                messages.error(request, 'User does not have an associated organization.', 'alert-danger')
+                return redirect('main:home_view')
+    else:
+        form = ProjectForm(instance=project)
+
+    return render(request, 'organization/update_project.html', {'form': form, 'project': project})
+
+
+
+
+def delete_project(request, project_id):
+    project = get_object_or_404(Projects, id=project_id)
+    if request.method == 'POST':
+        project.delete()
+        return redirect('organization:profile', org_id=request.user.organization.id)
+    return render(request, 'organization/delete_project.html', {'project': project})
+
+
 def like_organization(request, organization_id):
     organization = get_object_or_404(Organization, id=organization_id)
     # Toggle the like
@@ -159,3 +239,4 @@ def like_organization(request, organization_id):
             messages.success(request, f"It's a match! You and {organization.name} like each other.")
     # Redirect back to the home if no referrer is available
     return redirect("main:home_view")
+

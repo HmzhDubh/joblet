@@ -1,13 +1,29 @@
 {% extends 'main/index.html' %}
-
-{% block title %}Add Project{% endblock %}
+{% block title %} Add Project {% endblock %}
 
 {% block content %}
-
-<main>
-    <form>
-        <label for="title">Title</label>
-        <input type="text" id="title">
-    </form>
+<main class="my-5 pt-5 mt-5 d-flex justify-content-center">
+    <div class="container pt-5 mt-5 mb-5 pb-5 shadow rounded text-center" style="max-width: 600px;">
+        <h3 class="display-4 mb-4">Add a New Project</h3>
+        <form method="post" class="text-start">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="username" class="form-control" id="username">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" name="username" class="form-control" id="username">
+            </div>
+            <div class="mb-3">
+                <label for="tools_used" class="form-label">Tools used</label>
+                <input type="text" name="username" class="form-control" id="username">
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary">Save Project</button>
+                <a href="{% url 'organization:org_profile' user_name=request.user.username %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
 </main>
 {% endblock %}
