@@ -40,7 +40,7 @@
                             <ul class="navbar-nav">
                                 <li><a class="nav-link" href="{% url 'main:home_view' %}?type=candidate">Home</a></li>
                                 {% if request.user.is_authenticated %}
-                                <li><a class="nav-link" href="#">DM</a></li>
+                                <li><a class="nav-link" href="{% url 'direct_messages:direct_messages_view' %}">DM</a></li>
                                 {% endif %}
                                 <li><a class="nav-link" href="#">About</a>
                                 </li>

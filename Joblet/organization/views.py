@@ -1,8 +1,11 @@
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from .models import Organization, Skill
+from .models import Organization, Skill,OrganizationLike
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+ 
 # Create your views here.
 
 
@@ -17,7 +20,6 @@ def org_profile(request: HttpRequest, user_name):
     org = Organization.objects.get(profile=user)
 
     if 'edit' in request.GET:
-
         print('Editing: ' + request.GET['edit'])
 
         if 'name' in request.POST:
@@ -142,3 +144,11 @@ def change_org_status(request: HttpRequest, org_id):
         messages.success(request, 'Organization Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
 
+def like_organization(request, organization_id):
+    organization = get_object_or_404(Organization, id=organization_id)
+    # Toggle the like
+    like, created = OrganizationLike.objects.get_or_create(user=request.user, organization=organization)
+    if not created:
+        like.delete()  # If the like already exists, delete it (unlike)
+    # Redirect back to the home if no referrer is available
+    return redirect("main:home_view")

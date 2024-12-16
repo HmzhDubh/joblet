@@ -16,4 +16,6 @@ urlpatterns = [
 
     path('profile/experience/add/', views.add_experience, name='add_experience'),
     path('profile/experience/remove/<experience_id>/', views.remove_experience, name='remove_experience'),
+    path('candidate/like/<candidate_id>', views.like_candidate, name='like_candidate'),
+
 ]
