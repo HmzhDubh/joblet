@@ -27,4 +27,5 @@ urlpatterns = [
     path('organization/', include('organization.urls')),
     path('dm/', include('direct_messages.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('match/', include('matchApp.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

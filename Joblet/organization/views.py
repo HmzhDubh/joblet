@@ -144,6 +144,7 @@ def change_org_status(request: HttpRequest, org_id):
         messages.success(request, 'Organization Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
 
+
 def like_organization(request, organization_id):
     organization = get_object_or_404(Organization, id=organization_id)
     # Toggle the like
