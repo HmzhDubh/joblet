@@ -3,12 +3,13 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import ProjectForm
-from .models import Organization, Skill, OrganizationLike, Projects
+from .models import Organization, Skill, Projects
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from candidate.models import CandidateLike,Candidate
-from candidate.views import is_match
+from candidate.models import Candidate
+from matchApp.models import CandidateLike, OrganizationLike, Match
+from candidate.views import check_and_create_match
 
  
 
@@ -228,15 +229,11 @@ def delete_project(request, project_id):
 
 
 def like_organization(request, organization_id):
-    organization = get_object_or_404(Organization, id=organization_id)
-    # Toggle the like
-    like, created = OrganizationLike.objects.get_or_create(user=request.user, organization=organization)
-    if not created:
-        like.delete()  # If the like already exists, delete it (unlike)
-    else:
-         # Check for mutual like (match)
-        candidate = Candidate.objects.get(user=request.user)
-        if is_match(candidate, organization):
-            messages.success(request, f"It's a match! You and {organization.name} like each other.")
-    # Redirect back to the home if no referrer is available
+    candidate = request.user.candidate  # Assuming candidate is tied to user
+    organization = Organization.objects.get(id=organization_id)
+
+    # Add the like
+    CandidateLike.objects.get_or_create(candidate=candidate, organization=organization)
+    # Check for a match
+    check_and_create_match(organization, candidate)
     return redirect("main:home_view")
