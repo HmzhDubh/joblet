@@ -151,12 +151,9 @@ def new_skill_view(request: HttpRequest):
             skill_name = request.POST['skill_name']
         )
         new_skill.save()
-
-        org = Organization.objects.get(profile=request.user)
-        org.skills.add(new_skill)
-        org.save()
+        return_url = request.GET.get('next', request.path_info)
         messages.success(request, 'Skill was added Successfully', 'alert-success')
-        return redirect('organization:org_profile', user_name=request.user)
+        return redirect(return_url)
 
 
 def change_org_status(request: HttpRequest, org_id):

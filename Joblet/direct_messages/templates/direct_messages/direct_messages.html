@@ -52,10 +52,10 @@
                             {% for match in matches %}
                             <div class="card">
                                 <div class="card-body">
-                                    <h1>{{match.project}}</h1>
-                                    <h1>{{match.candidate}}</h1>
-                                    <h4>See who is interested in you</h4>
+                                    <h5>match bw: {{match.candidate.user.first_name}} and {{match.organization.name}}</h5>
+                                    <button class="btn btn-circle">View Match Profile</button>
                                     <p>Get the gold</p>
+                                    <button class="btn btn-circle">Contact Now! <i class="fas fa-comment-alt"></i></button>
                                 </div>
                             </div>
                             {% endfor %}

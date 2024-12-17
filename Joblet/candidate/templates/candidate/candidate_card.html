@@ -150,18 +150,20 @@
                 <form action="{% url 'candidate:like_candidate' candidate.id %}" method="POST" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-circle">
-                        {% if user in candidate.likes.all %}
+                        {% for liked_cand in liked_cands %}
+                        {% if candidate == liked_cand.candidate %}
                             <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
                         {% else %}
                             <i class="fas fa-heart"></i> <!-- Not liked -->
                         {% endif %}
+                        {% endfor %}
                     </button>
                 </form>
     
                 <!-- Other Buttons -->
+                <a href="{% url 'matchApp:candidate_super_like' candidate.id %}" class="btn btn-circle"><i class="fas fa-bolt"></i></a>
                 <button class="btn btn-circle"><i class="fas fa-star"></i></button>
-                <button class="btn btn-circle"><i class="fas fa-bolt"></i></button>
-                <button class="btn btn-circle"><i class="fas fa-comment-alt"></i></button>
+
         </div>
     </div>
 </div>
