@@ -135,30 +135,29 @@
         </div>
         <div class="action-buttons">
             <!-- Like Button -->
+
             <form action="{% url 'organization:like_organization' org.id %}" method="POST" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-circle">
-                    {% for liked_org in liked_orgs %}
-                    {% if org == liked_org.organization %}
-                        <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
+                    {% if user in org.likes.all %}
+                    <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
                     {% else %}
-                        <i class="fas fa-heart"></i> <!-- Not liked -->
+                    <i class="fas fa-heart"></i> <!-- Not liked -->
                     {% endif %}
-                    {% endfor %}
                 </button>
             </form>
             <span>{{ org.likes.count }}</span> <!-- Display Like Count -->
 
+
             <!-- Other Buttons -->
-            {% for super_liked_org in super_liked_orgs %}
-            
+
             {% if org == super_liked_org.organization %}
-                <a href="{% url 'matchApp:organization_super_like' org.id %}" class="btn btn-circle"><i class="fas fa-bolt text-warning"></i></a>
+                <a href="{% url 'matchApp:organization_super_like' org.id %}" class="btn btn-circle"><i class="fas fa-star text-primary"></i></a>
                 {% else %}
-                <a href="{% url 'matchApp:organization_super_like' org.id %}" class="btn btn-circle "><i class="fas fa-bolt "></i></a>
+                <a href="{% url 'matchApp:organization_super_like' org.id %}" class="btn btn-circle "><i class="fas fa-star"></i></a>
                 {% endif %}
-            {% endfor %}
-            <button class="btn btn-circle"><i class="fas fa-star"></i></button>
+
+            <button class="btn btn-circle"><i class="fas fa-bolt"></i></button>
 
         </div>
     </div>

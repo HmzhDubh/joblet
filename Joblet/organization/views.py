@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import IntegrityError
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 
@@ -223,7 +224,6 @@ def delete_project(request, project_id):
         project.delete()
         return redirect('organization:profile', org_id=request.user.organization.id)
     return render(request, 'organization/delete_project.html', {'project': project})
-
 
 def like_organization(request, organization_id):
     candidate = request.user.candidate  # Assuming candidate is tied to user

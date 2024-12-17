@@ -17,7 +17,8 @@ def home_view(request: HttpRequest):
 
     cands = Candidate.objects.all()
     orgs = Organization.objects.all()
-    
+    user_candidate = Candidate.objects.get(user=request.user)
+
     if not request.user.is_authenticated:
         return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
 
@@ -53,19 +54,18 @@ def home_view(request: HttpRequest):
                 # Profile completion check
                 if not request.user.is_superuser:
                     try:
-                        user_candidate = Candidate.objects.get(user=request.user)
+
                         if user_candidate.profile_completion <= 80:
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Candidate.DoesNotExist:
                         pass
-            liked_orgs = OrganizationLike.objects.all()
+
             super_liked_orgs = OrganizationSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'orgs': orgs,
                 'carousel_items': carousel_items,
                 'total_cards': total_cards,
-                'liked_orgs': liked_orgs,
-                'super_liked_orgs': super_liked_orgs
+
             })
 
         elif group.name == 'organizations':
@@ -104,13 +104,12 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Organization.DoesNotExist:
                         pass
-            liked_cands = CandidateLike.objects.all()
+
             super_liked_cands = CandidateSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'candidates': candidates,
                 'carousel_items': carousel_items,
                 'total_cards': total_cards,
-                'liked_cands': liked_cands,
                 'super_liked_cands': super_liked_cands
             })
 

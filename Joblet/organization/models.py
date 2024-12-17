@@ -25,6 +25,7 @@ class Organization(models.Model):
     approved = models.BooleanField(default=False)
     profile_completion = models.SmallIntegerField(default=10)
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='org_likes')
 
 
 class Projects(models.Model):
@@ -37,7 +38,4 @@ class Projects(models.Model):
 
     def __str__(self):
         return self.title
-
-
-
 

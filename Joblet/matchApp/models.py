@@ -20,13 +20,6 @@ class OrganizationLike(models.Model):
     def __str__(self):
         return f'ORG:{self.organization.name} Liked CAN:{self.candidate.user.first_name}'
 
-class CandidateLike(models.Model):
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='organization_liked')
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='candidate_likes')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'CAN:{self.candidate.user.first_name} Liked ORG:{self.organization.name}'
 
 class CandidateSuperLike(models.Model):
 

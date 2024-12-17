@@ -238,14 +238,12 @@ def check_and_create_match(organization, candidate):
         return match
     return None
 
-
 def like_candidate(request, candidate_id):
-    organization = Organization.objects.get(profile=request.user) # Assuming organization is tied to user
+    organization = request.user.organization  # Assuming organization is tied to user
     candidate = Candidate.objects.get(id=candidate_id)
 
     # Add the like
     OrganizationLike.objects.get_or_create(organization=organization, candidate=candidate)
     # Check for a match
     check_and_create_match(organization, candidate)
-
     return redirect("main:home_view")
