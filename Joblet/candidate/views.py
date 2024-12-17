@@ -5,6 +5,7 @@ from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Candidate, Project, Education, Experince, CandidateLike
+from matchApp.models import Match
 from django.http import JsonResponse
 from organization.models import Skill, Organization,OrganizationLike
 
@@ -215,26 +216,37 @@ def change_candidate_status(request: HttpRequest, candidate_id):
         messages.success(request, 'Candidate Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
 
-def is_match(candidate, organization):
-    # Check if mutual likes exist
-    candidate_likes_org = CandidateLike.objects.filter(user=candidate.user, candidate=candidate).exists()
-    org_likes_candidate = OrganizationLike.objects.filter(user=organization.profile, organization=organization).exists()
+def check_and_create_match(organization, candidate):
+    """
+    Check if both OrganizationLike and CandidateLike exist, and create a Match if they do.
+    """
+    # Check if the organization likes the candidate
+    org_liked_candidate = OrganizationLike.objects.filter(organization=organization, candidate=candidate).exists()
 
-    return candidate_likes_org and org_likes_candidate
+    # Check if the candidate likes the organization
+    candidate_liked_org = CandidateLike.objects.filter(candidate=candidate, organization=organization).exists()
+
+    # If both exist, create a Match if it doesn't already exist
+    if org_liked_candidate and candidate_liked_org:
+        match, created = Match.objects.get_or_create(organization=organization, candidate=candidate)
+        if created:
+            print("Match created!")
+        else:
+            print("Match already exists.")
+        return match
+    return None
+
 
 def like_candidate(request, candidate_id):
-    # Get the candidate object or return 404 if not found
-    candidate = get_object_or_404(Candidate, id=candidate_id)
+    organization = request.user.organization  # Assuming organization is tied to user
+    candidate = Candidate.objects.get(id=candidate_id)
     
-    # Toggle the like
-    like, created = CandidateLike.objects.get_or_create(user=request.user, candidate=candidate)
-    if not created:
-        like.delete()  # If the like already exists, remove it (unlike)
-    else:
-        organization = Organization.objects.get(profile=request.user)
-        if is_match(candidate, organization):
-            messages.success(request, f"It's a match! You and {candidate.user.username} like each other.")
-    # Redirect back to the previous page or fallback to home if no referrer
+    # Add the like
+    OrganizationLike.objects.get_or_create(organization=organization, candidate=candidate)
+
+    # Check for a match
+    check_and_create_match(organization, candidate)
+
     return redirect("main:home_view")
 
 
