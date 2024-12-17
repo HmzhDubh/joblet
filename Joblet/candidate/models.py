@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from organization.models import Skill
-
-
 # Create your models here.
 
 
@@ -19,7 +17,7 @@ class Candidate(models.Model):
     website = models.URLField(null=True)
     github = models.URLField(null=True)
     linkedin = models.URLField(null=True)
-
+    likes = models.ManyToManyField(User, through='CandidateLike', related_name='liked_candidates')
 
 
     def __str__(self):
@@ -75,7 +73,10 @@ class Experince(models.Model):
         return f"{self.position} at {self.company}"
     
 
-
+class CandidateLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='liked_candidates')
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 

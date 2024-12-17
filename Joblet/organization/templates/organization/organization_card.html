@@ -135,16 +135,14 @@
         </div>
         <div class="action-buttons">
             <!-- Like Button -->
-            <form action="{% url 'candidate:like_candidate' org.id %}" method="POST" style="display: inline;">
+            <form action="{% url 'organization:like_organization' org.id %}" method="POST" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-circle">
-                    {% for cand_like in cands_likes  %}
-                    {% if org.id == cands_likes.org.id %}
+                    {% if user in org.likes.all %}
                         <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
                     {% else %}
                         <i class="fas fa-heart"></i> <!-- Not liked -->
                     {% endif %}
-                    {% endfor %}
                 </button>
             </form>
             <span>{{ org.likes.count }}</span> <!-- Display Like Count -->

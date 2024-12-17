@@ -4,7 +4,7 @@ from django.http import HttpRequest, HttpResponse
 from .forms import ContactForm
 from organization.models import Organization
 from candidate.models import Candidate
-from matchApp.models import CandidateLike, OrganizationLike
+
 # Create your views here.
 
 
@@ -12,9 +12,7 @@ def home_view(request: HttpRequest):
 
     cands = Candidate.objects.all()
     orgs = Organization.objects.all()
-    cands_likes = CandidateLike.objects.all()
-    orgs_likes = OrganizationLike.objects.all()
-
+    
     if not request.user.is_authenticated:
         return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
 
@@ -105,7 +103,7 @@ def home_view(request: HttpRequest):
                 'total_cards': total_cards
             })
 
-    return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs, 'orgs_likes':orgs_likes, 'cands_likes': cands_likes})
+    return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
 
 
 def contact_view(request: HttpRequest):

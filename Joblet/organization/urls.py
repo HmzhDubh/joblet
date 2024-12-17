@@ -13,5 +13,5 @@ urlpatterns = [
     path('update_project/<int:project_id>/', views.update_project, name='update_project'),
     path('delete_project/<int:project_id>/', views.delete_project, name='delete_project'),
   
-    path('organization/like/<can_id>', views.like_organization, name='like_organization'),
+    path('organization/like/<organization_id>', views.like_organization, name='like_organization'),
 ]

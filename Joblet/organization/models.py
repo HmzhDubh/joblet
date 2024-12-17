@@ -23,7 +23,7 @@ class Organization(models.Model):
     logo = models.ImageField(upload_to='images', default='images/logo.jpg')
     skills = models.ManyToManyField(Skill)
     approved = models.BooleanField(default=False)
-    profile_completion = models.SmallIntegerField(default=10)
+    profile_completion = models.SmallIntegerField(default=10, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -38,7 +38,11 @@ class Projects(models.Model):
     def __str__(self):
         return self.title
 
+    likes = models.ManyToManyField(User, through='OrganizationLike', related_name='liked_organizations')
 
 
-
+class OrganizationLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    projects = models.ForeignKey(Projects, default=0, on_delete=models.CASCADE, related_name='organization_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
 

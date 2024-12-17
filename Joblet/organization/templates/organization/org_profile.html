@@ -52,7 +52,7 @@
                         <form class="text-end">
 
                             {% if request.GET.edit %}
-                            <input id="save_btn" type="hidden" name="save_edits" value="true">
+                            <input type="hidden" name="save_edits" value="true">
                             <button type="submit" class="btn btn-primary">Done <i class="bi bi-file-earmark-check" style="font-size: 1rem"></i></button>
                             {% else %}
                             <input type="hidden" name="edit" value="true">
@@ -294,6 +294,8 @@
                
         </div>
     </div>
-    
+
+
+
 </main>
 {% endblock %}
