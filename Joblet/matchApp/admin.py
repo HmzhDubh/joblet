@@ -4,4 +4,4 @@ from .models import OrganizationLike, CandidateLike, Match
 
 admin.site.register(Match)
 admin.site.register(CandidateLike)
-admin.site.register(CandidateLike)
+admin.site.register(OrganizationLike)
