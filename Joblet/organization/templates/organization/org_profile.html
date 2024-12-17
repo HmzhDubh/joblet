@@ -222,7 +222,7 @@
 
                                             {% endfor %}
                                             <li>
-                                                <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}?next={{ request.path|urlencode }}" method="post">
+                                                <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}" method="post">
                                                     {% csrf_token %}
                                                 <input type="text" name="skill_name" placeholder="Add New Skill">
                                                 <button  type="submit" class=" "><i class="bi bi-plus-circle"></i></button>

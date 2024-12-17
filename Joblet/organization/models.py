@@ -23,7 +23,7 @@ class Organization(models.Model):
     logo = models.ImageField(upload_to='images', default='images/logo.jpg')
     skills = models.ManyToManyField(Skill)
     approved = models.BooleanField(default=False)
-    profile_completion = models.SmallIntegerField(default=10)
+    profile_completion = models.SmallIntegerField(default=10, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='org_likes')
 

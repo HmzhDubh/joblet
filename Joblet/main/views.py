@@ -5,11 +5,6 @@ from .forms import ContactForm
 from organization.models import Organization
 from candidate.models import Candidate
 
-from matchApp.models import OrganizationLike, CandidateLike, Match
-
-from matchApp.models import OrganizationSuperLike, CandidateSuperLike
-
-
 # Create your views here.
 
 
@@ -17,8 +12,7 @@ def home_view(request: HttpRequest):
 
     cands = Candidate.objects.all()
     orgs = Organization.objects.all()
-    user_candidate = Candidate.objects.get(user=request.user)
-
+    
     if not request.user.is_authenticated:
         return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
 
@@ -54,18 +48,16 @@ def home_view(request: HttpRequest):
                 # Profile completion check
                 if not request.user.is_superuser:
                     try:
-
+                        user_candidate = Candidate.objects.get(user=request.user)
                         if user_candidate.profile_completion <= 80:
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Candidate.DoesNotExist:
                         pass
-
-            super_liked_orgs = OrganizationSuperLike.objects.all()
+            
             return render(request, "main/home.html", {
                 'orgs': orgs,
                 'carousel_items': carousel_items,
-                'total_cards': total_cards,
-
+                'total_cards': total_cards
             })
 
         elif group.name == 'organizations':
@@ -104,13 +96,11 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Organization.DoesNotExist:
                         pass
-
-            super_liked_cands = CandidateSuperLike.objects.all()
+            
             return render(request, "main/home.html", {
                 'candidates': candidates,
                 'carousel_items': carousel_items,
-                'total_cards': total_cards,
-                'super_liked_cands': super_liked_cands
+                'total_cards': total_cards
             })
 
     return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
