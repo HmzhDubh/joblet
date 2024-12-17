@@ -46,9 +46,9 @@ def candidate_profile_view(request, user_name):
     })
 
 
-def add_skill(request: HttpRequest):
+def add_skill(request: HttpRequest, skill_id):
 
-    skill = Skill.objects.get(pk=request.POST['skill'])
+    skill = Skill.objects.get(pk=skill_id)
     candidate = Candidate.objects.get(user=request.user)
     candidate.skills.add(skill)
     if not candidate.profile_completion >= 100:

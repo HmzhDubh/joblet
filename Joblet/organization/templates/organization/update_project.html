@@ -1,0 +1,29 @@
+{% extends 'main/index.html' %}
+{% block title %} Update Project {% endblock %}
+
+{% block content %}
+<main class="my-5 pt-5 mt-5 d-flex justify-content-center">
+    <div class="container pt-5 mt-5 mb-5 pb-5 shadow rounded text-center" style="max-width: 600px;">
+        <h2>Update Project</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" id="title" value="{{ project.title }}">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" name="description" class="form-control" id="description" value="{{ project.description }}">
+            </div>
+            <div class="mb-3">
+                <label for="tools_used" class="form-label">Tools used</label>
+                <input type="text" name="tools_used" class="form-control" id="tools_used" value="{{ project.tools_used }}">
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="submit" name="delete" value="delete" class="btn btn-danger">Delete Project</button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}
