@@ -228,6 +228,7 @@ def delete_project(request, project_id):
     return render(request, 'organization/delete_project.html', {'project': project})
 
 
+
 def like_organization(request, organization_id):
     candidate = request.user.candidate  # Assuming candidate is tied to user
     organization = Organization.objects.get(id=organization_id)

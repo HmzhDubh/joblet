@@ -1,10 +1,10 @@
 from django.db import models
-from candidate.models import Candidate
-from organization.models import Organization
+from candidate.models import Candidate, CandidateLike
+from organization.models import Organization, Projects,OrganizationLike
 # Create your models here.
 
 
-class Match(models.Model):
+
 
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)

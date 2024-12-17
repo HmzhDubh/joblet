@@ -73,6 +73,3 @@ class Experince(models.Model):
         return f"{self.position} at {self.company}"
 
 
-
-
-

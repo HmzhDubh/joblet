@@ -6,8 +6,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Candidate, Project, Education, Experince
 from django.http import JsonResponse
-from organization.models import Skill, Organization
-from matchApp.models import OrganizationLike, CandidateLike, Match
+from organization.models import Skill, Organization,OrganizationLike
+from matchApp.models import Match
 
 # Create your views here.
 
