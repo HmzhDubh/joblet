@@ -147,15 +147,23 @@ def change_org_status(request: HttpRequest, org_id):
     return redirect('dashboard:dashboard_view')
 
 def like_organization(request, organization_id):
+    """
+    Allow a candidate to like an organization. Check for a match if mutual likes exist.
+    """
+    # Fetch the organization and candidate objects
     organization = get_object_or_404(Organization, id=organization_id)
+    candidate = get_object_or_404(Candidate, user=request.user)
+
     # Toggle the like
-    like, created = OrganizationLike.objects.get_or_create(user=request.user, organization=organization)
+    like, created = CandidateLike.objects.get_or_create(user=request.user, organization=organization)
     if not created:
-        like.delete()  # If the like already exists, delete it (unlike)
+        like.delete()  # Remove the like if it already exists
     else:
-         # Check for mutual like (match)
-        candidate = Candidate.objects.get(user=request.user)
+        # Check for mutual like (match)
         if is_match(candidate, organization):
             messages.success(request, f"It's a match! You and {organization.name} like each other.")
-    # Redirect back to the home if no referrer is available
+    
+    # Redirect to the homepage
     return redirect("main:home_view")
+
+
