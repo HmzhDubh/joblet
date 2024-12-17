@@ -147,7 +147,7 @@
         </div>
         <div class="action-buttons">
                 <!-- Like Button -->
-                <form action="{% url 'candidate:like_candidate' candidate.id %}" method="POST" style="display: inline;">
+                <form action="{% url 'organization:like_organizaion' candidate.id %}" method="POST" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-circle">
                         {% if user in candidate.likes.all %}

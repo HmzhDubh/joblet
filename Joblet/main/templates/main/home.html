@@ -11,6 +11,7 @@
 {% endblock %}
 {% block content %}
 <div class="">
+    <h1>{{matches.count}}</h1>
     <section class="">
         {% if request.user.is_authenticated %}
             {% for group in request.user.groups.all %}
