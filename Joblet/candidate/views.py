@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Candidate, Project, Education, Experince, CandidateLike
 from django.http import JsonResponse
 from organization.models import Skill, Organization,OrganizationLike
+from matchApp.models import Match
 
 # Create your views here.
 
@@ -214,40 +215,3 @@ def change_candidate_status(request: HttpRequest, candidate_id):
         candidate.save()
         messages.success(request, 'Candidate Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
-
-def is_match(candidate, organization):
-    """
-    Check if there is a mutual like between a candidate and an organization.
-    """
-    # Check if the candidate has liked the organization
-    candidate_likes_org = CandidateLike.objects.filter(user=candidate.user, organization=organization).exists()
-    # Check if the organization has liked the candidate
-    org_likes_candidate = OrganizationLike.objects.filter(user=organization.profile, candidate=candidate).exists()
-
-    # Return True if both conditions are satisfied
-    return candidate_likes_org and org_likes_candidate
-
-
-
-def like_candidate(request, candidate_id):
-    """
-    Allow an organization to like a candidate. Check for a match if mutual likes exist.
-    """
-    # Fetch the candidate and organization objects
-    candidate = get_object_or_404(Candidate, id=candidate_id)
-    organization = get_object_or_404(Organization, profile=request.user)
-
-    # Toggle the like
-    like, created = OrganizationLike.objects.get_or_create(user=request.user, candidate=candidate)
-    if not created:
-        like.delete()  # Remove the like if it already exists
-    else:
-        # Check for mutual like (match)
-        if is_match(candidate, organization):
-            messages.success(request, f"It's a match! You and {candidate.user.username} like each other.")
-    
-    # Redirect to the homepage
-    return redirect("main:home_view")
-
-
-

@@ -73,13 +73,3 @@ class Experince(models.Model):
         return f"{self.position} at {self.company}"
     
 
-class CandidateLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='liked_candidates')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-
-
-
-

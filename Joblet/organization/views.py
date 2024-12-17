@@ -224,25 +224,3 @@ def delete_project(request, project_id):
         return redirect('organization:profile', org_id=request.user.organization.id)
     return render(request, 'organization/delete_project.html', {'project': project})
 
-
-def like_organization(request, organization_id):
-    """
-    Allow a candidate to like an organization. Check for a match if mutual likes exist.
-    """
-    # Fetch the organization and candidate objects
-    organization = get_object_or_404(Organization, id=organization_id)
-    candidate = get_object_or_404(Candidate, user=request.user)
-
-    # Toggle the like
-    like, created = CandidateLike.objects.get_or_create(user=request.user, organization=organization)
-    if not created:
-        like.delete()  # Remove the like if it already exists
-    else:
-        # Check for mutual like (match)
-        if is_match(candidate, organization):
-            messages.success(request, f"It's a match! You and {organization.name} like each other.")
-    
-    # Redirect to the homepage
-    return redirect("main:home_view")
-
-

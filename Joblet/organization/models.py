@@ -41,8 +41,5 @@ class Projects(models.Model):
     likes = models.ManyToManyField(User, through='OrganizationLike', related_name='liked_organizations')
 
 
-class OrganizationLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    projects = models.ForeignKey(Projects, default=0, on_delete=models.CASCADE, related_name='organization_likes')
-    created_at = models.DateTimeField(auto_now_add=True)
+
 
