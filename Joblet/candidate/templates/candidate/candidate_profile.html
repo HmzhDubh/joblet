@@ -4,20 +4,20 @@
 {% block title %} {{request.user.username}} Profile {% endblock %}
 
 {% block content %}
-<main>
-<div class="container-fluid py-4 pt-5">
-    <div class="container ps-5 pt-5">
-        <nav class="" aria-label="breadcrumb">
+<main class="my-5 mt-5 pt-5">
+<div class="container py-4 pt-5">
+
+        <nav class="ms-2" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
                 <li class="breadcrumb-item"><a href="#" class="text-primary">Candidate</a></li>
                 <li class="breadcrumb-item active">Candidate Profile</li>
             </ol>
         </nav>
-    </div>
-    <div class="row">
+
+    <div class="row g-4">
         <div class="col-md-4">
-            <div class="container card shadow-sm">
+            <div class="card shadow-sm">
                 <div class="card-body text-center p-5 ">
                     <img src="{{ candidate_profile.avatar.url}}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
 
@@ -74,8 +74,8 @@
             </div>
         </div>
 
-        <div class="col-md-8 right-column gap-3">
-            <div class="card shadow-sm btn-box">
+        <div class="col-md-8 gap-3">
+            <div class="card shadow-sm btn-box mb-4">
                 <div class="card-body">
                     <div class="btn-group d-flex flex-row justify-content-between gap-3" role="group" aria-label="Profile Info Buttons">
                         <button class="btn btns mb-2 d-flex flex-column align-items-center border border-warning text-warning" id="skills-btn">

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Candidate, Project, Education, Experince, CandidateLike
+from .models import Candidate, Project, Education, Experince
 from django.http import JsonResponse
 from organization.models import Skill, Organization,OrganizationLike
 from matchApp.models import Match
@@ -215,3 +215,35 @@ def change_candidate_status(request: HttpRequest, candidate_id):
         candidate.save()
         messages.success(request, 'Candidate Status Updated successfully', 'alert-success')
     return redirect('dashboard:dashboard_view')
+
+
+
+def check_and_create_match(organization, candidate):
+    """
+    Check if both OrganizationLike and CandidateLike exist, and create a Match if they do.
+    """
+    # Check if the organization likes the candidate
+    org_liked_candidate = OrganizationLike.objects.filter(organization=organization, candidate=candidate).exists()
+    # Check if the candidate likes the organization
+    candidate_liked_org = CandidateLike.objects.filter(candidate=candidate, organization=organization).exists()
+    # If both exist, create a Match if it doesn't already exist
+    if org_liked_candidate and candidate_liked_org:
+        match, created = Match.objects.get_or_create(organization=organization, candidate=candidate)
+        if created:
+            print("Match created!")
+        else:
+            print("Match already exists.")
+        return match
+    return None
+
+
+def like_candidate(request, candidate_id):
+    organization = Organization.objects.get(profile=request.user) # Assuming organization is tied to user
+    candidate = Candidate.objects.get(id=candidate_id)
+
+    # Add the like
+    OrganizationLike.objects.get_or_create(organization=organization, candidate=candidate)
+    # Check for a match
+    check_and_create_match(organization, candidate)
+
+    return redirect("main:home_view")

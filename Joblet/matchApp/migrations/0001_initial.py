@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('candidate', '0006_candidate_likes_alter_candidatelike_candidate'),
+
         ('organization', '0016_alter_organization_profile_completion'),
     ]
 
@@ -22,6 +23,7 @@ class Migration(migrations.Migration):
                 ('is_match', models.BooleanField(default=False)),
                 ('candidate', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='matches', to='candidate.candidate')),
                 ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='matches', to='organization.organization')),
+                ('candidate', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='candidate.candidate')),
             ],
         ),
     ]

@@ -17,7 +17,7 @@ class Candidate(models.Model):
     website = models.URLField(null=True)
     github = models.URLField(null=True)
     linkedin = models.URLField(null=True)
-    likes = models.ManyToManyField(User, through='CandidateLike', related_name='liked_candidates')
+
 
 
     def __str__(self):
@@ -71,5 +71,5 @@ class Experince(models.Model):
 
     def __str__(self):
         return f"{self.position} at {self.company}"
-    
+
 

@@ -3,12 +3,13 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import ProjectForm
-from .models import Organization, Skill, OrganizationLike, Projects
+from .models import Organization, Skill, Projects
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from candidate.models import CandidateLike,Candidate
-from candidate.views import is_match
+from candidate.models import Candidate
+from matchApp.models import CandidateLike, OrganizationLike, Match
+from candidate.views import check_and_create_match
 
  
 
@@ -181,7 +182,9 @@ def add_project(request):
                 return redirect('organization:org_profile', user_name=request.user)
             else:
                 messages.error(request, 'User does not have an associated organization.', 'alert-danger')
-                return redirect('main:home_view')  
+                return redirect('main:home_view')
+        else:
+            print('form is not valid')
     else:
         form = ProjectForm()
 
@@ -224,3 +227,14 @@ def delete_project(request, project_id):
         return redirect('organization:profile', org_id=request.user.organization.id)
     return render(request, 'organization/delete_project.html', {'project': project})
 
+
+
+def like_organization(request, organization_id):
+    candidate = request.user.candidate  # Assuming candidate is tied to user
+    organization = Organization.objects.get(id=organization_id)
+
+    # Add the like
+    CandidateLike.objects.get_or_create(candidate=candidate, organization=organization)
+    # Check for a match
+    check_and_create_match(organization, candidate)
+    return redirect("main:home_view")

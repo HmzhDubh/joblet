@@ -1,63 +1,111 @@
 {% extends 'main/index.html' %}
-{% load static %}
 
-{% block title %}DM{% endblock %}
+{% block title %}{{ user.first_name }} Profile{% endblock %}
 
 {% block content %}
-<div class="main-container">
-    <!-- Left Side: User Profile -->
-    <div class="left-side">
-        <div class="profile-container">
-            <img src="{% static 'images/avatar_placeholder.png' %}" alt="User Avatar" class="avatar">
-            <h3>{{ user.username }}</h3>
-            <p class="email">{{ user.email }}</p>
-            <ul class="profile-info">
-                <li><strong>Location:</strong> {{ user.profile.location }}</li>
-                <li><strong>Member Since:</strong> {{ user.date_joined|date:"F Y" }}</li>
-                <li><strong>Bio:</strong> {{ user.profile.bio }}</li>
-            </ul>
-        </div>
-    </div>
+<main class="my-5 mt-5 pt-5">
+    <div class="container">
+        <nav class="" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-primary">Candidate</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'candidate:candidate_profile_view' user.username %}" class="text-primary">Profile</a></li>
+                <li class="breadcrumb-item active">{{ user.first_name }} DM</li>
+            </ol>
+        </nav>
 
-    <!-- Right Side: Cards and Chats -->
-    <div class="right-side">
-        <div class="cards-container">
-            <div class="card">
-                <h4>See who is interested in you</h4>
-                <p>Get the gold</p>
-            </div>
-            <div class="card">
-                <h4>Match With Sadaia</h4>
-                <p>Description for card 2 goes here.</p>
-            </div>
-            <div class="card">
-                <h4>Match With Sadaia</h4>
-                <p>Description for card 3 goes here.</p>
-            </div>
-        </div>
-
-        <div class="chats-section">
-            <h2>Chats</h2>
-            <div class="chat-box">
-                {% if conversations %}
-                    {% for conversation in conversations %}
-                        <div class="chat-message">
-                            <div class="sender-info">
-                                <strong>{{ conversation.user.username }}</strong>
-                                <span class="timestamp">{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                        <div class="card-body text-center p-5 ">
+                            <div>
+                                <img src="{{ user.candidate.avatar.url}}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                             </div>
-                            <p class="chat-preview">{{ conversation.last_message.content|truncatechars:50 }}</p>
-                            <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-primary">View Chat</a>
+                            <a href="{% url 'candidate:candidate_profile_view' user.username %}" class="h2">{{ user.first_name }} {{ user.last_name }}
+                                {% if user.approved %}
+                                <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
+                                {% else %}
+                                <i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i>
+                                {% endif %}
+
+                            </a>
+                            <div class="p-2">
+                                <p>Your Profile Completion</p>
+                                <div class="progress">
+                                    <div class="progress-bar {% if user.candidate.profile_completion <= 40 %}bg-danger{% elif user.candidate.profile_completion <= 70 and user.candidate.profile_completion >= 41 %}bg-warning{% elif user.candidate.profile_completion >= 80 %}bg-success{% endif %}" style="width: {{user.candidate.profile_completion}}%">{{ user.candidate.profile_completion }}%</div>
+                                </div>
+                            </div>
+                            <div class="text-start">
+                                <h6>Bio: </h6>
+                                <p>{{ user.candidate.about }}</p>
+                            </div>
+
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <p>No conversations yet. Start a new chat!</p>
-                {% endif %}                                          
+                    </div>
+            </div>
+
+            <div class="col-md-8">
+
+                <div class="row">
+                    <div class="col d-flex gap-3 flex-column">
+                        <div class="d-flex gap-4">
+                            {% for match in matches %}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1>{{match.project}}</h1>
+                                    <h1>{{match.candidate}}</h1>
+                                    <h4>See who is interested in you</h4>
+                                    <p>Get the gold</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4>Match With Sadaia</h4>
+                                    <p>Description for card 2 goes here.</p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4>Match With Sadaia</h4>
+                                    <p>Description for card 3 goes here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- chat section -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="chats-section">
+                                    <h2>Chats</h2>
+                                    <div class="chat-box">
+                                        {% if conversations %}
+                                        {% for conversation in conversations %}
+                                        <div class="chat-message">
+                                            <div class="sender-info">
+                                                <strong>{{ conversation.user.username }}</strong>
+                                                <span class="timestamp">{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
+                                            </div>
+                                            <p class="chat-preview">{{ conversation.last_message.content|truncatechars:50 }}</p>
+                                            <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-primary">View Chat</a>
+                                        </div>
+                                        {% endfor %}
+                                        {% else %}
+                                        <p>No conversations yet. Start a new chat!</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
-
-
+</main>
 {% endblock %}
-

@@ -38,8 +38,4 @@ class Projects(models.Model):
     def __str__(self):
         return self.title
 
-    likes = models.ManyToManyField(User, through='OrganizationLike', related_name='liked_organizations')
-
-
-
 
