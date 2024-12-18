@@ -56,11 +56,13 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Candidate.DoesNotExist:
                         pass
-            liked_orgs = OrganizationLike.objects.all()
-            if org in liked_orgs:
-                print(True)
-            else:
-                print(False)
+
+            # Filter likes for the current user
+            liked_orgs = OrganizationLike.objects.filter(candidate__user=request.user)
+            for org in orgs:
+                is_liked = liked_orgs.filter(organization=org).exists()
+                print(f"Organization {org.name} liked: {is_liked}")
+
             super_liked_orgs = OrganizationSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'orgs': orgs,
@@ -106,6 +108,7 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Organization.DoesNotExist:
                         pass
+
             liked_cands = CandidateLike.objects.all()
             super_liked_cands = CandidateSuperLike.objects.all()
             return render(request, "main/home.html", {
@@ -117,6 +120,7 @@ def home_view(request: HttpRequest):
             })
 
     return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
+
 
 
 def contact_view(request: HttpRequest):
