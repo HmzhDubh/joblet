@@ -15,110 +15,43 @@ from candidate.views import check_and_create_match
 
 # Create your views here.
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import Organization, Skill
+from .forms import OrganizationForm
+from django.http import HttpRequest
 
 def org_profile(request: HttpRequest, user_name):
-
     if request.user.username != user_name:
-
-        messages.warning(request, 'There is error uploading your profile', 'alert-danger')
+        messages.warning(request, 'You are not authorized to view this profile.', 'alert-danger')
         return redirect('main:home_view')
 
-    user = User.objects.get(username=user_name)
-    org = Organization.objects.get(profile=user)
+    user = get_object_or_404(User, username=user_name)
+    org = get_object_or_404(Organization, profile=user)
 
-
-    if request.method == 'POST' and 'delete_project' in request.POST:
-        project_id = request.POST.get('delete_project')
-        project = get_object_or_404(Projects, id=project_id, profile=org)
-        project.delete()
-        messages.success(request, 'Project deleted successfully.', 'alert-success')
-        return redirect('organization:org_profile', user_name=user_name)
-    
-    if 'edit' in request.GET:
-        print('Editing: ' + request.GET['edit'])
-
-        if 'name' in request.POST:
-
-            if org.name == '':
-                org.name = request.POST['name']
-                org.profile_completion += 10
-            else:
-                org.name = request.POST['name']
-
-        if 'logo' in request.FILES:
-            if org.logo == '':
-
-                org.logo = request.FILES['logo']
-                org.profile_completion += 10
-            else:
-                org.logo = request.FILES['logo']
-
-        if 'email' in request.POST:
-            if org.email == '':
-                org.email = request.POST['email']
-                org.profile_completion += 10
-            else:
-                org.email = request.POST['email']
-                print("Edit email")
-
-        if 'phone_number' in request.POST:
-            if org.phone_number == '':
-                org.phone_number = request.POST['phone_number']
-                org.profile_completion += 10
-            else:
-                org.phone_number = request.POST['phone_number']
-
-        if 'location' in request.POST:
-            if org.location == '':
-
-                org.location = request.POST['location']
-                org.profile_completion += 10
-            else:
-                org.location = request.POST['location']
-
-        if 'website' in request.POST:
-            if org.website == '':
-                org.website = request.POST['website']
-                org.profile_completion += 10
-            else:
-                org.website = request.POST['website']
-
-        if 'linkedin' in request.POST:
-            if org.linkedin == '':
-                org.linkedin = request.POST['linkedin']
-                org.profile_completion += 10
-            else:
-                org.linkedin = request.POST['linkedin']
-
-        if 'description' in request.POST:
-            if org.description == '':
-                org.description = request.POST['description']
-                org.profile_completion += 10
-            else:
-                org.description = request.POST['description']
-
-        if 'job_title' in request.POST:
-            if org.job_title == '':
-                org.job_title = request.POST['job_title']
-                org.profile_completion += 10
-            else:
-                org.job_title = request.POST['job_title']
-
-        org.save()
-        messages.success(request, 'Profile was updated Successfully', 'alert-success')
-        
-        if request.method == 'POST' and 'delete_project' in request.POST:
+    if request.method == 'POST':
+        if 'edit' in request.POST:
+            form = OrganizationForm(request.POST, request.FILES, instance=org)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Profile updated successfully!', 'alert-success')
+                return redirect('organization:org_profile', user_name=user_name)
+        elif 'delete_project' in request.POST:
             project_id = request.POST.get('delete_project')
-            project = get_object_or_404(Projects, id=project_id, organization=org)  
+            project = get_object_or_404(Projects, id=project_id, organization=org)
             project.delete()
             messages.success(request, 'Project deleted successfully.', 'alert-success')
             return redirect('organization:org_profile', user_name=user_name)
 
-        
+    else:
+        form = OrganizationForm(instance=org)
+
     return render(request, 'organization/org_profile.html', context={
         'org': org,
-        'skills': Skill.objects.all
+        'form': form,
+        'skills': Skill.objects.all()
     })
+
 
 
 def add_skill(request: HttpRequest, skill_id):

@@ -57,11 +57,13 @@ def home_view(request: HttpRequest):
                     except Candidate.DoesNotExist:
                         pass
 
+
             # Filter likes for the current user
             liked_orgs = CandidateLike.objects.filter(candidate__user=request.user)
             for org in liked_orgs:
 
                 print(f"Organization {org.organization} liked {org.candidate}")
+
 
             super_liked_orgs = OrganizationSuperLike.objects.all()
             return render(request, "main/home.html", {
