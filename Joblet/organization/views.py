@@ -232,23 +232,23 @@ from django.contrib import messages
 def like_organization(request, organization_id):
     candidate = request.user.candidate  # Assuming candidate is tied to the user
     organization = get_object_or_404(Organization, id=organization_id)
-    cand_like = CandidateLike.objects.all()
+
     try:
         # Check if the candidate has already liked the organization
-        if organization in cand_like.organization.all():
+        cand_like = CandidateLike.objects.filter(candidate=candidate, organization=organization).first()
+        if cand_like:
             messages.info(request, 'You have already liked this organization.', 'alert-info')
         else:
-            # Add the organization to the candidate's liked_organizations
-            cand_like.add(organization)
+            # Create a new like entry
+            CandidateLike.objects.create(candidate=candidate, organization=organization)
+
             # Check for a match
             check_and_create_match(organization, candidate)
             messages.success(request, 'Liked successfully!', 'alert-success')
 
-    except InterruptedError as i:
-        print(i)
-        print('Integrity')
     except Exception as e:
         print(e)
         messages.error(request, 'An error occurred while liking the organization.', 'alert-danger')
 
     return redirect("main:home_view")
+
