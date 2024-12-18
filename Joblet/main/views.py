@@ -57,7 +57,6 @@ def home_view(request: HttpRequest):
                     except Candidate.DoesNotExist:
                         pass
 
-            # Filter likes for the current user
             liked_orgs = OrganizationLike.objects.filter(candidate__user=request.user)
             for org in orgs:
                 is_liked = liked_orgs.filter(organization=org).exists()
