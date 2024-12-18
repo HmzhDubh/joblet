@@ -4,6 +4,7 @@ from . import views
 app_name = 'matchApp'
 
 urlpatterns = [
-    path('', views.match_users_view, name='match_users_view'),
+    path('candidate/<candidate_id>/super/like', views.candidate_super_like, name='candidate_super_like'),
+    path('organization/<organization_id>/super/like', views.organization_super_like, name='organization_super_like'),
 
 ]

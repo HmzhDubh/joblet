@@ -132,25 +132,24 @@
                 <button class="btn btn-warning rounded-5">{{ skill.skill_name }}</button>
                 {% endfor %}
             </div>
+
+
         </div>
         <div class="action-buttons">
             <!-- Like Button -->
             <form action="{% url 'organization:like_organization' org.id %}" method="POST" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-circle">
-                    {% if user in org.likes.all %}
-                        <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
-                    {% else %}
-                        <i class="fas fa-heart"></i> <!-- Not liked -->
-                    {% endif %}
+
+                    <i class="fas fa-heart {% if liked_org %}text-danger{% endif %}"></i> <!-- Already liked -->
+
                 </button>
             </form>
-            <span>{{ org.likes.count }}</span> <!-- Display Like Count -->
 
             <!-- Other Buttons -->
+            <a href="{% url 'matchApp:organization_super_like' org.id %}" class="btn btn-circle"><i class="fas fa-bolt {% if org.id == super_liked_org.id %}text-warning{% endif %}"></i></a>
             <button class="btn btn-circle"><i class="fas fa-star"></i></button>
-            <button class="btn btn-circle"><i class="fas fa-bolt"></i></button>
-            <button class="btn btn-circle"><i class="fas fa-comment-alt"></i></button>
+
         </div>
     </div>
 </div>

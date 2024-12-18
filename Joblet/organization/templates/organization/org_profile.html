@@ -4,7 +4,7 @@
 {% block content %}
 <main class="my-5 mt-5 pt-5">
     <div class="container">
-        <nav class="" aria-label="breadcrumb">
+        <nav class="ms-2" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
                 <li class="breadcrumb-item"><a href="#" class="text-primary">Organization</a></li>
@@ -14,7 +14,7 @@
 
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card">
+                <div class="card shadow-sm">
                     <div class="card-body text-center">
                         <img src="{{ org.logo.url }}" alt="logo" class="profile-image mb-3 rounded-circle" width="100%">
                         {% if request.GET.edit %}
@@ -222,7 +222,7 @@
 
                                             {% endfor %}
                                             <li>
-                                                <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}" method="post">
+                                                <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}?next={{ request.path|urlencode }}" method="post">
                                                     {% csrf_token %}
                                                 <input type="text" name="skill_name" placeholder="Add New Skill">
                                                 <button  type="submit" class=" "><i class="bi bi-plus-circle"></i></button>

@@ -5,6 +5,8 @@ from .models import Message
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
+from matchApp.models import Match
+
 
 # Create your views here.
 def direct_messages_view(request:HttpRequest):
@@ -22,8 +24,10 @@ def direct_messages_view(request:HttpRequest):
 
     # Convert dictionary to a list of tuples for the template
     conversations_list = [{'user': user, 'last_message': msg} for user, msg in conversations.items()]
-
-    return render(request, "direct_messages/direct_messages.html", {'conversations': conversations_list})
+    matches = Match.objects.filter(
+        Q(candidate=request.user.candidate.id) | Q(organization=request.user.id)
+    )
+    return render(request, "direct_messages/direct_messages.html", {'conversations': conversations_list, 'matches':matches})
 
 @login_required
 def chat_view(request, recipient_id):

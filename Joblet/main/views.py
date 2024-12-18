@@ -5,6 +5,9 @@ from .forms import ContactForm
 from organization.models import Organization
 from candidate.models import Candidate
 
+from matchApp.models import OrganizationLike, CandidateLike, Match
+
+from matchApp.models import OrganizationSuperLike, CandidateSuperLike
 # Create your views here.
 
 
@@ -53,11 +56,18 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Candidate.DoesNotExist:
                         pass
-            
+            liked_orgs = OrganizationLike.objects.all()
+            if org in liked_orgs:
+                print(True)
+            else:
+                print(False)
+            super_liked_orgs = OrganizationSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'orgs': orgs,
                 'carousel_items': carousel_items,
-                'total_cards': total_cards
+                'total_cards': total_cards,
+                'liked_orgs': liked_orgs,
+                'super_liked_orgs': super_liked_orgs
             })
 
         elif group.name == 'organizations':
@@ -96,11 +106,14 @@ def home_view(request: HttpRequest):
                             messages.warning(request, 'Your profile is not complete. Please complete it to continue.', 'alert-warning')
                     except Organization.DoesNotExist:
                         pass
-            
+            liked_cands = CandidateLike.objects.all()
+            super_liked_cands = CandidateSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'candidates': candidates,
                 'carousel_items': carousel_items,
-                'total_cards': total_cards
+                'total_cards': total_cards,
+                'liked_cands': liked_cands,
+                'super_liked_cands': super_liked_cands
             })
 
     return render(request, "main/home.html", context={'cands': cands, 'orgs': orgs})
