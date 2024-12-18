@@ -47,8 +47,9 @@ def candidate_profile_view(request, user_name):
     })
 
 
-def add_skill(request: HttpRequest, skill_id):
+def add_skill(request: HttpRequest):
 
+    skill_id = request.POST['skill']
     skill = Skill.objects.get(pk=skill_id)
     candidate = Candidate.objects.get(user=request.user)
     candidate.skills.add(skill)
@@ -230,18 +231,21 @@ def check_and_create_match(organization, candidate):
     if org_liked_candidate and candidate_liked_org:
         match, created = Match.objects.get_or_create(organization=organization, candidate=candidate)
         if created:
+
             print("Match created!")
         else:
             print("Match already exists.")
         return match
     return None
 
+
 def like_candidate(request, candidate_id):
-    organization = request.user.organization  # Assuming organization is tied to user
+    organization = Organization.objects.get(profile=request.user) # Assuming organization is tied to user
     candidate = Candidate.objects.get(id=candidate_id)
 
     # Add the like
     OrganizationLike.objects.get_or_create(organization=organization, candidate=candidate)
     # Check for a match
     check_and_create_match(organization, candidate)
+
     return redirect("main:home_view")

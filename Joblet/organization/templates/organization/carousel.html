@@ -7,9 +7,9 @@
 
     {% for item in carousel_items %}
         {% if item.org %}
-            {% include "organization/organization_card.html" with org=item.org position_class=item.position_class %}
+            {% include "organization/organization_card.html" with org=item.org position_class=item.position_class liked_org=item.is_liked super_liked_orgs=super_liked_orgs%}
         {% elif item.candidate %}
-            {% include "candidate/candidate_card.html" with candidate=item.candidate position_class=item.position_class %}
+            {% include "candidate/candidate_card.html" with candidate=item.candidate position_class=item.position_class liked_cands=liked_cands super_liked_cands=super_liked_cands %}
         {% endif %}
     {% endfor %}
 

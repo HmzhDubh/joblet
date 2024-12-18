@@ -19,6 +19,7 @@ class Candidate(models.Model):
     linkedin = models.URLField(null=True)
 
 
+
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
