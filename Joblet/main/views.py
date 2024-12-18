@@ -57,10 +57,13 @@ def home_view(request: HttpRequest):
                     except Candidate.DoesNotExist:
                         pass
 
-            liked_orgs = OrganizationLike.objects.filter(candidate__user=request.user)
-            for org in orgs:
-                is_liked = liked_orgs.filter(organization=org).exists()
-                print(f"Organization {org.name} liked: {is_liked}")
+
+            # Filter likes for the current user
+            liked_orgs = CandidateLike.objects.filter(candidate__user=request.user)
+            for org in liked_orgs:
+
+                print(f"Organization {org.organization} liked {org.candidate}")
+
 
             super_liked_orgs = OrganizationSuperLike.objects.all()
             return render(request, "main/home.html", {
@@ -108,7 +111,11 @@ def home_view(request: HttpRequest):
                     except Organization.DoesNotExist:
                         pass
 
-            liked_cands = CandidateLike.objects.all()
+            liked_cands = OrganizationLike.objects.filter(organization__profile=request.user)
+            for cand in liked_cands:
+
+                print(f"Candidate {cand.candidate} liked {cand.organization}")
+
             super_liked_cands = CandidateSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'candidates': candidates,
