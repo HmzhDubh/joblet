@@ -150,11 +150,15 @@
                 <form action="{% url 'candidate:like_candidate' candidate.id %}" method="POST" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-circle">
-                        {% if candidate in request.user.organization.candidate_likes.all %}
-                        <i class="fas fa-heart text-danger"></i> <!-- Already liked -->
-                        {% else %}
-                        <i class="fas fa-heart"></i> <!-- Not liked -->
-                        {% endif %}
+
+                        <i class="fas fa-heart
+                         {% for d in liked_cands %}
+                            {% if d.candidate == candidate %}
+                                text-danger
+                            {% endif %}
+                        {% endfor %}
+                        "></i> <!-- Already liked -->
+                        
                     </button>
                 </form>
     
