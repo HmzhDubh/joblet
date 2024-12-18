@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from candidate.models import Candidate
 
 # Create your models here.
 
@@ -42,7 +43,10 @@ class Projects(models.Model):
 
 
 class OrganizationLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    projects = models.ForeignKey(Projects, default=0, on_delete=models.CASCADE, related_name='organization_likes')
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.organization} likes {self.candidate}"
 
