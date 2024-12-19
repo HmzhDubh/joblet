@@ -21,9 +21,7 @@
             <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInLeft">
                 <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">Profile</h4>
-                    {% if request.user == candidate_profile.user %}
                     <a href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal" class="btn btn-light btn-sm">Edit</a>
-                    {% endif %}
                 </div>
                 <div class="card-body text-center p-5">
                     <div class="p-2 text-center">
@@ -98,9 +96,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3>Skills</h3>
-                        {% if request.user == candidate_profile.user %}
                         <a href="#" data-bs-toggle="modal" data-bs-target="#editSkillsModal" class="btn btn-primary btn-sm shadow-sm"><i class="bi bi-plus-circle"></i></a>
-                        {% endif %}
                     </div>
                     <div class="container p-5">
                         {% if candidate_profile.skills.all %}
@@ -122,9 +118,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3>Projects</h3>
-                        {% if request.user == candidate_profile.user %}
                         <a href="#" data-bs-toggle="modal" data-bs-target="#editProjectsModal" class="btn btn-primary btn-sm shadow-sm"><i class="bi bi-plus-circle"></i></a>
-                        {% endif %}
                     </div>
                     <div class="container p-5">
                         {% if candidate_profile.projects.all %}
@@ -147,9 +141,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3>Education</h3>
-                        {% if request.user == candidate_profile.user %}
                         <a href="#" data-bs-toggle="modal" data-bs-target="#editEducationModal" class="btn btn-primary btn-sm shadow-sm"><i class="bi bi-plus-circle"></i></a>
-                        {% endif %}
                     </div>
                     <div class="container p-5">
                         {% if candidate_profile.education.all %}
@@ -193,9 +185,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3>Experience</h3>
-                        {% if request.user == candidate_profile.user %}
                         <a href="#" data-bs-toggle="modal" data-bs-target="#editExperienceModal" class="btn btn-primary btn-sm shadow-sm"><i class="bi bi-plus-circle"></i></a>
-                        {% endif %}
                     </div>
                     <div class="container p-5">
                         {% if candidate_profile.experience.all %}
@@ -313,7 +303,7 @@
                         </div>
                     </div>
 
-                     <div class="modal fade" id="editProjectsModal" tabindex="-1" aria-labelledby="editProjectsModalLabel" aria-hidden="true">
+ <div class="modal fade" id="editProjectsModal" tabindex="-1" aria-labelledby="editProjectsModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form method="POST" action="{% url 'candidate:add_project' %}" enctype="multipart/form-data" >
                                 {% csrf_token %}
@@ -342,6 +332,8 @@
                             </form>
                         </div>
                     </div>
+
+
 
                     <div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="editEducationModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

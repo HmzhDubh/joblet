@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-
 from .models import Candidate, Project, Education, Experince
 from django.http import JsonResponse
 from organization.models import Skill, Organization
@@ -17,12 +15,12 @@ from matchApp.models import OrganizationLike, CandidateLike, Match
 @login_required
 def candidate_profile_view(request, user_name):
 
-    # if request.user.username != user_name:
-    #
-    #     messages.warning(request, 'There is error uploading your profile', 'alert-danger')
-    #     return redirect('main:home_view')
+    if request.user.username != user_name:
 
-    user = User.objects.get(username=user_name)
+        messages.warning(request, 'There is error uploading your profile', 'alert-danger')
+        return redirect('main:home_view')
+
+    user = User.objects.get(pk=request.user.id)
     candidate_profile = Candidate.objects.get(user=user.id)
 
     if request.method == 'POST':
@@ -263,4 +261,4 @@ def like_candidate(request, candidate_id):
         print(e)
         messages.error(request, 'An error occurred while liking the organization.', 'alert-danger')
 
-    return redirect(f'{reverse("main:home_view")}?type=organization&active={candidate_id}')
+    return redirect("main:home_view")

@@ -3,7 +3,7 @@
 
 {% block content %}
 <main class="my-5 mt-5 pt-5">
-    <div class="container pb-3 mb-3">
+    <div class="container">
         <nav class="ms-2" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
@@ -11,16 +11,18 @@
                 <li class="breadcrumb-item active">Organization Profile</li>
             </ol>
         </nav>
-    
-        <div class="row g-4 mt-4">
-            <div class="row">
-                <!-- Profile Section -->
-                <div class="col-md-4 col-lg-4">
-                    <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInLeft">
-                        <div class="card-header bg-secondary text-white text-center">
-                            <h4 class="mb-0">Profile</h4>
-                        </div>
 
+        <div class="row g-4">
+            <div class="col-md-4 col-lg-4">
+                <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInLeft">
+                    <div class="card-header bg-secondary text-white d-flex justify-content-center align-items-center">
+                        <h4 class="mb-0">Profile</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
+                        <!-- Logo -->
+                        <div class="d-flex justify-content-center align-items-center mb-4">
+                            <img src="{{ org.logo.url }}" alt="logo" class="img-fluid rounded-circle shadow-lg" style="max-width: 150px; height: 150px; object-fit: cover;">
+                        </div>
 
                         <!-- Profile Name -->
                         <h5 class="card-title text-center">@{{ org.name }}</h5>
@@ -47,7 +49,7 @@
                                     {% elif org.profile_completion <= 70 and org.profile_completion >= 41 %}bg-warning
                                     {% elif org.profile_completion >= 80 %}bg-success
                                     {% endif %}" style="width: {{ org.profile_completion }}%;">
-                                    {{ org.profile_completion }}
+                                    {{ org.profile_completion }}%
                                 </div>
                             </div>
                         </div>
@@ -82,7 +84,7 @@
                                 {% endif %}
                             </li>
                         </ul>
-                        {% if request.user == org.profile %}
+
                         <!-- Edit/Done Button -->
                         <div class="p-3 m-3 text-center">
                             <form class="text-end">
@@ -95,7 +97,7 @@
                                 {% endif %}
                             </form>
                         </div>
-                        {% endif %}
+
                         <!-- Logo Upload Form (Edit Mode) -->
                         {% if request.GET.edit %}
                         <form method="post" enctype="multipart/form-data">
@@ -218,61 +220,42 @@
                                 {% else %}
                                 {{ org.job_title }}
                                 {% endif %}
-
                             </div>
-                            {% endif %}
                         </div>
 
-
                         <!-- Edit Button and Modal -->
-                        {% if request.user == org.profile %}
                         <div class="text-end mb-3">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                         </div>
-                        {% endif %}
 
                     </div>
                 </div>
-            
-                <!-- Editable Details Section -->
-                <div class="col-md-8">
-                    <div class="card shadow-lg animate__animated animate__fadeInRight">
-                        <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Organization Name</strong></div>
-                                <div class="col-sm-8">{{ org.name }}</div>
+                <!-- Modal for Editing -->
+                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit Organization</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Description</strong></div>
-                                <div class="col-sm-8">{{ org.description }}</div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Email</strong></div>
-                                <div class="col-sm-8">{{ org.email }}</div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Phone</strong></div>
-                                <div class="col-sm-8">{{ org.phone_number }}</div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Address</strong></div>
-                                <div class="col-sm-8">{{ org.location }}</div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Job Title</strong></div>
-                                <div class="col-sm-8">{{ org.job_title }}</div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                     <!-- Tools Section -->
+                </div>
+
+                <!-- Tools Section -->
                 <div class="card shadow-lg rounded-4 my-4 animate__animated animate__fadeInUp" id="skills-info" style="display: block;">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-row justify-content-between">
                             <h4 class="d-flex align-items-center gap-2 mb-3">
                                 <i class="bi bi-tools"></i>Required Tools
                             </h4>
-
-                            {% if request.user == org.profile %}
                             <div class="dropdown">
                                 <a data-bs-toggle="dropdown" class="dropdown-toggle arrow-hidden">
                                     <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
@@ -291,20 +274,16 @@
                                         </form>
                                     </li>
                                 </ul>
-
                             </div>
-                            {% endif %}
                         </div>
                         <div class="container p-5">
                             {% if org.skills.all %}
                                 {% for skill in org.skills.all %}
                                     <div class="d-flex justify-content-between mb-3 p-3 rounded-3 shadow-sm align-items-center bg-light">
                                         <h5 class="mb-0">{{ skill.skill_name }}</h5>
-                                        {% if request.user == org.profile %}
                                         <a href="{% url 'organization:remove_skill' skill.id %}" class="btn btn-danger btn-sm shadow-sm">
                                             <i class="bi bi-trash"></i>
                                         </a>
-                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             {% else %}
@@ -319,17 +298,19 @@
                     <div class="col">
                         <div class="card shadow-lg rounded-4 animate__animated animate__fadeInUp">
                             <div class="card-body">
-                                <div class="d-flex flex-row justify-content-between">
-                                    <h4 class="d-flex align-items-center gap-2 mb-3">
-                                        <i class="bi bi-briefcase"></i>Projects
-                                    </h4>
-                                    {% if request.user == org.profile %}
-                                    <div class="text-end mb-3">
-                                        <a href="{% url 'organization:add_project' %}" style="color: black;">
-                                            <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
-                                        </a>
-                                    </div>
-                                </div>
+                                
+<div class="d-flex flex-row justify-content-between">
+    <h4 class="d-flex align-items-center gap-2 mb-3">
+        <i class="bi bi-briefcase"></i>Projects
+    </h4>
+    {% if request.user == org.profile %}
+    <div class="text-end mb-3">
+        <a href="{% url 'organization:add_project' %}" style="color: black;">
+            <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
+        </a>
+    </div>
+</div>
+
 
                                 {% endif %}
                                 <div class="row">
@@ -338,7 +319,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ project.title }}</h5>
-                                                <p class="card-text">{{ project.description }}...</p>
+                                                <p class="card-text">{{ project.description }}</p>
                                                 <p class="card-text">{{ project.tools_used }}</p>
                                                 <div class="d-flex flex-row gap-3">
                                                     <a href="{% url 'organization:update_project' project.id %}" class="btn btn-warning">Edit</a>
@@ -359,32 +340,6 @@
                         </div>
                     </div>
                 </div>
-                </div>
-            </div>
-            
-            <!-- Modal for Editing Profile -->
-            <!-- Modal for Editing Profile -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-            
-
-               
             </div>
 
         </div>

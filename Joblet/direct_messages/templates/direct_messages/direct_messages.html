@@ -56,15 +56,7 @@
 
                             <div class="card">
                                 <div class="card-body">
-                                    <h5>Match With <a href="
-                                    {% for group in request.user.groups.all %}
-                                        {% if  group.name == 'organizations'%}
-                                            {% url 'candidate:candidate_profile_view' match.candidate.user.username  %}
-                                        {% elif group.name == 'candidate' %}
-                                            {% url 'organization:org_profile' match.organization.profile.username  %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    ">{{match.candidate.user.first_name}} {{match.candidate.user.last_name}}</a> and {{match.organization.name}}</h5>
+                                    <h5>match bw: {{match.candidate.user.first_name}} and {{match.organization.name}}</h5>
                                     <button class="btn btn-circle">View Match Profile</button>
                                     <p>Get the gold</p>
                                     <button class="btn btn-circle">Contact Now! <i class="fas fa-comment-alt"></i></button>

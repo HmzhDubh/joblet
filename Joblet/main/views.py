@@ -57,11 +57,15 @@ def home_view(request: HttpRequest):
                     except Candidate.DoesNotExist:
                         pass
 
+
             # Filter likes for the current user
             liked_orgs = CandidateLike.objects.filter(candidate__user=request.user)
+            for org in liked_orgs:
 
-            super_liked_orgs = OrganizationSuperLike.objects.filter(candidate__user=request.user)
+                print(f"Organization {org.organization} liked {org.candidate}")
 
+
+            super_liked_orgs = OrganizationSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'orgs': orgs,
                 'carousel_items': carousel_items,
@@ -108,8 +112,11 @@ def home_view(request: HttpRequest):
                         pass
 
             liked_cands = OrganizationLike.objects.filter(organization__profile=request.user)
+            for cand in liked_cands:
 
-            super_liked_cands = CandidateSuperLike.objects.filter(organization__profile=request.user)
+                print(f"Candidate {cand.candidate} liked {cand.organization}")
+
+            super_liked_cands = CandidateSuperLike.objects.all()
             return render(request, "main/home.html", {
                 'candidates': candidates,
                 'carousel_items': carousel_items,

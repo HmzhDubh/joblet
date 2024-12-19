@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
 
-from .forms import ProjectForm, OrganizationForm
+from .forms import ProjectForm
 from .models import Organization, Skill, Projects
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -16,55 +15,43 @@ from candidate.views import check_and_create_match
 
 # Create your views here.
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import Organization, Skill
+from .forms import OrganizationForm
+from django.http import HttpRequest
+
+
 def org_profile(request: HttpRequest, user_name):
+    if request.user.username != user_name:
+        messages.warning(request, 'You are not authorized to view this profile.', 'alert-danger')
+        return redirect('main:home_view')
 
-    # if request.user.username != user_name:
-    #     messages.warning(request, 'You are not authorized to view this profile.', 'alert-danger')
-    #     return redirect('main:home_view')
-
-
-    # Fetch organization and related data
     user = get_object_or_404(User, username=user_name)
     org = get_object_or_404(Organization, profile=user)
 
     if request.method == 'POST':
-        form = OrganizationForm(request.POST, request.FILES, instance=org)
-        if form.is_valid():
-            updated_org = form.save(commit=False)  # Save form data but do not commit yet
-
-            changes_made = False  # Flag to check if any changes were made
-
-            # Increment profile_completion for fields that were updated
-            fields_to_check = ['name', 'logo', 'email', 'phone_number', 'location', 'website', 'linkedin', 'description', 'job_title']
-            for field in fields_to_check:
-                if field in form.changed_data:  # Check if the field has been changed
-                    org.profile_completion = min(org.profile_completion + 10, 100)  # Increment by 3 but cap at 100
-                    changes_made = True
-
-            if changes_made:
-                updated_org.save()  # Save the organization instance if changes were made
-                messages.success(request, 'Profile was updated successfully!', 'alert-success')
-            else:
-                messages.info(request, 'No changes were made to the profile.', 'alert-info')
-
+        if 'edit' in request.POST:
+            form = OrganizationForm(request.POST, request.FILES, instance=org)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Profile updated successfully!', 'alert-success')
+                return redirect('organization:org_profile', user_name=user_name)
+        elif 'delete_project' in request.POST:
+            project_id = request.POST.get('delete_project')
+            project = get_object_or_404(Projects, id=project_id, organization=org)
+            project.delete()
+            messages.success(request, 'Project deleted successfully.', 'alert-success')
             return redirect('organization:org_profile', user_name=user_name)
-        else:
-            messages.error(request, 'There was an error with your submission.', 'alert-danger')
-    else:
-        form = OrganizationForm(instance=org)  # For GET requests, populate the form with current data
 
-    # Render the profile page
-    return render(request, 'organization/org_profile.html', {
+    else:
+        form = OrganizationForm(instance=org)
+
+    return render(request, 'organization/org_profile.html', context={
         'org': org,
         'form': form,
-        'skills': Skill.objects.all(),
+        'skills': Skill.objects.all()
     })
-
-
-
-
-
-
 
 
 
@@ -197,5 +184,5 @@ def like_organization(request, organization_id):
         print(e)
         messages.error(request, 'An error occurred while liking the organization.', 'alert-danger')
 
-    return redirect(f'{reverse("main:home_view")}?type=candidate&active={organization_id}')
+    return redirect("main:home_view")
 
