@@ -53,22 +53,15 @@
                     <div class="col-12">
                         <div class="d-flex gap-4 flex-wrap">
                             {% for match in matches %}
-
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5>Match With <a href="
-                                        {% for group in request.user.groups.all %}
-                                            {% if  group.name == 'organizations'%}
-                                                {% url 'candidate:candidate_profile_view' match.candidate.user.username  %}
-                                            {% elif group.name == 'candidate' %}
-                                                {% url 'organization:org_profile' match.organization.profile.username  %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    ">{{match.candidate.user.first_name}} {{match.candidate.user.last_name}}</a> and {{match.organization.name}}</h5>
-                                    <button class="btn btn-circle">View Match Profile</button>
-                                    <p>Get the gold</p>
-                                    <button class="btn btn-circle">Contact Now! <i class="fas fa-comment-alt"></i></button>
-
+                            <div class="card shadow border-0 rounded-3 animated-card" style="flex: 1; min-width: 250px;">
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bold">Match: {{ match.candidate.user.first_name }} & {{ match.organization.name }}</h5>
+                                    <div class="d-flex flex-row justify-content-center gap-3 align-items-center">
+                                        <button class="btn btn-primary btn-sm">View Match Profile</button>
+                                        <button class="btn btn-success btn-sm">
+                                            Contact Now <i class="fas fa-comment-alt"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             
