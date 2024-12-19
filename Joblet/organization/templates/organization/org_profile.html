@@ -49,7 +49,7 @@
                                     {% elif org.profile_completion <= 70 and org.profile_completion >= 41 %}bg-warning
                                     {% elif org.profile_completion >= 80 %}bg-success
                                     {% endif %}" style="width: {{ org.profile_completion }}%;">
-                                    {{ org.profile_completion }}%
+                                    {{ org.profile_completion }}
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                                 {% endif %}
                             </li>
                         </ul>
-
+                        {% if request.user == org.profile %}
                         <!-- Edit/Done Button -->
                         <div class="p-3 m-3 text-center">
                             <form class="text-end">
@@ -97,7 +97,7 @@
                                 {% endif %}
                             </form>
                         </div>
-
+                        {% endif %}
                         <!-- Logo Upload Form (Edit Mode) -->
                         {% if request.GET.edit %}
                         <form method="post" enctype="multipart/form-data">
@@ -222,11 +222,12 @@
                                 {% endif %}
                             </div>
                         </div>
-
+                        {% if request.user == org.profile %}
                         <!-- Edit Button and Modal -->
                         <div class="text-end mb-3">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
@@ -256,6 +257,7 @@
                             <h4 class="d-flex align-items-center gap-2 mb-3">
                                 <i class="bi bi-tools"></i>Required Tools
                             </h4>
+                            {% if request.user == org.profile %}
                             <div class="dropdown">
                                 <a data-bs-toggle="dropdown" class="dropdown-toggle arrow-hidden">
                                     <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
@@ -275,15 +277,19 @@
                                     </li>
                                 </ul>
                             </div>
+                            {% endif %}
                         </div>
                         <div class="container p-5">
                             {% if org.skills.all %}
                                 {% for skill in org.skills.all %}
                                     <div class="d-flex justify-content-between mb-3 p-3 rounded-3 shadow-sm align-items-center bg-light">
                                         <h5 class="mb-0">{{ skill.skill_name }}</h5>
+                                        {% if request.user == org.profile %}
                                         <a href="{% url 'organization:remove_skill' skill.id %}" class="btn btn-danger btn-sm shadow-sm">
+
                                             <i class="bi bi-trash"></i>
                                         </a>
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             {% else %}

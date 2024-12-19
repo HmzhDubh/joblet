@@ -118,7 +118,7 @@
         </div>
         <div class="profile-info">
             <div class="d-flex align-items-center justify-content-center">
-                <h4 class="mb-0 me-2">{{ candidate.user.first_name }}{{ candidate.user.last_name }}</h4>
+                <a href="{% url 'candidate:candidate_profile_view' candidate.user.username %}" class="h4 mb-0 me-2 text-decoration-none">{{ candidate.user.first_name }}{{ candidate.user.last_name }}</a>
                 {% if candidate.approved %}
                 <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
                 {% else %}
@@ -163,9 +163,14 @@
                 </form>
     
                 <!-- Other Buttons -->
-                <a href="{% url 'matchApp:candidate_super_like' candidate.id %}" class="btn btn-circle"><i class="fas fa-bolt"></i></a>
-                <button class="btn btn-circle"><i class="fas fa-star"></i></button>
-
+                <a href="{% url 'matchApp:candidate_super_like' candidate.id %}" class="btn btn-circle"><i class="fas fa-star
+                        {% for cand in super_liked_cands %}
+                            {% if cand.candidate == candidate %}
+                                text-danger
+                            {% endif %}
+                        {% endfor %}
+                    "></i></a>
+                <button class="btn btn-circle"><i class="fas fa-bolt"></i></button>
         </div>
     </div>
 </div>
