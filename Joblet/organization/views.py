@@ -21,6 +21,7 @@ from .models import Organization, Skill
 from .forms import OrganizationForm
 from django.http import HttpRequest
 
+
 def org_profile(request: HttpRequest, user_name):
     if request.user.username != user_name:
         messages.warning(request, 'You are not authorized to view this profile.', 'alert-danger')

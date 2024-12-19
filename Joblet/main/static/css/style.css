@@ -510,3 +510,71 @@ html, body {
     background-color: #c3dbe8;
 }
 
+
+.message-container {
+  background: #232531;
+  width: 720px;
+  height: 144px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container {
+  height: 96px;
+  width: 96px;
+  background: #2E303C;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-icon {
+  color: #D65563;
+  height: 60px;
+  width: 60px;
+}
+
+.text-container {
+  height: 96px;
+  margin-left: 25px;
+  width: 470px;
+}
+
+.text-top {
+  color: white;
+  font-size: 23px;
+  height: 48px;
+  line-height: 48px;
+}
+
+.text-bottom {
+  color: #686F7C;
+  font-size: 23px;
+  height: 48px;
+  line-height: 48px;
+}
+
+.close-icon {
+  width: 96px;
+  height: 96px;
+}
+
+.close-icon svg {
+  color: #4B5563;
+  cursor: pointer;
+}
+
+.success-icon {
+  color: #2B9875;
+  height: 60px;
+  width: 60px;
+}
+
+.message-icon {
+  color: #1C56BE;
+  height: 60px;
+  width: 60px;
+}
