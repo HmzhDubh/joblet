@@ -4,6 +4,7 @@ body, ul, li, a, img, header {
     padding: 0;
     border: 0;
     box-sizing: border-box;
+
 }
 
 html, body {
@@ -11,11 +12,18 @@ html, body {
     display: flex;
     flex-direction: column; /* Makes body and footer layout manageable */
 }
+.nav-scroll {
+	background: #fff;
+	-webkit-box-shadow: 0 1px 8px 3px rgba(0, 0, 0, 0.0509803922);
+	box-shadow: 0 1px 8px 3px rgba(0, 0, 0, 0.0509803922);
+	-webkit-transition: all .4s ease;
+	transition: all .4s ease;
+}
 .bg-candidate{
-    background-color: #c3dbe8;
+    background-color: #F5F0CD;
 }
 .bg-organization{
-    background-color: #293855;
+    background-color: #81BFDA;
 }
 /* Main Content Area */
 
