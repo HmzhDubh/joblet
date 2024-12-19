@@ -9,8 +9,16 @@ class ProjectForm(forms.ModelForm):
 
 from django import forms
 from .models import Organization
-
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
-        fields = ['name', 'email', 'phone_number', 'job_title', 'description', 'location', 'website', 'linkedin', 'logo', 'skills']
+        fields = [
+            'name', 'email', 'phone_number', 'job_title',
+            'description', 'location', 'website', 'linkedin', 'logo', 'skills',
+        ]
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'website': forms.URLInput(attrs={'class': 'form-control'}),
+            'linkedin': forms.URLInput(attrs={'class': 'form-control'}),
+        }

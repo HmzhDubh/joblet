@@ -5,51 +5,55 @@
 {% block content %}
 <main class="my-5 mt-5 pt-5">
     <div class="container">
-        <nav class="" aria-label="breadcrumb">
-            <ol class="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
                 <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}" class="text-primary">Home</a></li>
                 <li class="breadcrumb-item"><a href="#" class="text-primary">Candidate</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'candidate:candidate_profile_view' user.username %}" class="text-primary">Profile</a></li>
-                <li class="breadcrumb-item active">{{ user.first_name }} DM</li>
+                <li class="breadcrumb-item active text-dark">{{ user.first_name }} DM</li>
             </ol>
         </nav>
 
         <div class="row g-4">
+            <!-- Profile Card -->
             <div class="col-md-4">
-                <div class="card shadow-sm">
-                        <div class="card-body text-center p-5 ">
-                            <div>
-                                <img src="{{ user.candidate.avatar.url}}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                            </div>
-                            <a href="{% url 'candidate:candidate_profile_view' user.username %}" class="h2">{{ user.first_name }} {{ user.last_name }}
-                                {% if user.approved %}
+                <div class="card shadow-lg border-0 rounded-3 animated-card">
+                    <div class="card-body text-center p-5">
+                        <div>
+                            <img src="{{ user.candidate.avatar.url }}" alt="Avatar" class="img-fluid rounded-circle mb-3 shadow-sm" style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                        <a href="{% url 'candidate:candidate_profile_view' user.username %}" class="h2 text-dark fw-bold">
+                            {{ user.first_name }} {{ user.last_name }}
+                            {% if user.approved %}
                                 <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
-                                {% else %}
+                            {% else %}
                                 <i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i>
-                                {% endif %}
-
-                            </a>
-                            <div class="p-2">
-                                <p>Your Profile Completion</p>
-                                <div class="progress">
-                                    <div class="progress-bar {% if user.candidate.profile_completion <= 40 %}bg-danger{% elif user.candidate.profile_completion <= 70 and user.candidate.profile_completion >= 41 %}bg-warning{% elif user.candidate.profile_completion >= 80 %}bg-success{% endif %}" style="width: {{user.candidate.profile_completion}}%">{{ user.candidate.profile_completion }}%</div>
+                            {% endif %}
+                        </a>
+                        <div class="p-3">
+                            <p class="fw-semibold">Your Profile Completion</p>
+                            <div class="progress shadow-sm">
+                                <div class="progress-bar {% if user.candidate.profile_completion <= 40 %}bg-danger{% elif user.candidate.profile_completion <= 70 %}bg-warning{% else %}bg-success{% endif %}" 
+                                     style="width: {{ user.candidate.profile_completion }}%;">
+                                    {{ user.candidate.profile_completion }}%
                                 </div>
                             </div>
-                            <div class="text-start">
-                                <h6>Bio: </h6>
-                                <p>{{ user.candidate.about }}</p>
-                            </div>
-
+                        </div>
+                        <div class="text-start mt-3">
+                            <h6 class="fw-bold">Bio:</h6>
+                            <p class="text-muted">{{ user.candidate.about }}</p>
                         </div>
                     </div>
+                </div>
             </div>
 
+            <!-- Matches and Chat Section -->
             <div class="col-md-8">
-
-                <div class="row">
-                    <div class="col d-flex gap-3 flex-column">
-                        <div class="d-flex gap-4">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="d-flex gap-4 flex-wrap">
                             {% for match in matches %}
+
                             <div class="card">
                                 <div class="card-body">
                                     <h5>Match With <a href="
@@ -64,56 +68,72 @@
                                     <button class="btn btn-circle">View Match Profile</button>
                                     <p>Get the gold</p>
                                     <button class="btn btn-circle">Contact Now! <i class="fas fa-comment-alt"></i></button>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4>Match With Sadaia</h4>
-                                    <p>Description for card 2 goes here.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4>Match With Sadaia</h4>
-                                    <p>Description for card 3 goes here.</p>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- chat section -->
-                        <div class="card">
+                                </div>
+                            </div>
+                            
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Chat Section -->
+                    <div class="col-12">
+                        <div class="card shadow-lg border-0 rounded-3 animated-card">
                             <div class="card-body">
-                                <div class="chats-section">
-                                    <h2>Chats</h2>
-                                    <div class="chat-box">
-                                        {% if conversations %}
+                                <h3 class="text-dark fw-bold mb-4">Chats</h3>
+                                <div class="chat-box">
+                                    {% if conversations %}
                                         {% for conversation in conversations %}
-                                        <div class="chat-message">
-                                            <div class="sender-info">
-                                                <strong>{{ conversation.user.username }}</strong>
-                                                <span class="timestamp">{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
+                                        <div class="chat-message bg-light p-3 mb-3 rounded shadow-sm animated-card">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <strong class="text-primary">{{ conversation.user.username }}</strong>
+                                                <span class="text-muted small">{{ conversation.last_message.timestamp|date:"F j, Y, g:i a" }}</span>
                                             </div>
-                                            <p class="chat-preview">{{ conversation.last_message.content|truncatechars:50 }}</p>
-                                            <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-primary">View Chat</a>
+                                            <p class="text-muted">{{ conversation.last_message.content|truncatechars:50 }}</p>
+                                            <a href="{% url 'direct_messages:chat_view' conversation.user.id %}" class="btn btn-outline-primary btn-sm">View Chat</a>
                                         </div>
                                         {% endfor %}
-                                        {% else %}
-                                        <p>No conversations yet. Start a new chat!</p>
-                                        {% endif %}
-                                    </div>
+                                    {% else %}
+                                        <p class="text-muted">No conversations yet. Start a new chat!</p>
+                                    {% endif %}
                                 </div>
-
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </main>
+
+<style>
+    /* Animation Styles */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animated-card {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animated-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .animated-card:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    .animated-card:nth-child(4) {
+        animation-delay: 0.6s;
+    }
+</style>
 {% endblock %}
