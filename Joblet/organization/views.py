@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from .forms import ProjectForm
 from .models import Organization, Skill, Projects
@@ -23,9 +24,9 @@ from django.http import HttpRequest
 
 
 def org_profile(request: HttpRequest, user_name):
-    if request.user.username != user_name:
-        messages.warning(request, 'You are not authorized to view this profile.', 'alert-danger')
-        return redirect('main:home_view')
+    # if request.user.username != user_name:
+    #     messages.warning(request, 'You are not authorized to view this profile.', 'alert-danger')
+    #     return redirect('main:home_view')
 
     user = get_object_or_404(User, username=user_name)
     org = get_object_or_404(Organization, profile=user)
@@ -184,5 +185,5 @@ def like_organization(request, organization_id):
         print(e)
         messages.error(request, 'An error occurred while liking the organization.', 'alert-danger')
 
-    return redirect("main:home_view")
+    return redirect(f'{reverse("main:home_view")}?type=candidate&active={organization_id}')
 
