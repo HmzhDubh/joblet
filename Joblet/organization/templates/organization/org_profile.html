@@ -13,268 +13,159 @@
         </nav>
 
         <div class="row g-4">
-            <div class="col-md-4 col-lg-4">
-                <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInLeft">
-                    <div class="card-header bg-secondary text-white d-flex justify-content-center align-items-center">
-                        <h4 class="mb-0">Profile</h4>
-                    </div>
-                    <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
-                        <!-- Logo -->
-                        <div class="d-flex justify-content-center align-items-center mb-4">
-                            <img src="{{ org.logo.url }}" alt="logo" class="img-fluid rounded-circle shadow-lg" style="max-width: 150px; height: 150px; object-fit: cover;">
+            <div class="row">
+                <!-- Profile Section -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInLeft">
+                        <div class="card-header bg-secondary text-white text-center">
+                            <h4 class="mb-0">Profile</h4>
                         </div>
-
-                        <!-- Profile Name -->
-                        <h5 class="card-title text-center">@{{ org.name }}</h5>
-                        <p class="text-muted">{{ user.first_name }} {{ user.last_name }}</p>
-                        <p class="text-muted">{{ org.description }}</p>
-                        <p class="text-muted">{{ org.location }}</p>
-                        <p class="text-muted">Since: {{ org.created_at }}</p>
-
-                        <!-- Profile Completion -->
-                        {% if request.user == org.profile %}
-                        <div class="p-2 text-center">
-                            <div class="d-flex gap-3 justify-content-center">
-                                <p class="fw-bold text-muted">Your Profile Completion</p>
-                                {% if org.approved %}
-                                <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
-                                {% else %}
-                                <i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i>
-                                {% endif %}
+                        <div class="card-body text-center p-4">
+                            <!-- Logo -->
+                            <div class="mb-4">
+                                <img src="{{ org.logo.url }}" alt="logo" 
+                                     class="img-fluid rounded-circle shadow-lg" 
+                                     style="max-width: 150px; height: 150px; object-fit: cover;">
                             </div>
-
-                            <div class="progress mt-3 shadow-sm" style="height: 20px;">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated
-                                    {% if org.profile_completion <= 40 %}bg-danger
-                                    {% elif org.profile_completion <= 70 and org.profile_completion >= 41 %}bg-warning
-                                    {% elif org.profile_completion >= 80 %}bg-success
-                                    {% endif %}" style="width: {{ org.profile_completion }}%;">
-                                    {{ org.profile_completion }}%
+            
+                            <!-- Organization Details -->
+                            <h5 class="card-title">@{{ org.name }}</h5>
+                            <p class="text-muted">{{ user.first_name }} {{ user.last_name }}</p>
+                            <p class="text-muted">{{ org.description }}</p>
+                            <p class="text-muted">{{ org.location }}</p>
+                            <p class="text-muted">Since: {{ org.created_at }}</p>
+            
+                            <!-- Profile Completion -->
+                            {% if request.user == org.profile %}
+                            <div class="p-2">
+                                <div class="d-flex justify-content-center align-items-center gap-2">
+                                    <span class="fw-bold text-muted">Profile Completion</span>
+                                    {% if org.approved %}
+                                    <i class="bi bi-patch-check-fill text-success" style="font-size: 1.2rem"></i>
+                                    {% else %}
+                                    <i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 1.2rem"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="progress mt-3" style="height: 20px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated 
+                                        {% if org.profile_completion <= 40 %}bg-danger
+                                        {% elif org.profile_completion <= 70 %}bg-warning
+                                        {% else %}bg-success
+                                        {% endif %}" 
+                                        style="width: {{ org.profile_completion }}%;">
+                                        {{ org.profile_completion }}%
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endif %}
-
-                        <!-- Contact Info -->
-                        <ul class="list-group list-group-flush text-center p-0">
-                            <li class="list-group-item d-flex justify-content-start gap-2 align-items-center">
-                                <i class="fas fa-globe me-2"></i>
-                                <span class="text-muted">Website:</span>
-                                {% if request.GET.edit %}
-                                <form method="post" class="w-100">
-                                    {% csrf_token %}
-                                    <input type="url" class="form-control" name="website" value="{{ org.website }}" required>
-                                    <button type="submit" hidden></button>
-                                </form>
-                                {% else %}
-                                <a href="{{ org.website }}" class="social-link text-decoration-none">{{ org.website }}</a>
-                                {% endif %}
-                            </li>
-                            <li class="list-group-item d-flex justify-content-start gap-2 align-items-center">
-                                <i class="fab fa-linkedin me-2"></i>
-                                <span class="text-muted">LinkedIn:</span>
-                                {% if request.GET.edit %}
-                                <form method="post" class="w-100">
-                                    {% csrf_token %}
-                                    <input type="url" class="form-control" name="linkedin" value="{{ org.linkedin }}" required>
-                                    <button type="submit" hidden></button>
-                                </form>
-                                {% else %}
-                                <a href="{{ org.linkedin }}" class="social-link text-decoration-none">{{ org.linkedin }}</a>
-                                {% endif %}
-                            </li>
-                        </ul>
-
-                        <!-- Edit/Done Button -->
-                        <div class="p-3 m-3 text-center">
-                            <form class="text-end">
-                                {% if request.GET.edit %}
-                                <input type="hidden" name="save_edits" value="true">
-                                <button type="submit" class="btn btn-primary">Done <i class="bi bi-file-earmark-check" style="font-size: 1rem"></i></button>
-                                {% else %}
-                                <input type="hidden" name="edit" value="true">
-                                <button type="submit" class="btn"><i class="bi bi-pencil-square text-warning" style="font-size: 1.5rem"></i></button>
-                                {% endif %}
-                            </form>
-                        </div>
-
-                        <!-- Logo Upload Form (Edit Mode) -->
-                        {% if request.GET.edit %}
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="input-group">
-                                <input type="file" class="form-control" name="logo" aria-label="Upload">
-                                <button class="btn btn-light btn-sm" type="submit">Submit</button>
+                            {% endif %}
+            
+                            <!-- Social Links -->
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <i class="fas fa-globe me-2"></i>
+                                    <span>Website:</span>
+                                    <a href="{{ org.website }}" class="text-decoration-none">{{ org.website }}</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <i class="fab fa-linkedin me-2"></i>
+                                    <span>LinkedIn:</span>
+                                    <a href="{{ org.linkedin }}" class="text-decoration-none">{{ org.linkedin }}</a>
+                                </li>
+                            </ul>
+            
+                            <!-- Edit Button -->
+                            {% if request.user == org.profile %}
+                            <div class="mt-3">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
                             </div>
-                        </form>
-                        {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Editable Details Section -->
+                <div class="col-md-8">
+                    <div class="card shadow-lg animate__animated animate__fadeInRight">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Organization Name</strong></div>
+                                <div class="col-sm-8">{{ org.name }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Description</strong></div>
+                                <div class="col-sm-8">{{ org.description }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Email</strong></div>
+                                <div class="col-sm-8">{{ org.email }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Phone</strong></div>
+                                <div class="col-sm-8">{{ org.phone_number }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Address</strong></div>
+                                <div class="col-sm-8">{{ org.location }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Job Title</strong></div>
+                                <div class="col-sm-8">{{ org.job_title }}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Modal for Editing Profile -->
+            <!-- Modal for Editing Profile -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <div class="col-md-8">
-                <div class="card mb-4 shadow-lg animate__animated animate__fadeInRight">
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <!-- Organization Name -->
-                            <div class="col-sm-4">
-                                <h6 class="mb-0">Organization Name</h6>
-                            </div>
-                            <div class="col-sm-8 text-muted">
-                                {% if request.GET.edit %}
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.name }}
-                                    <input type="submit" hidden />
-                                </form>
-                                {% else %}
-                                {{ org.name }}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <!-- Organization Description -->
-                            <div class="col-sm-4">
-                                <h6 class="mb-0">Organization Description</h6>
-                            </div>
-                            <div class="col-sm-8 text-muted">
-                                {% if request.GET.edit %}
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.description }}
-                                    <input type="submit" hidden />
-                                </form>
-                                {% else %}
-                                {{ org.description }}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <!-- Email -->
-                            <div class="col-sm-4">
-                                <h6 class="mb-0">Email</h6>
-                            </div>
-                            <div class="col-sm-8 text-muted">
-                                {% if request.GET.edit %}
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.email }}
-                                    <input type="submit" hidden />
-                                </form>
-                                {% else %}
-                                {{ org.email }}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <!-- Phone -->
-                            <div class="col-sm-4">
-                                <h6 class="mb-0">Phone</h6>
-                            </div>
-                            <div class="col-sm-8 text-muted">
-                                {% if request.GET.edit %}
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.phone_number }}
-                                    <input type="submit" hidden />
-                                </form>
-                                {% else %}
-                                {{ org.phone_number }}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <!-- Address -->
-                            <div class="col-sm-4">
-                                <h6 class="mb-0">Address</h6>
-                            </div>
-                            <div class="col-sm-8 text-muted">
-                                {% if request.GET.edit %}
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.location }}
-                                    <input type="submit" hidden />
-                                </form>
-                                {% else %}
-                                {{ org.location }}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <!-- Job Title -->
-                            <div class="col-sm-4">
-                                <h6 class="mb-0">Job Title</h6>
-                            </div>
-                            <div class="col-sm-8 text-muted">
-                                {% if request.GET.edit %}
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.job_title }}
-                                    <input type="submit" hidden />
-                                </form>
-                                {% else %}
-                                {{ org.job_title }}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <!-- Edit Button and Modal -->
-                        <div class="text-end mb-3">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                        </div>
-
-                        <!-- Modal for Editing -->
-                        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editModalLabel">Edit Organization</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="post" enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            {{ form.as_p }}
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
+            
 
                 <!-- Tools Section -->
                 <div class="card shadow-lg rounded-4 my-4 animate__animated animate__fadeInUp" id="skills-info" style="display: block;">
                     <div class="card-body">
-                        <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex justify-content-between">
                             <h4 class="d-flex align-items-center gap-2 mb-3">
                                 <i class="bi bi-tools"></i>Required Tools
                             </h4>
-                            <div class="dropdown">
-                                <a data-bs-toggle="dropdown" class="dropdown-toggle arrow-hidden">
-                                    <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% for skill in skills %}
-                                    <li>
-                                        <a href="{% url 'organization:add_skill' skill.id %}" class="dropdown-item">{{ skill.skill_name }}</a>
-                                    </li>
-                                    {% endfor %}
-                                    <li>
-                                        <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}?next={{ request.path|urlencode }}" method="post">
-                                            {% csrf_token %}
-                                            <input type="text" name="skill_name" placeholder="Add New Skill">
-                                            <button type="submit"><i class="bi bi-plus-circle"></i></button>
-                                        </form>
-                                    </li>
-                                </ul>
+                            <div class="d-flex flex-row justify-content-between">
+                                
+                                <div class="dropdown">
+                                    <a data-bs-toggle="dropdown" class="dropdown-toggle arrow-hidden">
+                                        <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for skill in skills %}
+                                        <li>
+                                            <a href="{% url 'organization:add_skill' skill.id %}" class="dropdown-item">{{ skill.skill_name }}</a>
+                                        </li>
+                                        {% endfor %}
+                                        <li>
+                                            <form class="dropdown-item" action="{% url 'organization:new_skill_view' %}?next={{ request.path|urlencode }}" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" name="skill_name" placeholder="Add New Skill">
+                                                <button type="submit"><i class="bi bi-plus-circle"></i></button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="container p-5">
@@ -299,19 +190,17 @@
                     <div class="col">
                         <div class="card shadow-lg rounded-4 animate__animated animate__fadeInUp">
                             <div class="card-body">
-                                
-<div class="d-flex flex-row justify-content-between">
-    <h4 class="d-flex align-items-center gap-2 mb-3">
-        <i class="bi bi-briefcase"></i>Projects
-    </h4>
-    {% if request.user == org.profile %}
-    <div class="text-end mb-3">
-        <a href="{% url 'organization:add_project' %}" style="color: black;">
-            <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
-        </a>
-    </div>
-</div>
-
+                                <div class="d-flex flex-row justify-content-between">
+                                    <h4 class="d-flex align-items-center gap-2 mb-3">
+                                        <i class="bi bi-briefcase"></i>Projects
+                                    </h4>
+                                    {% if request.user == org.profile %}
+                                    <div class="text-end mb-3">
+                                        <a href="{% url 'organization:add_project' %}" style="color: black;">
+                                            <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
+                                        </a>
+                                    </div>
+                                </div>
 
                                 {% endif %}
                                 <div class="row">
@@ -320,7 +209,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ project.title }}</h5>
-                                                <p class="card-text">{{ project.description }}</p>
+                                                <p class="card-text">{{ project.description }}...</p>
                                                 <p class="card-text">{{ project.tools_used }}</p>
                                                 <div class="d-flex flex-row gap-3">
                                                     <a href="{% url 'organization:update_project' project.id %}" class="btn btn-warning">Edit</a>
