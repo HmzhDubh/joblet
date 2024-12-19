@@ -14,6 +14,7 @@ from candidate.views import check_and_create_match
  
 
 # Create your views here.
+
 def org_profile(request: HttpRequest, user_name):
     # Authorization check
     if request.user.username != user_name:

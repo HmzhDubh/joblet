@@ -232,10 +232,13 @@ def check_and_create_match(organization, candidate):
         match, created = Match.objects.get_or_create(organization=organization, candidate=candidate)
         if created:
 
-            print("Match created!")
+            print("Match created!" , created)
+            # request.session['new_match'] = True
+            # request.session['match_org_name'] = organization.name  # Save org name for the popup
+
         else:
             print("Match already exists.")
-        return match
+        return match, created
     return None
 
 
@@ -243,9 +246,19 @@ def like_candidate(request, candidate_id):
     organization = Organization.objects.get(profile=request.user) # Assuming organization is tied to user
     candidate = Candidate.objects.get(id=candidate_id)
 
-    # Add the like
-    OrganizationLike.objects.get_or_create(organization=organization, candidate=candidate)
-    # Check for a match
-    check_and_create_match(organization, candidate)
+    try:
+        org_like = OrganizationLike.objects.filter(organization=organization, candidate=candidate).first()
+        # Add the like
+        if org_like:
+            messages.info(request, 'You have already liked this organization.', 'alert-info')
+        else:
+            OrganizationLike.objects.get_or_create(organization=organization, candidate=candidate)
+        # Check for a match
+            if check_and_create_match(organization, candidate):
+                messages.success(request, f'Congrats there is a Match between you and {organization.name}', 'alert-dark')
+            messages.success(request, 'Liked successfully!', 'alert-success')
+    except Exception as e:
+        print(e)
+        messages.error(request, 'An error occurred while liking the organization.', 'alert-danger')
 
     return redirect("main:home_view")

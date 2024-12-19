@@ -141,7 +141,13 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-circle">
 
-                    <i class="fas fa-heart {% if liked_org %}text-danger{% endif %}"></i> <!-- Already liked -->
+                    <i class="fas fa-heart
+                    {% for d in liked_orgs %}
+                    {% if d.organization == org %}
+                        text-danger
+                    {% endif %}
+                    {% endfor %}
+                    "></i> <!-- Already liked -->
 
                 </button>
             </form>
