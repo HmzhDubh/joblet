@@ -18,7 +18,7 @@ def candidate_super_like(request: HttpRequest, candidate_id):
     :return:
     """
 
-    organization = request.user.organization  # Assuming candidate is tied to user
+    organization = Organization.objects.get(profile=request.user) # Assuming organization is tied to user
     candidate = Candidate.objects.get(id=candidate_id)
 
     candidate_super_ike, created = CandidateSuperLike.objects.get_or_create(organization=organization, candidate=candidate)
