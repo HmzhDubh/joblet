@@ -185,5 +185,5 @@ def like_organization(request, organization_id):
         print(e)
         messages.error(request, 'An error occurred while liking the organization.', 'alert-danger')
 
-    return redirect(f'{reverse("main:home_view")}?type=candidate&active={organization_id}')
+    return redirect(f'{reverse("main:home_view")}?type=candidate')
 
